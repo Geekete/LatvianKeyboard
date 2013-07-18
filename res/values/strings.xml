@@ -6,5 +6,12 @@
     <string name="titleKeyboard2">Keyboard 2</string>
     <string name="titleKeyboard3">Keyboard 3</string>
     <string name="titleAbout">About</string>
+    
+    
+    
+    
+    
+    <!-- extra row keyboard strings -->
+    <string name="ime_name">extra row latvian keyboard</string>
 
 </resources>
