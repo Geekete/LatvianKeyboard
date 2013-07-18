@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Latvian keyboard settings</string>
+    <string name="titleKeyboard1">Keyboard 1</string>
+    <string name="titleKeyboard2">Keyboard 2</string>
+    <string name="titleKeyboard3">Keyboard 3</string>
+    <string name="titleAbout">About</string>
+
+</resources>
