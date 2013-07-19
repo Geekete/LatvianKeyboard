@@ -24,7 +24,7 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.activity_main);
 		listItems = new String[4];
 		listItems[0] = this.getString(R.string.titleExtraRowKeyboard);
-		listItems[1] = this.getString(R.string.titleKeyboard2);
+		listItems[1] = this.getString(R.string.titleAltKeyKeyboard);
 		listItems[2] = this.getString(R.string.titleKeyboard3);
 		listItems[3] = this.getString(R.string.titleAbout);
 		list = (ListView) findViewById(R.id.listView);
