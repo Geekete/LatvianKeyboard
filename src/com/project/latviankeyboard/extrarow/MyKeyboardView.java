@@ -36,7 +36,6 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 	//boolean isPreviewShown;
 	Vibrator vibrator;
-	boolean isHapticOn = true;
 
 	private static final int NOT_A_KEY = -1;
 
@@ -63,6 +62,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 	int displayWidth;
 	
+	boolean isHapticOn = true;
 	int buttonHeight = 45;
 	int waitTime = 200;
 	int backgroundColor;
@@ -189,22 +189,56 @@ public class MyKeyboardView extends View implements OnTouchListener{
 			
 		});
 		*/
-		setValues();
+		
+		setDefaultValues();
 	}
 
+
+	public void setDefaultValues(){
+		//this is done to make certain that if invalid values are passed, some settings are set
+		this.isHapticOn = true;
+		this.buttonHeight = 70;
+		this.waitTime = 200;
+		this.backgroundColor = new Color().argb(255,0,255,0);
+		this.btnBackgroundColor = new Color().argb(255,255,255,0);
+		this.btnBackgroundHoverColor = new Color().argb(255,200,200,0);
+		this.btnBorderColor = new Color().argb(255, 29, 105, 143);
+		this.btnTextColor = new Color().argb(255,0,0,255);
+		this.textSize = 25;
+		this.btnPadding = 5;
+		this.btnRoundedness = 8;
+	}
 	
 	
-	public void setValues(){
-		buttonHeight = 70;
-		waitTime = 200;
-		backgroundColor = new Color().argb(255,0,255,0);
-		btnBackgroundColor = new Color().argb(255,255,255,0);
-		btnBackgroundHoverColor = new Color().argb(255,200,200,0);
-		btnBorderColor = new Color().argb(255, 29, 105, 143);
-		btnTextColor = new Color().argb(255,0,0,255);
-		textSize = 25;
-		btnPadding = 5;
-		btnRoundedness = 8;
+	
+	/**
+	 * this method assumes that all passed parameters are correct
+	 * @param isHapticOn
+	 * @param buttonHeight
+	 * @param waitTime
+	 * @param backgroundColor
+	 * @param btnBackgroundColor
+	 * @param btnBackgroundHoverColor
+	 * @param btnBorderColor
+	 * @param btnTextColor
+	 * @param textSize
+	 * @param btnPadding
+	 * @param btnRoundedness
+	 */
+	public void setValues(boolean isHapticOn, int buttonHeight, int waitTime, int backgroundColor, int btnBackgroundColor, int btnBackgroundHoverColor, int btnBorderColor, int btnTextColor, int textSize, int btnPadding, int btnRoundedness){
+		this.isHapticOn = isHapticOn;
+		this.buttonHeight = buttonHeight;
+		this.waitTime = waitTime;
+		this.backgroundColor = backgroundColor;
+		this.btnBackgroundColor = btnBackgroundColor;
+		this.btnBackgroundHoverColor = btnBackgroundHoverColor;
+		this.btnBorderColor = btnBorderColor;
+		this.btnTextColor = btnTextColor;
+		this.textSize = textSize;
+		this.btnPadding = btnPadding;
+		this.btnRoundedness = btnRoundedness;
+		
+		
 	}
 	
 	

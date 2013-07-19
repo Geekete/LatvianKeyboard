@@ -51,7 +51,6 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 	
 	@Override
 	public void onInitializeInterface() {
-		// TODO possible stretching
 
 		keyboardQWERTY = new Keyboard(this, R.xml.extra_row_qwerty);
 		keyboardSymbols = new Keyboard(this, R.xml.extra_row_symbols);
@@ -69,7 +68,8 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		inputView = (MyKeyboardView) getLayoutInflater().inflate(R.layout.extra_row_input, null);
 		inputView.setOnKeyboardActionListener(this);
 		Log.d("!","set qwerty");
-		inputView.setKeyboard(keyboardQWERTY);
+		keyboardCur = keyboardQWERTY;
+		inputView.setKeyboard(keyboardCur);
 		return inputView;
 	}
 
@@ -213,7 +213,7 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		// a particular editor, to avoid popping the underlying application
 		// up and down if the user is entering text into the bottom of
 		// its window.
-		setCandidatesViewShown(false);
+		//setCandidatesViewShown(false);
 
 		keyboardCur = keyboardQWERTY;
 		if (inputView != null) {
