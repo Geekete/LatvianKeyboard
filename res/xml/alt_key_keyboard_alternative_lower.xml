@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard xmlns:android="http://schemas.android.com/apk/res/android"
+          android:keyWidth="10%p"
+          android:keyHeight="10%p" >
+
+    <Row>
+        <Key android:codes="1"    android:keyLabel="q" android:keyEdgeFlags="left"/>
+        <Key android:codes="2"    android:keyLabel="w" />
+        <Key android:codes="3"    android:keyLabel="ē" />
+        <Key android:codes="4"    android:keyLabel="r" />
+        <Key android:codes="5"    android:keyLabel="t" />
+        <Key android:codes="6"    android:keyLabel="y" />
+        <Key android:codes="7"    android:keyLabel="ū" />
+        <Key android:codes="8"    android:keyLabel="ī" />
+        <Key android:codes="9"    android:keyLabel="o" />
+        <Key android:codes="10"    android:keyLabel="p" />
+    </Row>
+    <Row>
+        <Key android:codes="11"    android:keyLabel="Alt" android:keyEdgeFlags="left"  android:isModifier="true"/>
+        <Key android:codes="12"    android:keyLabel="ā" />
+        <Key android:codes="13"    android:keyLabel="š" />
+        <Key android:codes="14"    android:keyLabel="d" />
+        <Key android:codes="15"    android:keyLabel="f" />
+        <Key android:codes="16"    android:keyLabel="ģ" />
+        <Key android:codes="17"    android:keyLabel="h" />
+        <Key android:codes="18"    android:keyLabel="j" />
+        <Key android:codes="19"    android:keyLabel="ķ" />
+        <Key android:codes="20"    android:keyLabel="ļ" />
+    </Row>
+    <Row>
+        <Key android:codes="21"    android:keyIcon="@drawable/sym_keyboard_shift" android:keyEdgeFlags="left" android:isModifier="true"/>
+        <Key android:codes="22"    android:keyLabel="ž" />
+        <Key android:codes="23"    android:keyLabel="x" />
+        <Key android:codes="24"    android:keyLabel="č" />
+        <Key android:codes="25"    android:keyLabel="v" />
+        <Key android:codes="26"    android:keyLabel="b" />
+        <Key android:codes="27"    android:keyLabel="ņ" />
+        <Key android:codes="28"    android:keyLabel="m" />
+        <Key android:codes="29"    android:keyIcon="@drawable/sym_keyboard_delete"
+             android:isRepeatable="true" android:keyWidth="20%p"/>
+    </Row>
+    <Row>
+        <Key android:codes="30"    android:keyLabel="123..." android:keyWidth="20%p" android:keyEdgeFlags="left"/>
+        <Key android:codes="31"    android:keyIcon="@android:drawable/ic_menu_preferences"/>
+        <Key android:codes="32"    android:keyIcon="@drawable/sym_keyboard_space" android:keyWidth="50%p"/>
+        <Key android:codes="33"    android:keyIcon="@drawable/sym_keyboard_return" android:keyWidth="20%p"/>
+    </Row>
+</Keyboard>

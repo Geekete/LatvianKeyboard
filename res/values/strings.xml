@@ -13,5 +13,6 @@
     
     <!-- extra row keyboard strings -->
     <string name="ime_name">extra row latvian keyboard</string>
+    <string name="ime_name2">Alt key latvian keyboard</string>
 
 </resources>

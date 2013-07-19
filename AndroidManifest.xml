@@ -41,6 +41,17 @@
             </intent-filter>
             <meta-data android:name="android.view.im" android:resource="@xml/extra_row_method" />
         </service>
+
+
+        <service android:name="com.project.latviankeyboard.altkey.AltKeyKeyboard"
+                 android:permission="android.permission.BIND_INPUT_METHOD"
+                 android:label="@string/ime_name2"
+                >
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+            <meta-data android:name="android.view.im" android:resource="@xml/extra_row_method" />
+        </service>
         
         
   <!-- COMMENT XLII--> 
