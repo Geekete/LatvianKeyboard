@@ -68,6 +68,8 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		inputView = (MyKeyboardView) getLayoutInflater().inflate(R.layout.extra_row_input, null);
 		inputView.setOnKeyboardActionListener(this);
 		Log.d("!","set qwerty");
+		//inputView.setValues un tad no sharredpreferences faila.
+		//setValues();
 		keyboardCur = keyboardQWERTY;
 		inputView.setKeyboard(keyboardCur);
 		return inputView;
@@ -79,6 +81,15 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 	
 	
 	
+	private void setValues() {
+
+	}
+
+
+
+
+
+
 	@Override
 	public void onStartInput(EditorInfo attribute, boolean restarting) {
 		super.onStartInput(attribute, restarting);

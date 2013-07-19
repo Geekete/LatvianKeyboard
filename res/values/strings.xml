@@ -3,12 +3,17 @@
 
     <!-- Main Activity Strings -->
     <string name="app_name">Latvian keyboard settings</string>
-    <string name="titleKeyboard1">Extra row keyboard</string>
+    <string name="titleExtraRowKeyboard">Extra row keyboard</string>
     <string name="titleKeyboard2">Keyboard 2</string>
     <string name="titleKeyboard3">Keyboard 3</string>
     <string name="titleAbout">About</string>
     
     <!-- extra row keyboard strings -->
     <string name="ime_name">Extra row keyboard</string>
+    <string name="titleExtraRowPreferences">Extra Row Preferences</string>
+    <string name="titleisHaptinOn">Vibration on keypress</string>
+    <string name="sumisHapticOn">Default value: True</string>
+    <string name="titleButtonHeight">Button height</string>
+    <string name="sumButtonHeight">Choose the button height</string>
 
 </resources>

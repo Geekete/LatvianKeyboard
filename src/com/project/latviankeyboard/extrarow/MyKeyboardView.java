@@ -196,6 +196,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 	public void setDefaultValues(){
 		//this is done to make certain that if invalid values are passed, some settings are set
+		//A. is going to change THIS HELLISHLY GREEN THINGY		
 		this.isHapticOn = true;
 		this.buttonHeight = 70;
 		this.waitTime = 200;
@@ -226,17 +227,17 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	 * @param btnRoundedness
 	 */
 	public void setValues(boolean isHapticOn, int buttonHeight, int waitTime, int backgroundColor, int btnBackgroundColor, int btnBackgroundHoverColor, int btnBorderColor, int btnTextColor, int textSize, int btnPadding, int btnRoundedness){
-		this.isHapticOn = isHapticOn;
-		this.buttonHeight = buttonHeight;
-		this.waitTime = waitTime;
-		this.backgroundColor = backgroundColor;
-		this.btnBackgroundColor = btnBackgroundColor;
-		this.btnBackgroundHoverColor = btnBackgroundHoverColor;
-		this.btnBorderColor = btnBorderColor;
-		this.btnTextColor = btnTextColor;
-		this.textSize = textSize;
-		this.btnPadding = btnPadding;
-		this.btnRoundedness = btnRoundedness;
+		this.isHapticOn = isHapticOn; //vibracīja
+		this.buttonHeight = buttonHeight; 
+		this.waitTime = waitTime; //wait time for the pop up window and time for backspace
+		this.backgroundColor = backgroundColor; //main background where the buttons are
+		this.btnBackgroundColor = btnBackgroundColor; //button background color
+		this.btnBackgroundHoverColor = btnBackgroundHoverColor; //color when holding button
+		this.btnBorderColor = btnBorderColor; //when holding a button the border color
+		this.btnTextColor = btnTextColor; //button text color
+		this.textSize = textSize; //letter size
+		this.btnPadding = btnPadding; //space between buttons
+		this.btnRoundedness = btnRoundedness; //roundness of buttons
 		
 		
 	}
