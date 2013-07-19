@@ -60,18 +60,6 @@
             <meta-data android:name="android.view.im" android:resource="@xml/extra_row_method" />
         </service>
         
-        
-  <!-- COMMENT XLII--> 
-        
-        
-        
-        <service android:name="com.project.latviankeyboard.testingstuff.TestKeyboard"
-                android:permission="android.permission.BIND_INPUT_METHOD"
-                android:label="test keyboard 00"
-                >
-                </service>
-
-        <!-- COMMENT XLII -->
 
         <service
             android:name="com.project.latviankeyboard.testingstuff.TestKeyboard"
