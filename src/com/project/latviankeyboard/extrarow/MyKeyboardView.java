@@ -88,14 +88,9 @@ public class MyKeyboardView extends View implements OnTouchListener{
 			}else if(!MyKeyboardView.this.popupWin.isShowing() && keyLongClicked.popupCharacters != null){
 				vibrate();
 				
-				int[] loc = new int[2];
-				MyKeyboardView.this.getLocationOnScreen(loc);
+				MyKeyboardView.this.popupContent.setKeys(keyLongClicked.popupCharacters, keyLongClicked.popupResId);
 				
-				CharSequence cs = keyLongClicked.popupCharacters.subSequence(0, keyLongClicked.popupCharacters.length());
-				//synchronized(MyKeyboardView.this.keyLongClicked.popupCharacters){
-				MyKeyboardView.this.popupContent.setKeys(cs, keyLongClicked.popupResId);
-				//}
-				
+				/*
 				int posX = keyLongClicked.x - MyKeyboardView.this.popupWin.getWidth()/2 + keyLongClicked.width/2;
 				int posY = keyLongClicked.y - MyKeyboardView.this.popupWin.getHeight()-5;
 				if(posX <= 0)
@@ -106,8 +101,26 @@ public class MyKeyboardView extends View implements OnTouchListener{
 					posY = - MyKeyboardView.this.buttonHeight;
 				
 				Log.d("!","key.x:"+keyLongClicked.x+" key.y:"+keyLongClicked.y+"\tpopupHeight:"+MyKeyboardView.this.popupWin.getHeight()+" popupWidth:"+MyKeyboardView.this.popupWin.getWidth()+"\tpopupX:"+posX+" popupY:"+posY);
+				*/
+				int posX = keyLongClicked.x - MyKeyboardView.this.popupWin.getWidth()/2 + keyLongClicked.width/2;
+				int posY = MyKeyboardView.this.getHeight() - keyLongClicked.y/* + MyKeyboardView.this.popupWin.getHeight()*/ + 5;
 				
-				MyKeyboardView.this.popupWin.showAtLocation(MyKeyboardView.this, Gravity.NO_GRAVITY, posX, posY);
+				if(posX <= 0)
+					posX = 5;
+				if(posX + MyKeyboardView.this.popupWin.getWidth() >= MyKeyboardView.this.displayWidth)
+					posX = MyKeyboardView.this.displayWidth - MyKeyboardView.this.popupWin.getWidth() - 5;
+				
+				if(posY > MyKeyboardView.this.getHeight() - buttonHeight + MyKeyboardView.this.popupContent.padding)
+					posY = MyKeyboardView.this.getHeight() - buttonHeight + MyKeyboardView.this.popupContent.padding;
+				
+				
+				//if(display.getRotation() == Surface.ROTATION_0 || display.getRotation() == Surface.ROTATION_180)
+					MyKeyboardView.this.popupWin.showAtLocation(MyKeyboardView.this, Gravity.BOTTOM|Gravity.LEFT, posX, posY);
+				//else{
+				//	Log.d("!",".....loc[1]:"+loc[1]);
+				//	MyKeyboardView.this.popupWin.showAtLocation(MyKeyboardView.this, Gravity.NO_GRAVITY, posX, posY+loc[1]);
+				//}
+				
 				//this.popupWin.showAtLocation(this, Gravity.NO_GRAVITY, k.x, k.y - this.popupWin.getHeight()-5);
 				//Log.d("!","showing popup ... "+this.popupWin.isShowing());
 				MyKeyboardView.this.invalidate();
@@ -646,6 +659,10 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 
 
+
+
+
+
 	protected void handlePopUpWindowTouch(MotionEvent me){
 		int[] loc = new int[2];
 		this.popupContent.getLocationOnScreen(loc);
@@ -670,6 +687,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 				int index = this.popupContent.keysInCol * row + col;
 				
 				if(this.popupContent.selKeyIdx != index){
+					vibrate();
 					this.popupContent.selKeyIdx = index;
 					this.popupContent.invalidate();
 				}
@@ -700,6 +718,9 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		}//ACTION_UP
 		
 	}
+	
+	
+	
 	
 	
 	

@@ -1,14 +1,12 @@
 package com.project.latviankeyboard.altkey;
 
-import android.app.Activity;
+
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
-import android.inputmethodservice.KeyboardView;
 import android.inputmethodservice.KeyboardView.*;
 import android.text.Editable;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import com.project.latviankeyboard.R;
 
@@ -49,13 +47,6 @@ public class AltKeyKeyboard extends InputMethodService {
 
         @Override
         public void onKey(int primaryCode, int[] keyCodes) {
-            View focusCurrent = getWindow().getCurrentFocus();
-            if (focusCurrent == null || focusCurrent.getClass() != EditText.class) {
-                return;
-            }
-            EditText edittext = (EditText) focusCurrent;
-            Editable editable = edittext.getText();
-            int start = edittext.getSelectionStart();
 
             boolean special = false;
 
@@ -86,7 +77,7 @@ public class AltKeyKeyboard extends InputMethodService {
                 } else {
                     c = numberSymbolAlphabet.get(primaryCode);
                 }
-                editable.insert(start, Character.toString(c));
+                getCurrentInputConnection().commitText(Character.toString(c), 1);
             } else {
                 if (!numbersAndSht) {
                     switch (primaryCode) {
@@ -134,9 +125,7 @@ public class AltKeyKeyboard extends InputMethodService {
                             break;
                         }
                         case 29: {
-                            if (editable != null && start > 0) {
-                                editable.delete(start - 1, start);
-                            }
+                            getCurrentInputConnection().deleteSurroundingText(1, 0);
                             break;
                         }
                         case 30: {
@@ -146,11 +135,11 @@ public class AltKeyKeyboard extends InputMethodService {
                             break;
                         }
                         case 32: {
-                            editable.insert(start, " ");
+                            getCurrentInputConnection().commitText(" ", 1);
                             break;
                         }
                         case 33: {
-                            editable.insert(start, "\n");
+                            getCurrentInputConnection().commitText("\n", 1);
                             break;
                         }
                     }
@@ -161,9 +150,7 @@ public class AltKeyKeyboard extends InputMethodService {
                             break;
                         }
                         case 29: {
-                            if (editable != null && start > 0) {
-                                editable.delete(start - 1, start);
-                            }
+                            getCurrentInputConnection().deleteSurroundingText(1, 0);
                             break;
                         }
                         case 30: {
@@ -188,11 +175,11 @@ public class AltKeyKeyboard extends InputMethodService {
                             break;
                         }
                         case 32: {
-                            editable.insert(start, " ");
+                            getCurrentInputConnection().commitText(" ", 1);
                             break;
                         }
                         case 33: {
-                            editable.insert(start, "\n");
+                            getCurrentInputConnection().commitText("\n", 1);
                             break;
                         }
                     }
