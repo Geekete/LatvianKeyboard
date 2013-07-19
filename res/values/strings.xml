@@ -24,5 +24,7 @@
     <string name="sumTextSize">Letter size</string>
     <string name="titleBtnPadding">Button padding</string>
     <string name="sumBtnPadding">Space between buttons</string>
+    <string name="titleBackgroundColor">Background color</string>
+    <string name="sumBackgroundColor">Keyboard background color</string>
 
 </resources>

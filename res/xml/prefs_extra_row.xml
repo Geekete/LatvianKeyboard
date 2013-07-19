@@ -26,5 +26,6 @@
         android:summary="@string/sumBtnPadding"
         android:title="@string/titleBtnPadding" 
         android:inputType="number"/>
+    <Preference android:key="erBackgroundColor" android:title="@string/titleBackgroundColor" android:summary="@string/sumBackgroundColor"/>
 
 </PreferenceScreen>
