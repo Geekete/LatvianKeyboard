@@ -15,13 +15,5 @@ public class PrefsExtraRow extends PreferenceActivity {
 		addPreferencesFromResource(R.xml.prefs_extra_row);
 
 	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		Log.i("PrefList", "pos: "+position+" id: "+id);
-	}
-
-	
 	
 }
