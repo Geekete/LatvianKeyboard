@@ -57,7 +57,7 @@
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
             </intent-filter>
-            <meta-data android:name="android.view.im" android:resource="@xml/extra_row_method" />
+            <meta-data android:name="android.view.im" android:resource="@xml/extra_row_method0" />
         </service>
         
         
@@ -83,7 +83,7 @@
 
             <meta-data
                 android:name="android.view.im"
-                android:resource="@xml/extra_row_method" />
+                android:resource="@xml/extra_row_method1" />
         </service>
         
     </application>
