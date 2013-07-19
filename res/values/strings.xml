@@ -18,5 +18,11 @@
     
     <!-- Alt key keyboard strings -->
     <string name="ime_name2">Alt key keyboard</string>
+    <string name="titleWaitTime">Wait time</string>
+    <string name="sumWaitTime">Time for pop-up and backspace</string>
+    <string name="titleTextSize">Text size</string>
+    <string name="sumTextSize">Letter size</string>
+    <string name="titleBtnPadding">Button padding</string>
+    <string name="sumBtnPadding">Space between buttons</string>
 
 </resources>
