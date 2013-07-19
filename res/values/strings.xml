@@ -1,18 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Main Activity Strings -->
     <string name="app_name">Latvian keyboard settings</string>
-    <string name="titleKeyboard1">Keyboard 1</string>
-    <string name="titleKeyboard2">Keyboard 2</string>
+    <string name="titleKeyboard1">Extra row keyboard</string>
+    <string name="titleKeyboard2">Alt key keyboard</string>
     <string name="titleKeyboard3">Keyboard 3</string>
     <string name="titleAbout">About</string>
     
-    
-    
-    
-    
     <!-- extra row keyboard strings -->
-    <string name="ime_name">extra row latvian keyboard</string>
     <string name="ime_name2">Alt key latvian keyboard</string>
+    <string name="ime_name">Extra row keyboard</string>
 
 </resources>
