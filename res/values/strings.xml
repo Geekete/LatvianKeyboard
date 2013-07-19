@@ -8,13 +8,15 @@
     <string name="titleKeyboard3">Keyboard 3</string>
     <string name="titleAbout">About</string>
     
-    <!-- extra row keyboard strings -->
-    <string name="ime_name2">Alt key latvian keyboard</string>
+    <!-- Extra row keyboard strings -->
     <string name="ime_name">Extra row keyboard</string>
     <string name="titleExtraRowPreferences">Extra Row Preferences</string>
     <string name="titleisHaptinOn">Vibration on keypress</string>
     <string name="sumisHapticOn">Default value: True</string>
     <string name="titleButtonHeight">Button height</string>
     <string name="sumButtonHeight">Choose the button height</string>
+    
+    <!-- Alt key keyboard strings -->
+    <string name="ime_name2">Alt key keyboard</string>
 
 </resources>
