@@ -7,15 +7,27 @@
     <string name="titleAltKeyKeyboard">Alt key keyboard</string>
     <string name="titleKeyboard3">Keyboard 3</string>
     <string name="titleAbout">About</string>
-    
+
     <!-- Extra row keyboard strings -->
     <string name="ime_name">Extra row keyboard</string>
     <string name="titleExtraRowPreferences">Extra Row Preferences</string>
+
+    <!-- Extra row keyboard preference strings -->
     <string name="titleisHaptinOn">Vibration on keypress</string>
     <string name="sumisHapticOn">Default value: True</string>
     <string name="titleButtonHeight">Button height</string>
     <string name="sumButtonHeight">Choose the button height</string>
-    
+    <string name="titleWaitTime">Wait time</string>
+    <string name="sumWaitTime">Time for pop-up and backspace</string>
+    <string name="titleTextSize">Text size</string>
+    <string name="sumTextSize">Letter size</string>
+    <string name="titleBtnPadding">Button padding</string>
+    <string name="sumBtnPadding">Space between buttons</string>
+    <string name="titleBackgroundColor">Background color</string>
+    <string name="sumBackgroundColor">Keyboard background color</string>
+    <string name="titleButtonOk">Ok</string>
+    <string name="titleButtonCancel">Cancel</string>
+
     <!-- Alt key keyboard strings -->
     <string name="ime_name2">Alt key keyboard</string>
 

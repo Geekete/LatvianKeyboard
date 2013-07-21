@@ -2,15 +2,30 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <CheckBoxPreference
-        android:enabled="true"
-        android:key="isHapticOn"
+        android:key="erIsHapticOn"
         android:summary="@string/sumisHapticOn"
         android:title="@string/titleisHaptinOn" />
 
     <EditTextPreference
-        android:key="buttonHeight"
+        android:inputType="number"
+        android:key="erButtonHeight"
         android:summary="@string/sumButtonHeight"
-        android:title="@string/titleButtonHeight"
-        android:inputType="number" />
+        android:title="@string/titleButtonHeight" />
+    <EditTextPreference
+        android:inputType="number"
+        android:key="erWaitTime"
+        android:summary="@string/sumWaitTime"
+        android:title="@string/titleWaitTime" />
+    <EditTextPreference
+        android:inputType="number"
+        android:key="erTextSize"
+        android:summary="@string/sumTextSize"
+        android:title="@string/titleTextSize" />
+    <EditTextPreference
+        android:key="erBtnPadding"
+        android:summary="@string/sumBtnPadding"
+        android:title="@string/titleBtnPadding" 
+        android:inputType="number"/>
+    <Preference android:key="erBackgroundColor" android:title="@string/titleBackgroundColor" android:summary="@string/sumBackgroundColor"/>
 
 </PreferenceScreen>

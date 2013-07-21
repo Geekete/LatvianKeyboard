@@ -13,9 +13,9 @@
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:label="@string/app_name" >
         
+        <!-- MainActivty -->
         <activity
             android:name="com.project.latviankeyboard.MainActivity"
             android:label="@string/app_name" >
@@ -26,6 +26,7 @@
             </intent-filter>
         </activity>
         
+        <!-- Preference activity for extra row keyboard -->
         <activity
             android:name="PrefsExtraRow"
             android:label="@string/titleExtraRowPreferences">
@@ -36,6 +37,7 @@
             </intent-filter>
         </activity>
 
+        <!-- Extra row keyboard service -->
         <service
             android:name="com.project.latviankeyboard.extrarow.ExtraRowKeyboard"
             android:label="@string/ime_name"
@@ -49,7 +51,7 @@
                 android:resource="@xml/extra_row_method" />
         </service>
 
-
+		<!-- Alt keyboard service -->
         <service android:name="com.project.latviankeyboard.altkey.AltKeyKeyboard"
                  android:permission="android.permission.BIND_INPUT_METHOD"
                  android:label="@string/ime_name2"
@@ -57,10 +59,10 @@
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
             </intent-filter>
-            <meta-data android:name="android.view.im" android:resource="@xml/extra_row_method" />
+            <meta-data android:name="android.view.im" android:resource="@xml/extra_row_method0" />
         </service>
         
-
+		<!-- Test keyboard service -->
         <service
             android:name="com.project.latviankeyboard.testingstuff.TestKeyboard"
             android:label="test keyboard 00"
@@ -71,7 +73,7 @@
 
             <meta-data
                 android:name="android.view.im"
-                android:resource="@xml/extra_row_method" />
+                android:resource="@xml/extra_row_method1" />
         </service>
         
     </application>
