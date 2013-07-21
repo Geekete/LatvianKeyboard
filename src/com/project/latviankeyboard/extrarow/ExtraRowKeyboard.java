@@ -1,9 +1,12 @@
 package com.project.latviankeyboard.extrarow;
 
 
+import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
+import android.preference.PreferenceManager;
 import android.text.method.MetaKeyKeyListener;
 import android.util.Log;
 import android.view.KeyCharacterMap;
@@ -38,6 +41,9 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 	Keyboard keyboardShiftedSymbols;
 	
 	
+	//TODO
+	int currentSelectionEndPos;
+	
 	
 	@Override
 	public void onCreate() {
@@ -69,7 +75,7 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		inputView.setOnKeyboardActionListener(this);
 		Log.d("!","set qwerty");
 		//inputView.setValues un tad no sharredpreferences faila.
-		//setValues();
+		setValues();
 		keyboardCur = keyboardQWERTY;
 		inputView.setKeyboard(keyboardCur);
 		return inputView;
@@ -82,7 +88,28 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 	
 	
 	private void setValues() {
-
+		SharedPreferences prefs  = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
+		
+		boolean isHapticOn = prefs.getBoolean("erIsHapticOn", true);
+		//int buttonHeight = prefs.getInt("erButtonHeight", 70);
+		int kbdHeightpercentVert = prefs.getInt("erKbdHeightpercentVert", 50);
+		int kbdHeightpercentHoriz = prefs.getInt("erKbdHeightpercentHoriz", 60);
+		
+		int waitTime = prefs.getInt("erWaitTime", 200);
+		int backgroundColor = prefs.getInt("erBackgroundColor", Color.argb(255, 30, 30, 30));
+		int btnBackgroundColor = prefs.getInt("erBtnBackgroundColor", Color.argb(255,60,60,60));
+		int btnBackgroundHoverColor = prefs.getInt("erBtnBackgroundHoverColor", Color.argb(255,80,80,80));
+		int btnBorderColor = prefs.getInt("erBtnBorderColor", Color.argb(255,51,181,229));
+		int btnTextColor = prefs.getInt("erBtnTextColor", Color.argb(255,255,255,255));
+		int textSize = prefs.getInt("erTextSize", 25);
+		//int btnPadding = prefs.getInt("erBtnPadding", 4);
+		int btnPadding = prefs.getInt("erBtnPadding", 1);
+		
+		//int btnRoundedness = prefs.getInt("erBtnRoundedness", 8);
+		int btnRoundedness = prefs.getInt("erBtnRoundedness", 8);
+		
+		
+		inputView.setValues(isHapticOn, kbdHeightpercentVert, kbdHeightpercentHoriz, waitTime, backgroundColor, btnBackgroundColor, btnBackgroundHoverColor, btnBorderColor, btnTextColor, textSize, btnPadding, btnRoundedness);
 	}
 
 
@@ -176,42 +203,41 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 	
 	
 
-	/**
-	 * Deal with the editor reporting movement of its cursor.
-	 */
-	/*
-	 * @Override public void onUpdateSelection(int oldSelStart, int oldSelEnd,
-	 * int newSelStart, int newSelEnd, int candidatesStart, int candidatesEnd) {
-	 * super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd,
-	 * candidatesStart, candidatesEnd);
-	 * 
-	 * // If the current selection in the text view changes, we should // clear
-	 * whatever candidate text we have. if (mComposing.length() > 0 &&
-	 * (newSelStart != candidatesEnd || newSelEnd != candidatesEnd)) {
-	 * mComposing.setLength(0); //updateCandidates(); InputConnection ic =
-	 * getCurrentInputConnection(); if (ic != null) { ic.finishComposingText();
-	 * } } }
-	 */
+	
+	
+	
+	
 
-	
-	
-	
-	
-	
-	/*
-	 * //monitor [hard] key events being delivered to the application
-	 * 
-	 * @Override public boolean onKeyDown(int keyCode, KeyEvent event) { return
-	 * super.onKeyDown(keyCode, event); }
-	 * 
-	 * 
-	 * @Override public boolean onKeyUp(int keyCode, KeyEvent event) { return
-	 * super.onKeyUp(keyCode, event); }
-	 */
 
-	
-	
-	
+	//monitor [hard] key events being delivered to the application
+
+	@Override public boolean onKeyDown(int keyCode, KeyEvent event) { 
+		/*
+		if(keyCode == 4){ //prevent event from continuing on if the 'back' key was pressed (will handle it myself)
+			Log.d("!","onKeyDown");
+			return false;
+		}
+		*/
+		return super.onKeyDown(keyCode, event); 
+	}
+
+
+	@Override public boolean onKeyUp(int keyCode, KeyEvent event) { 
+		/*
+		if(keyCode == 4){ //prevent event from continuing on if the 'back' key was pressed (will handle it myself)
+			Log.d("!","onKeyUp");
+			this.requestHideSelf(0);
+	        inputView.closing();
+			return false;
+		}
+		*/
+		return super.onKeyUp(keyCode, event); 
+	}
+
+
+
+
+
 	
 	
 	
@@ -252,10 +278,10 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 	
 	
 	
-	// onkeyboard action listener
+	// onkeyboard action listener /////////
 
 	@Override
-	public void onKey(int primaryCode, int[] keyCodes) {
+	public void onKey(int primaryCode, int[] keyCodes) { //handle chars sent by MyKeyboardView 
 		Log.d("onKey", "spam: "+String.valueOf((char) primaryCode));
 		
 		switch(primaryCode){
@@ -268,8 +294,7 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 			inputView.setKeyboard(keyboardCur);
 			break;
 		case Keyboard.KEYCODE_DELETE:
-			getCurrentInputConnection().deleteSurroundingText(1, 0);
-			//return;
+			sendCharToField(primaryCode);
 			break;
 		case Keyboard.KEYCODE_SHIFT:
 			if(this.inputView.isShifted())
@@ -278,17 +303,10 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 				this.inputView.setShifted(true);
 			break;
 		case '\n':
-			//KeyEvent.KEYCODE_ENTER
-			getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
-	        getCurrentInputConnection().sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER));
+			sendCharToField(primaryCode);
 			break;
 		default:
-				if(this.inputView.isShifted()){
-					this.inputView.setShifted(false);
-					getCurrentInputConnection().commitText(String.valueOf((char) primaryCode).toUpperCase(), 1);
-				}else{
-					getCurrentInputConnection().commitText(String.valueOf((char) primaryCode), 1);
-				}
+			sendCharToField(primaryCode);
 		}
 		
 		
@@ -335,13 +353,62 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 
 	}
 
+	// onkeyboard action listener END /////////
 	
 	
 	
 	
 	
 	
-    /////disables edittext from requesting full screen keyboard;
+
+	//send a character to the edittext ... also manage selections in text
+	protected void sendCharToField(int chr){
+		InputConnection ic = getCurrentInputConnection();
+		CharSequence cs = ic.getSelectedText(0);
+		
+		//delete selection if there is one
+		if(cs != null){
+			ic.beginBatchEdit();
+			ic.setSelection(this.currentSelectionEndPos, this.currentSelectionEndPos);
+			ic.deleteSurroundingText(cs.length(),0);
+			
+			ic.endBatchEdit();
+		}
+		
+		if(chr == Keyboard.KEYCODE_DELETE){
+			if(cs == null)//only delete char if the user didn't intend to delete a selection
+				ic.deleteSurroundingText(1, 0);
+		}else if(chr == '\n'){//send ENTER
+			this.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER);
+		}else{//send a character in the apropriate case
+			if(this.inputView.isShifted()){
+				this.inputView.setShifted(false);
+				ic.commitText(String.valueOf((char) chr).toUpperCase(), 1);
+			}else{
+				ic.commitText(String.valueOf((char) chr), 1);
+			}
+		}
+		
+		
+		
+		
+	}
+	
+	
+
+	//saves the position of the end of the selection in edittext ... the position is required for the deletion of the selection
+    @Override
+	public void onUpdateSelection(int oldSelStart, int oldSelEnd, int newSelStart, int newSelEnd, int candidatesStart, int candidatesEnd) {
+		super.onUpdateSelection(oldSelStart, oldSelEnd, newSelStart, newSelEnd, candidatesStart, candidatesEnd);
+		this.currentSelectionEndPos = newSelEnd;
+	}
+
+
+
+
+
+
+	//disables edittext from requesting full screen keyboard;
     @Override
 	public void onUpdateExtractingVisibility(EditorInfo ei) {
     	ei.imeOptions |= EditorInfo.IME_FLAG_NO_EXTRACT_UI;

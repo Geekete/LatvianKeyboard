@@ -9,17 +9,21 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.graphics.Typeface;
+import android.graphics.Paint.Align;
 import android.graphics.drawable.BitmapDrawable;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.Keyboard.Row;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.MotionEvent;
+import android.view.MotionEvent.PointerCoords;
+import android.view.Surface;
 import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.WindowManager;
@@ -34,7 +38,6 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 	OnKeyboardActionListener keyboardActionListener;
 
-	//boolean isPreviewShown;
 	Vibrator vibrator;
 
 	private static final int NOT_A_KEY = -1;
@@ -48,22 +51,22 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 
 	PopupWindow popupWin;
-	//boolean isPopupShowing = false;
-	//LinearLayout ll;
-	//TextView popTv1;
-	//TextView popTv2;
 	FloatyView popupContent;
 
-	//////
 	boolean touchingKey = false;
 	int touchingKeyIndex = NOT_A_KEY;
 	long timeTouchedKey = 0;
 
-
+	Display display;
 	int displayWidth;
+	//int displayHeight;
+	
+	
+	int buttonHeight = 45;
 	
 	boolean isHapticOn = true;
-	int buttonHeight = 45;
+	int kbdHeightpercentVert = 40;
+	int kbdHeightpercentHoriz = 70;
 	int waitTime = 200;
 	int backgroundColor;
 	int btnBackgroundColor;
@@ -74,155 +77,97 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	int btnPadding;
 	int btnRoundedness;
 	
+	///////////////
+	Paint darkeningPaint;
+	Paint mainTextPaint;
+	Paint btnBgPaint;
+	Paint btnBorderPaint;
+	Paint popCharPaint;
 	
 	
 	Key keyLongClicked;
-	Runnable keyLongClick = new Runnable(){
+	Runnable keyLongClick = new Runnable(){		
 		@Override
 		public void run() {
-			Log.d("!","..............runnable");
 			if(MyKeyboardView.this.keyLongClicked.repeatable){
 				vibrate();
 				keyboardActionListener.onKey(keyLongClicked.codes[0], null);
 				MyKeyboardView.this.postDelayed(MyKeyboardView.this.keyLongClick, waitTime);
 			}else if(!MyKeyboardView.this.popupWin.isShowing() && keyLongClicked.popupCharacters != null){
-				vibrate();
 				
 				MyKeyboardView.this.popupContent.setKeys(keyLongClicked.popupCharacters, keyLongClicked.popupResId);
 				
-				/*
 				int posX = keyLongClicked.x - MyKeyboardView.this.popupWin.getWidth()/2 + keyLongClicked.width/2;
-				int posY = keyLongClicked.y - MyKeyboardView.this.popupWin.getHeight()-5;
-				if(posX <= 0)
-					posX = 5;
-				if(posX + MyKeyboardView.this.popupWin.getWidth() >= MyKeyboardView.this.displayWidth)
-					posX = MyKeyboardView.this.displayWidth - MyKeyboardView.this.popupWin.getWidth() - 5;
-				if(posY + MyKeyboardView.this.buttonHeight < 0)
-					posY = - MyKeyboardView.this.buttonHeight;
-				
-				Log.d("!","key.x:"+keyLongClicked.x+" key.y:"+keyLongClicked.y+"\tpopupHeight:"+MyKeyboardView.this.popupWin.getHeight()+" popupWidth:"+MyKeyboardView.this.popupWin.getWidth()+"\tpopupX:"+posX+" popupY:"+posY);
-				*/
-				int posX = keyLongClicked.x - MyKeyboardView.this.popupWin.getWidth()/2 + keyLongClicked.width/2;
-				int posY = MyKeyboardView.this.getHeight() - keyLongClicked.y/* + MyKeyboardView.this.popupWin.getHeight()*/ + 5;
+				int posY = MyKeyboardView.this.getHeight() - keyLongClicked.y/* + MyKeyboardView.this.popupWin.getHeight()*/ + MyKeyboardView.this.popupContent.padding;
 				
 				if(posX <= 0)
 					posX = 5;
 				if(posX + MyKeyboardView.this.popupWin.getWidth() >= MyKeyboardView.this.displayWidth)
 					posX = MyKeyboardView.this.displayWidth - MyKeyboardView.this.popupWin.getWidth() - 5;
 				
-				if(posY > MyKeyboardView.this.getHeight() - buttonHeight + MyKeyboardView.this.popupContent.padding)
+				if(posY + MyKeyboardView.this.popupWin.getHeight() > MyKeyboardView.this.getHeight() + buttonHeight + 3*MyKeyboardView.this.popupContent.padding)
 					posY = MyKeyboardView.this.getHeight() - buttonHeight + MyKeyboardView.this.popupContent.padding;
 				
-				
-				//if(display.getRotation() == Surface.ROTATION_0 || display.getRotation() == Surface.ROTATION_180)
-					MyKeyboardView.this.popupWin.showAtLocation(MyKeyboardView.this, Gravity.BOTTOM|Gravity.LEFT, posX, posY);
-				//else{
-				//	Log.d("!",".....loc[1]:"+loc[1]);
-				//	MyKeyboardView.this.popupWin.showAtLocation(MyKeyboardView.this, Gravity.NO_GRAVITY, posX, posY+loc[1]);
-				//}
-				
-				//this.popupWin.showAtLocation(this, Gravity.NO_GRAVITY, k.x, k.y - this.popupWin.getHeight()-5);
-				//Log.d("!","showing popup ... "+this.popupWin.isShowing());
+				MyKeyboardView.this.popupWin.showAtLocation(MyKeyboardView.this, Gravity.BOTTOM|Gravity.LEFT, posX, posY);
 				MyKeyboardView.this.invalidate();
+				
+				/*
+				int[] loc = new int[2];
+				MyKeyboardView.this.getLocationOnScreen(loc);
+				PointerCoords pc = new PointerCoords();
+				pc.x = keyLongClicked.x + keyLongClicked.width/2;
+				pc.y = keyLongClicked.y + keyLongClicked.height/2 + loc[1];
+				//MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_MOVE, 1, new int[]{0}, new PointerCoords[]{pc}, 0, 1.0f, 1.0f, 0, 0, 4098, 0);
+				Log.d("!","spaam");
+				MotionEvent me = MotionEvent.obtain(SystemClock.uptimeMillis(), SystemClock.uptimeMillis(), MotionEvent.ACTION_MOVE, keyLongClicked.x + keyLongClicked.width/2, keyLongClicked.y + keyLongClicked.height/2 +loc[1], 0);
+				MyKeyboardView.this.onTouch(MyKeyboardView.this, me);
+				me.recycle();
+				*/
 			}
 		}
 	};
-	/*
-	public MyKeyboardView(Context context) {
-		super(context);
-		this.ctx = context;
-	}*/
+
 
 	public MyKeyboardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.ctx = context;
 		this.setOnTouchListener(this);
 		vibrator = (Vibrator) ctx.getSystemService(Service.VIBRATOR_SERVICE);
-		Log.d("!","ceil 4,3: "+Math.ceil(4.3));
 
 		android.view.LayoutInflater inflater = (android.view.LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		/*
-		ll = (LinearLayout) inflater.inflate(R.layout.popup_test, null);
-		popTv1 = (TextView) ll.findViewById(R.id.tv1);
-		popTv2 = (TextView) ll.findViewById(R.id.tv2);
-		ll.setBackgroundColor(Color.GREEN);
-		*/
 		
 		WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
-		Display display = wm.getDefaultDisplay();
+		this.display = wm.getDefaultDisplay();
+		
+		this.displayWidth = display.getWidth();
+		//this.displayHeight = display.getHeight();
 		
 		popupContent = new FloatyView(context, this, display.getWidth()/10);
-		//popupContent = new FloatyView(context, this, 30, 45);
 		this.popupWin = new PopupWindow(context);
-		//this.popupWin.setContentView(ll);
 		this.popupWin.setContentView(popupContent);
 		this.popupWin.setBackgroundDrawable(new BitmapDrawable(getResources()));
 		this.popupWin.setTouchable(true);
-		//this.popupWin.setHeight(100);
-		//this.popupWin.setWidth(100);
-		//this.popupWin.setFocusable(true);
-		//ll.setOnTouchListener(this);
-		//this.popupWin.setFocusable(true);
-		//this.popupWin.setOutsideTouchable(true);
-		//this.popupWin.setSplitTouchEnabled(true);
-		
-		/*
-		this.popupContent.setOnTouchListener(new OnTouchListener(){
 
-			@Override
-			public boolean onTouch(View v, MotionEvent me) {
-				//Log.d("!","YAUZA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				Log.d("!","YAUZA!!!!!!!!!!!!!!!!! touch x"+me.getX(0)+" y:"+me.getY(0)+" view_id: "+v.getId());
-				if (me.getActionMasked() == MotionEvent.ACTION_UP){
-					Log.d("!","ACTION_UP");
-					
-					MyKeyboardView.this.touchingKey = false;
-					MyKeyboardView.this.touchingKeyIndex = NOT_A_KEY;
-					MyKeyboardView.this.timeTouchedKey = 0;
-
-					if (MyKeyboardView.this.popupWin.isShowing())
-						MyKeyboardView.this.popupWin.dismiss();
-					
-					MyKeyboardView.this.invalidate();
-				}
-				return true;
-			}
-			
-		});
-		*/
 		
-		/*
-		this.popupWin.setTouchInterceptor(new OnTouchListener(){
-
-			@Override
-			public boolean onTouch(View v, MotionEvent event) {
-				Log.d("!","YAUZA!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-				return true;
-			}
-			
-		});
-		*/
-		
-		setDefaultValues();
+		//setDefaultValues();
 	}
 
-
+/*
 	public void setDefaultValues(){
 		//this is done to make certain that if invalid values are passed, some settings are set
-		//A. is going to change THIS HELLISHLY GREEN THINGY		
 		this.isHapticOn = true;
 		this.buttonHeight = 70;
 		this.waitTime = 200;
-		this.backgroundColor = new Color().argb(255,0,255,0);
-		this.btnBackgroundColor = new Color().argb(255,255,255,0);
-		this.btnBackgroundHoverColor = new Color().argb(255,200,200,0);
-		this.btnBorderColor = new Color().argb(255, 29, 105, 143);
-		this.btnTextColor = new Color().argb(255,0,0,255);
+		this.backgroundColor = Color.argb(255,0,255,0);
+		this.btnBackgroundColor = Color.argb(255,255,255,0);
+		this.btnBackgroundHoverColor = Color.argb(255,200,200,0);
+		this.btnBorderColor = Color.argb(255, 29, 105, 143);
+		this.btnTextColor = Color.argb(255,0,0,255);
 		this.textSize = 25;
 		this.btnPadding = 5;
 		this.btnRoundedness = 8;
 	}
-	
+*/	
 	
 	
 	/**
@@ -239,9 +184,10 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	 * @param btnPadding
 	 * @param btnRoundedness
 	 */
-	public void setValues(boolean isHapticOn, int buttonHeight, int waitTime, int backgroundColor, int btnBackgroundColor, int btnBackgroundHoverColor, int btnBorderColor, int btnTextColor, int textSize, int btnPadding, int btnRoundedness){
-		this.isHapticOn = isHapticOn; //vibracīja
-		this.buttonHeight = buttonHeight; 
+	public void setValues(boolean isHapticOn, int kbdHeightpercentVert, int kbdHeightpercentHoriz, int waitTime, int backgroundColor, int btnBackgroundColor, int btnBackgroundHoverColor, int btnBorderColor, int btnTextColor, int textSize, int btnPadding, int btnRoundedness){
+		this.isHapticOn = isHapticOn; //vibration
+		this.kbdHeightpercentVert = kbdHeightpercentVert;
+		this.kbdHeightpercentHoriz = kbdHeightpercentHoriz;
 		this.waitTime = waitTime; //wait time for the pop up window and time for backspace
 		this.backgroundColor = backgroundColor; //main background where the buttons are
 		this.btnBackgroundColor = btnBackgroundColor; //button background color
@@ -252,7 +198,9 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		this.btnPadding = btnPadding; //space between buttons
 		this.btnRoundedness = btnRoundedness; //roundness of buttons
 		
+		this.buttonHeight = 70;
 		
+		this.initPaints();
 	}
 	
 	
@@ -260,26 +208,16 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	@Override
 	public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 		kbdDrawPending = true;
-		Log.d("!", "onmeasure");
 		WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
 		Display display = wm.getDefaultDisplay();
 
-		this.displayWidth = display.getWidth();
+		this.displayWidth = display.getWidth();		
 		
 		if (keyboard == null) {
-			//setMeasuredDimension(mPaddingLeft + mPaddingRight, mPaddingTop + mPaddingBottom);
 			setMeasuredDimension(display.getWidth(), 100);
-			Log.d("!", "onmeasure ... null width:"+display.getWidth()+" height:"+100);
 		} else {
-			//int width = keyboard.getMinWidth();
-			//if (MeasureSpec.getSize(widthMeasureSpec) < width + 10) {
-			//    width = MeasureSpec.getSize(widthMeasureSpec);
-			//}
 			Key k = this.keys[this.keys.length-1];
 			setMeasuredDimension(display.getWidth(), k.y+k.height);
-			//setMeasuredDimension(display.getWidth(), keyboard.getHeight());
-			
-			//Log.d("!", "onmeasure ... not null width:"+display.getWidth()+" height:"+keyboard.getHeight());
 		}
 
 		
@@ -296,6 +234,59 @@ public class MyKeyboardView extends View implements OnTouchListener{
 			this.popupWin.dismiss();
 	}
 
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	private void initPaints(){
+		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/GrandHotel-Regular.otf");
+		Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Xolonium-Regular.otf");
+		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Roboto-Regular.ttf");
+		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Pecita.otf");
+		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/d-puntillas-D-to-tiptoe.ttf");
+		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Megrim.ttf");
+		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Jura-Medium.ttf");
+		
+		
+		this.darkeningPaint = new Paint();
+		this.darkeningPaint.setColor(Color.argb(170,0,0,0));
+		
+		this.mainTextPaint = new Paint();
+		this.mainTextPaint.setColor(this.btnTextColor);
+		this.mainTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		this.mainTextPaint.setTextSize(this.textSize);
+		//this.mainTextPaint.setTypeface(Typeface.DEFAULT);
+		this.mainTextPaint.setTypeface(tf);
+		
+		this.btnBgPaint = new Paint();
+		
+		this.btnBorderPaint = new Paint();
+		this.btnBorderPaint.setColor(this.btnBorderColor);
+		this.btnBorderPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		
+		this.popCharPaint = new Paint();
+		this.popCharPaint.setColor(this.btnTextColor);
+		this.popCharPaint.setAlpha(100);
+		this.popCharPaint.setTextSize(this.textSize/2);
+		//this.popCharPaint.setTypeface(Typeface.DEFAULT);
+		this.popCharPaint.setTypeface(tf);
+		this.popCharPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		this.popCharPaint.setTextAlign(Align.LEFT);
+		
+		
+	}
+	
 
 	@Override
 	public void onDraw(Canvas canvas) {
@@ -307,30 +298,21 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		canvas.drawBitmap(kbdBuffer, 0, 0, null);
 
 		if(this.touchingKey && !this.popupWin.isShowing()){
-			/*
-			Paint p = new Paint();
-			p.setColor(Color.GREEN);
-			p.setStrokeWidth(4);        
-			p.setStyle(Paint.Style.STROKE);      
-			Key k = keys[this.touchingKeyIndex];
-			canvas.drawRect(k.x, k.y, k.x+k.width, k.y+k.height, p);
-			*/
 			drawButton(canvas, keys[this.touchingKeyIndex], true);
 		}
 		if(this.popupWin.isShowing()){
-			Paint p = new Paint();
-			p.setColor(new Color().argb(150,0,0,0));
-            canvas.drawRect(0, 0, getWidth(), getHeight(), p);
+            canvas.drawRect(0, 0, getWidth(), getHeight(), darkeningPaint);
 		}
 	}
 
+	
 
 	private void onBufferDraw() {
 		Log.d("!","redrawing canvas");
 
 		if (kbdBuffer == null || kbdChanged) {
 			if (kbdBuffer == null || kbdChanged && (kbdBuffer.getWidth() != getWidth() || kbdBuffer.getHeight() != getHeight())) {
-				// Make sure our bitmap is at least 1x1
+				//make certain the bitmap is at least 1x1
 				final int width = Math.max(1, getWidth());
 				final int height = Math.max(1, getHeight());
 				kbdBuffer = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
@@ -340,101 +322,62 @@ public class MyKeyboardView extends View implements OnTouchListener{
 			kbdChanged = false;
 		}
 
-
-
 		kbdChanged = false;
-
 		final Canvas canvas = kbdCanv;
 
 		if (keyboard == null) return;
 
-		//final Key[] keys = keyboard.getKeys().toArray(new Key[keyboard.getKeys().size()]);
-		Paint labelPaint = new Paint();
-		labelPaint.setColor(Color.WHITE);
-
-		//Paint btnBgPaint = new Paint();
-		//btnBgPaint.setColor(Color.GRAY);
-
 		canvas.drawColor(backgroundColor);
-		//canvas.drawColor(0x00000000, PorterDuff.Mode.CLEAR);
 
-		//final int keyCount = keys.length;
 		for (int i = 0; i < keys.length; i++) {
 			final Key key = keys[i];
 			drawButton(canvas, key, false);
 		}
-		//mInvalidatedKey = null;
-
-		/*
-        if (DEBUG && mShowTouchPoints) {
-            paint.setAlpha(128);
-            paint.setColor(0xFFFF0000);
-            canvas.drawCircle(mStartX, mStartY, 3, paint);
-            canvas.drawLine(mStartX, mStartY, mLastX, mLastY, paint);
-            paint.setColor(0xFF0000FF);
-            canvas.drawCircle(mLastX, mLastY, 3, paint);
-            paint.setColor(0xFF00FF00);
-            canvas.drawCircle((mStartX + mLastX) / 2, (mStartY + mLastY) / 2, 2, paint);
-        }
-		 */
 
 		kbdDrawPending = false;
-		//mDirtyRect.setEmpty();
 	}
 
 
 
 	public void drawButton(Canvas canv, Key k, boolean border){
-		Paint labelPaint = new Paint();
-		labelPaint.setColor(btnTextColor);
-		labelPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-
-		Paint btnBgPaint = new Paint();
+		
 		if(border){
 			btnBgPaint.setColor(btnBackgroundHoverColor);
-			//btnBgPaint.setColor(new Color().argb(255,160,160,160));
 		}else{
 			btnBgPaint.setColor(btnBackgroundColor);
-			//btnBgPaint.setColor(new Color().argb(255,120,120,120));
 		}
 		btnBgPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 
 		String label = k.label == null? null : adjustCase(k.label).toString();
-		//String label = k.label+"";//TODO shift
 
 		if(border){
-			Paint btnBorderPaint = new Paint();
-			btnBorderPaint.setColor(btnBorderColor);
-			//btnBorderPaint.setColor(new Color().argb(255, 29, 205, 243));
-			btnBorderPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-			int borderPadding = btnPadding/2;
+			float borderPadding = btnPadding/2.5f;
 			if(borderPadding < 1)
 				borderPadding = 1;
 			canv.drawRoundRect(new RectF(k.x + borderPadding, k.y + borderPadding, k.x + k.width - borderPadding, k.y + k.height - borderPadding), btnRoundedness+2, btnRoundedness+2, btnBorderPaint);
 		}
 		
-		if(!border)
-			btnBgPaint.setShadowLayer(3, 0, 0, new Color().argb(170, 0, 0, 0));
+		if(!border && this.btnPadding >2)
+			btnBgPaint.setShadowLayer(3, 0, 0, Color.argb(170, 0, 0, 0));
+		
 		canv.drawRoundRect(new RectF(k.x + btnPadding, k.y + btnPadding, k.x + k.width - btnPadding, k.y + k.height - btnPadding), btnRoundedness, btnRoundedness, btnBgPaint);
-		//canv.drawRect(k.x + 3, k.y + 3, k.x + k.width - 3, k.y + k.height - 3, btnBgPaint);
 		btnBgPaint.setShadowLayer(0, 0, 0, 0);
 
-		if (label != null) {
-			// For characters, use large font. For labels like "Done", use small font.
-			if (label.length() > 1 && k.codes.length < 2) {
-				labelPaint.setTextSize(textSize);
-				labelPaint.setTypeface(Typeface.DEFAULT_BOLD);
-			} else {
-				labelPaint.setTextSize(textSize);
-				labelPaint.setTypeface(Typeface.DEFAULT);
-			}
-			// Draw a drop shadow for the text
-			labelPaint.setShadowLayer(7, 0, 0, new Color().argb(135, 0, 0, 0));
-			// Draw the text
-			canv.drawText(label,(k.width) / 2 + k.x - (labelPaint.measureText(label)/2), (k.height) / 2 + (labelPaint.getTextSize() - labelPaint.descent()) / 2 + k.y, labelPaint);
-			// Turn off drop shadow
-			labelPaint.setShadowLayer(0, 0, 0, 0);
-		} else if (k.icon != null) {
+		
+		//draw popup character hint
+		if(k.popupCharacters != null && k.popupCharacters.length() > 1){
+			canv.drawText("...", k.x + btnPadding + btnRoundedness/3 +3 , k.y + popCharPaint.getTextSize(), popCharPaint);
+		}else if(k.popupCharacters != null && k.popupCharacters.length() == 1){
+			canv.drawText(k.popupCharacters.toString(), k.x + btnPadding + btnRoundedness/3 + 3, k.y + popCharPaint.getTextSize() + btnPadding + btnRoundedness/3 +3, popCharPaint);
+		}
+		
+		
+		
+		if (label != null) { //draw label
+			mainTextPaint.setShadowLayer(7, 0, 0, Color.argb(135, 0, 0, 0));
+			canv.drawText(label,(k.width) / 2 + k.x - (mainTextPaint.measureText(label)/2), (k.height) / 2 + (mainTextPaint.getTextSize() - mainTextPaint.descent()/2) / 2 + k.y, mainTextPaint);
+			mainTextPaint.setShadowLayer(0, 0, 0, 0);
+		} else if (k.icon != null) { //draw icon
 			/*
         	final int drawableX = (key.width - padding.left - padding.right 
                             - key.icon.getIntrinsicWidth()) / 2 + padding.left;
@@ -447,14 +390,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
             canvas.translate(-drawableX, -drawableY);
 			 */
 		}
-		Paint popCharPaint = new Paint();
-		popCharPaint.setColor(btnTextColor);
-		popCharPaint.setTextSize(15);
-		popCharPaint.setTypeface(Typeface.DEFAULT);
-		popCharPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
-		if(k.popupCharacters != null){
-			canv.drawText("...", k.x + 1.25f*((k.width) / 2)  - (popCharPaint.measureText("...")/2) - btnPadding*0.5f , /*1.5f*((k.height) / 2) +*/k.y + (popCharPaint.getTextSize() - popCharPaint.descent()) + btnPadding*0.5f /* / 2*/, popCharPaint);
-		}
+		
 	}
 
 
@@ -465,21 +401,20 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		}
 		return label;
 	}
+	
+	
 
 	public void closing() {
-		//if (mPreviewPopup.isShowing()) {
-		//    mPreviewPopup.dismiss();
-		//}
-		//removeMessages();
-
-		//dismissPopupKeyboard();
+		if (this.popupWin.isShowing()) {
+		    this.popupWin.dismiss();
+		}
 		kbdBuffer = null;
 		kbdCanv = null;
-		//mMiniKeyboardCache.clear();
 	}
+	
+	
 
 	public void invalidateAllKeys() {
-		// mDirtyRect.union(0, 0, getWidth(), getHeight());
 		kbdDrawPending = true;
 		invalidate();
 	}
@@ -526,7 +461,14 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 	@Override
 	public boolean onTouch(View v, MotionEvent me) {
-		Log.d("!","touch x"+me.getX(0)+" y:"+me.getY(0)+" view_id: "+v.getId());
+		//Log.d("!","touch x"+me.getX(0)+" y:"+me.getY(0)+" view_id: "+v.getId());
+		
+		/*Log.d("!","metastate:"+me.getMetaState()+
+				"\tx precision:"+me.getXPrecision()+
+				"\tedge flags: "+me.getEdgeFlags()+
+				"\tsource"+me.getSource()+
+				"\tflags:"+me.getFlags());
+		*/
 		
 		if(this.popupWin.isShowing()){
 			//this.popupContent.dispatchTouchEvent(me);
@@ -536,7 +478,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		
 
 		if (me.getActionMasked() == MotionEvent.ACTION_DOWN){
-			Log.d("!","ACTION_DOWN");
+			//Log.d("!","ACTION_DOWN");
 			int index = getKeysIndex(Math.round(me.getX(0)), Math.round(me.getY(0)));
 			if(index != NOT_A_KEY){
 				vibrate();
@@ -558,7 +500,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		}
 
 		if (me.getActionMasked() == MotionEvent.ACTION_MOVE){
-			Log.d("!","ACTION_MOVE");
+			//Log.d("!","ACTION_MOVE");
 			int index = getKeysIndex(Math.round(me.getX(0)), Math.round(me.getY(0)));
 			if(index != NOT_A_KEY){
 				if(index != this.touchingKeyIndex && !this.popupWin.isShowing()){
@@ -630,7 +572,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 		if (me.getActionMasked() == MotionEvent.ACTION_UP){
 			this.removeCallbacks(this.keyLongClick);
-			Log.d("!","ACTION_UP");
+			//Log.d("!","ACTION_UP");
 			int index = getKeysIndex(Math.round(me.getX(0)), Math.round(me.getY(0)));
 			if(index != NOT_A_KEY){
 				keyboardActionListener.onKey(keys[index].codes[0], null);
@@ -666,15 +608,15 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	protected void handlePopUpWindowTouch(MotionEvent me){
 		int[] loc = new int[2];
 		this.popupContent.getLocationOnScreen(loc);
-		Log.d("!", "x:"+loc[0]+" y:"+loc[1]+" rawX:"+me.getRawX()+" rawY:"+me.getRawY());
+		//Log.d("!", "handlePopUpWindowTouch x:"+loc[0]+" y:"+loc[1]+" rawX:"+me.getRawX()+" rawY:"+me.getRawY());
 		
 		
 		
 		if (me.getActionMasked() == MotionEvent.ACTION_MOVE){
-			Log.d("!","ACTION_MOVE");
+			//Log.d("!","ACTION_MOVE");
 			int dX = (int) me.getRawX() - loc[0] - this.popupContent.padding;
 			int dY = (int) me.getRawY() - loc[1] - buttonHeight - this.popupContent.padding;
-			Log.d("!","!!!!!!!!DELTA dX: "+dX+" dY:"+dY);
+			//Log.d("!","!!!!!!!!DELTA dX: "+dX+" dY:"+dY);
 			if(dX < 0 || dX > this.popupWin.getWidth() - 3*this.popupContent.padding || dY < 0 || dY > this.popupWin.getHeight()){
 				int index = -1;
 				if(this.popupContent.selKeyIdx != index){
@@ -694,13 +636,13 @@ public class MyKeyboardView extends View implements OnTouchListener{
 			}
 			
 			
-			Log.d("!","key........ width:"+this.keyboard.getKeys().get(12).width+" height:"+this.keyboard.getKeys().get(12).height);
+			//Log.d("!","key........ width:"+this.keyboard.getKeys().get(12).width+" height:"+this.keyboard.getKeys().get(12).height);
 			
 		}//ACTION_MOVE
 		
 		
 		if (me.getActionMasked() == MotionEvent.ACTION_UP){
-			Log.d("!","ACTION_UP");
+			//Log.d("!","ACTION_UP");
 			
 			MyKeyboardView.this.touchingKey = false;
 			MyKeyboardView.this.touchingKeyIndex = NOT_A_KEY;
@@ -737,44 +679,74 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 
 	public void setKeyboard(Keyboard keyboard) {
-		Log.d("!","keys set");
-		//if (keyboard != null) {
-		//    showPreview(NOT_A_KEY);
-		//}
-		// Remove any pending messages
-		//removeMessages();
+
 		this.keyboard = keyboard;
 		this.keys = keyboard.getKeys().toArray(new Key[keyboard.getKeys().size()]);
 		
 		
 		
-		int curHeight = this.keys[0].height;
+		//count rows
+		for(int i=0; i<this.keys.length; i++){
+			
+		}
 		
+		//calculate button height
+		if(display.getRotation() == Surface.ROTATION_0 || display.getRotation() == Surface.ROTATION_180){
+			this.buttonHeight = Math.round((int) ( ((float)display.getHeight()) * ((float)this.kbdHeightpercentVert) / 100) / 5);
+		}else{
+			this.buttonHeight = Math.round((int) ( ((float)display.getHeight()) * ((float)this.kbdHeightpercentHoriz) / 100) / 5);
+		}
+		
+		
+		//update key height ... THIS ASSUMES THAT ALL ROWS HAVE THE SAME HEIGHT
+		int curHeight = this.keys[0].height;
 		for(Key k : this.keys){
-			Log.d("!","y:"+k.y+" height:"+k.height);
 			k.height = buttonHeight;
 			k.y = (k.y/curHeight) * buttonHeight;
 		}
 		
 		
+		//manage fail that is INT type of width and pos of keys ....WARNING this fix only manages tiny rounding up
+		int ind = 0;
+		while(ind < this.keys.length){
+			Key curK = this.keys[ind];
+			
+			//if not last key in row - continue
+			if(ind != this.keys.length - 1 && curK.y == this.keys[ind+1].y){
+				ind++;
+				continue;
+			}
+			
+			int overlap = curK.x + curK.width - this.displayWidth;
+			
+			//continue if no fixing is required
+			if(overlap <= 0){
+				ind++;
+				continue;
+			}
+			
+			for(int i=0; i<=overlap; i++){
+				//if overlap was too big and that leads to 'fixing' keys in previous row - don't do that
+				if(ind-(overlap-i) < 0 || this.keys[ind-(overlap-i)].y != curK.y)
+					continue;
+				
+				this.keys[ind-(overlap-i)].x -= i;
+				if(overlap-i != 0)
+					this.keys[ind-(overlap-i)].width -= 1;
+			}
+			
+			ind++;
+		}
 		
-		
-		
-		
-		
-		//List<Key> keys = mKeyboard.getKeys();
-		//mKeys = keys.toArray(new Key[keys.size()]);
+		//init onmeassuer
 		requestLayout();
-		// Hint to reallocate the buffer if the size changed
+		
+		//redraw buffer
 		kbdChanged = true;
 		invalidateAllKeys();
-		//computeProximityThreshold(keyboard);
-		//mMiniKeyboardCache.clear(); // Not really necessary to do every time, but will free up views
-		// Switching to a different keyboard should abort any pending keys so that the key up
-		// doesn't get delivered to the old or new keyboard
-		//mAbortKey = true; // Until the next ACTION_DOWN
-		//
 	}
+	
+	
 	public Keyboard getKeyboard() {
 		return keyboard;
 	}
@@ -891,11 +863,12 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		@Override
 		protected void onDraw(Canvas canvas) {
 			super.onDraw(canvas);
+			//Log.d("!", "popupkeyboard draw");
 			Paint bgPaint = new Paint();
 			bgPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 			bgPaint.setColor(backgroundColor);
 			//bgPaint.setShadowLayer(15, 0, 0, new Color().argb(220, 0, 0, 0));
-			canvas.drawRoundRect(new RectF(0, 0, this.getWidth(), this.getHeight()), btnRoundedness, btnRoundedness, bgPaint);
+			canvas.drawRoundRect(new RectF(0, 0, this.getWidth(), this.getHeight()), btnRoundedness + 3, btnRoundedness + 3, bgPaint);
 			//canvas.drawRoundRect(new RectF(0, 0, this.getWidth(), this.getHeight()), 6, 6, bgPaint);
 			//((keys.length-1)/keysInCol+1)*keyHeight + 2*padding
 			for(int i=0; i<keys.length; i++){
