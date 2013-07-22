@@ -101,7 +101,7 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		int btnBackgroundHoverColor = prefs.getInt("erBtnBackgroundHoverColor", Color.argb(255,80,80,80));
 		int btnBorderColor = prefs.getInt("erBtnBorderColor", Color.argb(255,51,181,229));
 		int btnTextColor = prefs.getInt("erBtnTextColor", Color.argb(255,255,255,255));
-		int textSize = prefs.getInt("erTextSize", 25);
+		int textSize = prefs.getInt("erTextSize", 15);
 		//int btnPadding = prefs.getInt("erBtnPadding", 4);
 		int btnPadding = prefs.getInt("erBtnPadding", 1);
 		
