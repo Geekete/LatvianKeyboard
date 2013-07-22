@@ -8,7 +8,7 @@
 
     <EditTextPreference
         android:inputType="number"
-        android:key="erHeightpercentVert"
+        android:key="erVerticalHeight"
         android:summary="@string/sumVerticalHeight"
         android:title="@string/titleVerticalHeight" />
     <EditTextPreference

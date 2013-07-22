@@ -101,13 +101,15 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		
 		boolean isHapticOn = prefs.getBoolean("erIsHapticOn", true);
 		//int buttonHeight = prefs.getInt("erButtonHeight", 70);
-		int kbdHeightpercentVert = prefs.getInt("erKbdHeightpercentVert", 50);
-		int kbdHeightpercentHoriz = prefs.getInt("erKbdHeightpercentHoriz", 60);
+		int kbdHeightpercentVert = prefs.getInt("erVerticalHeight", 50);
+		int kbdHeightpercentHoriz = prefs.getInt("erHorizontalHeight", 60);
+		
+		String textFont = prefs.getString("erTextFont", "");
 		
 		int waitTime = prefs.getInt("erWaitTime", 200);
 		int backgroundColor = prefs.getInt("erBackgroundColor", Color.argb(255, 30, 30, 30));
-		int btnBackgroundColor = prefs.getInt("erBtnBackgroundColor", Color.argb(255,60,60,60));
-		int btnBackgroundHoverColor = prefs.getInt("erBtnBackgroundHoverColor", Color.argb(255,80,80,80));
+		int btnBackgroundColor = prefs.getInt("erBtnBackground", Color.argb(255,60,60,60));
+		int btnBackgroundHoverColor = prefs.getInt("erBtnHoverColor", Color.argb(255,80,80,80));
 		int btnBorderColor = prefs.getInt("erBtnBorderColor", Color.argb(255,51,181,229));
 		int btnTextColor = prefs.getInt("erBtnTextColor", Color.argb(255,255,255,255));
 		int textSize = prefs.getInt("erTextSize", 25);
@@ -115,7 +117,7 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		int btnPadding = prefs.getInt("erBtnPadding", 1);
 		
 		//int btnRoundedness = prefs.getInt("erBtnRoundedness", 8);
-		int btnRoundedness = prefs.getInt("erBtnRoundedness", 8);
+		int btnRoundedness = prefs.getInt("erBtnRoundness", 8);
 		
 		
 		inputView.setValues(isHapticOn, kbdHeightpercentVert, kbdHeightpercentHoriz, waitTime, backgroundColor, btnBackgroundColor, btnBackgroundHoverColor, btnBorderColor, btnTextColor, textSize, btnPadding, btnRoundedness);
