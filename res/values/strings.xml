@@ -11,6 +11,10 @@
     <!-- Extra row keyboard strings -->
     <string name="ime_name">Extra row keyboard</string>
     <string name="titleExtraRowPreferences">Extra Row Preferences</string>
+    
+    <string name="extraRowInKeyboardListItem0">Keyboard settings</string>
+    <string name="extraRowInKeyboardListItem1">Input method</string>
+    <string name="extraRowInKeyboardDialogTitle">Choose action</string>
 
     <!-- Extra row keyboard preference strings -->
     <string name="titleisHaptinOn">Vibration on keypress</string>

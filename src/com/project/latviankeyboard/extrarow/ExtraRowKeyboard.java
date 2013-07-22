@@ -1,6 +1,9 @@
 package com.project.latviankeyboard.extrarow;
 
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.inputmethodservice.InputMethodService;
@@ -12,14 +15,21 @@ import android.util.Log;
 import android.view.KeyCharacterMap;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
+import android.widget.ListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.project.latviankeyboard.PrefsExtraRow;
 import com.project.latviankeyboard.R;
 
 
@@ -41,7 +51,6 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 	Keyboard keyboardShiftedSymbols;
 	
 	
-	//TODO
 	int currentSelectionEndPos;
 	
 	
@@ -101,7 +110,7 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		int btnBackgroundHoverColor = prefs.getInt("erBtnBackgroundHoverColor", Color.argb(255,80,80,80));
 		int btnBorderColor = prefs.getInt("erBtnBorderColor", Color.argb(255,51,181,229));
 		int btnTextColor = prefs.getInt("erBtnTextColor", Color.argb(255,255,255,255));
-		int textSize = prefs.getInt("erTextSize", 15);
+		int textSize = prefs.getInt("erTextSize", 25);
 		//int btnPadding = prefs.getInt("erBtnPadding", 4);
 		int btnPadding = prefs.getInt("erBtnPadding", 1);
 		
@@ -282,7 +291,7 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 
 	@Override
 	public void onKey(int primaryCode, int[] keyCodes) { //handle chars sent by MyKeyboardView 
-		Log.d("onKey", "spam: "+String.valueOf((char) primaryCode));
+		Log.d("onKey", "spam: "+String.valueOf((char) primaryCode) + " keycode: "+primaryCode);
 		
 		switch(primaryCode){
 		case Keyboard.KEYCODE_MODE_CHANGE:
@@ -304,6 +313,50 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 			break;
 		case '\n':
 			sendCharToField(primaryCode);
+			break;
+		case 167:
+			final Dialog d = new Dialog(this);
+			ListView lv = new ListView(this);
+			ArrayList<String> list = new ArrayList<String>();
+			list.add(this.getResources().getString(R.string.extraRowInKeyboardListItem0));
+			list.add(this.getResources().getString(R.string.extraRowInKeyboardListItem1));
+			ArrayAdapter adapter = new ArrayAdapter(this, android.R.layout.simple_list_item_1,list);
+			lv.setAdapter(adapter);
+			
+			lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			      @Override
+			      public void onItemClick(AdapterView<?> parent, final View view, int position, long id) {
+			        if(position == 0){
+			        	d.dismiss();
+			        	Intent i = new Intent(ExtraRowKeyboard.this, PrefsExtraRow.class);
+			        	i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			        	ExtraRowKeyboard.this.startActivity(i);
+			        }else{
+			        	d.dismiss();
+			        	InputMethodManager imm = (InputMethodManager) ExtraRowKeyboard.this.getSystemService(ExtraRowKeyboard.this.INPUT_METHOD_SERVICE);
+						imm.showInputMethodPicker();
+			        }
+			      }
+
+			    });
+			
+			
+			d.setCanceledOnTouchOutside(true);
+			d.setContentView(lv);
+			d.setTitle(R.string.extraRowInKeyboardDialogTitle);
+			
+			Window window = d.getWindow(); 
+			WindowManager.LayoutParams lp = window.getAttributes();
+			lp.token = inputView.getWindowToken();
+			lp.type = WindowManager.LayoutParams.TYPE_APPLICATION_ATTACHED_DIALOG;
+			window.setAttributes(lp);
+			window.addFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+			//end addons
+			d.show();
+			
+			
+			
+			
 			break;
 		default:
 			sendCharToField(primaryCode);

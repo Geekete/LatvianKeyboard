@@ -352,8 +352,8 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 		if(border){
 			float borderPadding = btnPadding/2.5f;
-			if(borderPadding < 1)
-				borderPadding = 1;
+			if(borderPadding <= 1)
+				borderPadding = -1;
 			canv.drawRoundRect(new RectF(k.x + borderPadding, k.y + borderPadding, k.x + k.width - borderPadding, k.y + k.height - borderPadding), btnRoundedness+2, btnRoundedness+2, btnBorderPaint);
 		}
 		
