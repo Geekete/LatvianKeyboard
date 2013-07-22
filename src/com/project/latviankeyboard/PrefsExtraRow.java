@@ -30,6 +30,7 @@ public class PrefsExtraRow extends PreferenceActivity {
 					colorChooser.findViewById(R.id.sbRed);
 					d.setCancelable(true);
 					d.setTitle(R.string.titleBackgroundColor);
+					d.setCanceledOnTouchOutside(true);
 					d.show();				
 					}
 				return false;
