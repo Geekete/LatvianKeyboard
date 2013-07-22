@@ -29,7 +29,8 @@
         <!-- Preference activity for extra row keyboard -->
         <activity
             android:name="PrefsExtraRow"
-            android:label="@string/titleExtraRowPreferences">
+            android:label="@string/titleExtraRowPreferences"
+            android:screenOrientation="portrait">
              <intent-filter>
                 <action android:name="com.project.latviankeyboard.PREFSEXTRAROW" />
 

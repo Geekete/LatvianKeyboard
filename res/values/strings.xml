@@ -31,6 +31,20 @@
     <string name="sumBackgroundColor">Keyboard background color</string>
     <string name="titleButtonOk">Ok</string>
     <string name="titleButtonCancel">Cancel</string>
+    <string name="titleKeyboardHeight">Keyboard height</string>
+    <string name="titleVerticalHeight">Keyboard vertical height</string>
+    <string name="sumVerticalHeight">How much percentage of screen keyboard takes</string>
+    <string name="titleHorizontalKeyboard">Keyboard horizontal height</string>
+    <string name="sumHorizontalHeight">How much percentage of screen keyboard takes</string>
+    <string name="titleBtnBackground">Button color</string>
+    <string name="titleBtnHoverColor">Button color on hover</string>
+    <string name="titleBtnBorderColor">Button border color</string>
+    <string name="titleBtnTextColor">Button text color</string>
+    <string name="titleBtnRoundness">Button roundness</string>
+    <string name="titleCallKeyboard">Test keyboard</string>
+    <string name="sumCallKeyboard">Opens keyboard with selected preferences</string>
+    <string name="titleResetDefaults">Reset</string>
+    <string name="sumResetDefaults">Resets keyboard preferences to dafault values</string>
 
     <!-- Alt key keyboard strings -->
     <string name="ime_name2">Alt key keyboard</string>
