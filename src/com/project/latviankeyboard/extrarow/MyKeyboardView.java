@@ -54,6 +54,11 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 	PopupWindow popupWin;
 	FloatyView popupContent;
+	
+	
+	PopupWindow previewWin; //used to show button preview when 'noSecondaryKeys' is true
+	Preview previewContent;
+	
 
 	boolean touchingKey = false;
 	int touchingKeyIndex = NOT_A_KEY;
@@ -81,6 +86,13 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	Typeface typeface;
 	int textShadow;
 	int btnShadow;
+
+	boolean noSecondaryKeys;
+	int previewDelay = 30;
+	int previewTextSize;
+	int previewTextColor;
+	int previewBgColor;
+	
 	
 	///////////////
 	Paint darkeningPaint;
@@ -89,9 +101,14 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	Paint btnBorderPaint;
 	Paint popCharPaint;
 	
+	Paint previewTextPaint;
+	Paint previewBgPaint;
+	
+	
+	
 	
 	Key keyLongClicked;
-	Runnable keyLongClick = new Runnable(){		
+	Runnable keyLongClick = new Runnable(){	//	
 		@Override
 		public void run() {
 			if(MyKeyboardView.this.keyLongClicked.repeatable){
@@ -131,6 +148,39 @@ public class MyKeyboardView extends View implements OnTouchListener{
 			}
 		}
 	};
+	
+	
+	
+	
+	
+	Runnable keyPreview = new Runnable(){	//	
+		@Override
+		public void run() {
+			if(touchingKeyIndex == NOT_A_KEY)
+				return;
+			
+			Key k = MyKeyboardView.this.keys[touchingKeyIndex];
+			MyKeyboardView.this.previewContent.setPopupLebel(k.label.toString());
+			
+			int posX = k.x - MyKeyboardView.this.previewWin.getWidth()/2 + k.width/2;
+			int posY = MyKeyboardView.this.getHeight() - k.y + MyKeyboardView.this.previewContent.padding;
+			
+			if(posX <= 0)
+				posX = 5;
+			if(posX + MyKeyboardView.this.previewWin.getWidth() >= MyKeyboardView.this.displayWidth)
+				posX = MyKeyboardView.this.displayWidth - MyKeyboardView.this.previewWin.getWidth() - 5;
+			
+			//if(posY + MyKeyboardView.this.previewWin.getHeight() > MyKeyboardView.this.getHeight() + buttonHeight + 3*MyKeyboardView.this.previewContent.padding)
+			//	posY = MyKeyboardView.this.getHeight() - buttonHeight + MyKeyboardView.this.previewContent.padding;
+			
+			MyKeyboardView.this.previewWin.showAtLocation(MyKeyboardView.this, Gravity.BOTTOM|Gravity.LEFT, posX, posY);
+			//MyKeyboardView.this.invalidate();
+		}
+	};
+	
+	
+	
+	
 
 
 	public MyKeyboardView(Context context, AttributeSet attrs) {
@@ -146,17 +196,22 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		this.display = wm.getDefaultDisplay();
 		
 		this.displayWidth = display.getWidth();
-		//this.displayHeight = display.getHeight();
 		
+		//init popup window and its content
 		popupContent = new FloatyView(context, this, display.getWidth()/10);
 		this.popupWin = new PopupWindow(context);
 		this.popupWin.setContentView(popupContent);
 		this.popupWin.setBackgroundDrawable(new BitmapDrawable(getResources()));
 		this.popupWin.setTouchable(true);
 
+		//
 		
-		//setDefaultValues();
-		//setValues();
+		this.previewContent = new Preview(context, this);
+		this.previewWin = new PopupWindow(context);
+		this.previewWin.setContentView(this.previewContent);
+		this.previewWin.setBackgroundDrawable(new BitmapDrawable(getResources()));
+		this.previewWin.setTouchable(true);
+		
 	}
 
 /*
@@ -219,7 +274,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	private void setValues() {
 		SharedPreferences prefs  = PreferenceManager.getDefaultSharedPreferences(ctx);
 
-		boolean isHapticOn = prefs.getBoolean("erIsHapticOn", true);
+		isHapticOn = prefs.getBoolean("erIsHapticOn", true);
 		this.kbdHeightpercentVert = prefs.getInt("erVerticalHeight", 50);
 		this.kbdHeightpercentHoriz = prefs.getInt("erHorizontalHeight", 60);
 		
@@ -235,10 +290,16 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		this.textSize = prefs.getInt("erTextSize", 25);
 		this.btnPadding = prefs.getInt("erBtnPadding", 1);
 		this.btnRoundedness = prefs.getInt("erBtnRoundness", 8);
-		
 		this.textShadow = prefs.getInt("erTextShadow", Color.argb(135, 0, 0, 0));
 		this.btnShadow = prefs.getInt("erBtnShadow", Color.argb(170, 0, 0, 0));
-		//Color.argb(170, 0, 0, 0)
+		
+		
+		
+		//TODO
+		noSecondaryKeys = true;
+		previewTextSize = 80;
+		this.previewTextColor = Color.argb(255, 255, 255, 255);
+		this.previewBgColor = Color.GRAY;
 		
 		this.initPaints();
 	}
@@ -334,6 +395,19 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		this.popCharPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		this.popCharPaint.setTextAlign(Align.LEFT);
 		
+		 
+		this.previewTextPaint = new Paint();
+		this.previewTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		this.previewTextPaint.setColor(this.previewTextColor);
+		this.previewTextPaint.setTextSize(previewTextSize);
+		this.previewTextPaint.setTextAlign(Align.CENTER);
+		this.previewTextPaint.setTypeface(this.typeface);
+		
+		
+		this.previewBgPaint = new Paint();
+		this.previewBgPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+		this.previewBgPaint.setColor(this.previewBgColor);
+		
 		
 	}
 	
@@ -350,7 +424,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		if(this.touchingKey && !this.popupWin.isShowing()){
 			drawButton(canvas, keys[this.touchingKeyIndex], true);
 		}
-		if(this.popupWin.isShowing()){
+		if(this.popupWin.isShowing()/* && noSecondaryKeys == false*/){
             canvas.drawRect(0, 0, getWidth(), getHeight(), darkeningPaint);
 		}
 	}
@@ -414,13 +488,14 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		btnBgPaint.setShadowLayer(0, 0, 0, 0);
 
 		
-		//draw popup character hint
-		if(k.popupCharacters != null && k.popupCharacters.length() > 1){
-			canv.drawText("...", k.x + btnPadding + btnRoundedness/3 +3 , k.y + popCharPaint.getTextSize() + btnPadding/2, popCharPaint);
-		}else if(k.popupCharacters != null && k.popupCharacters.length() == 1){
-			canv.drawText(k.popupCharacters.toString(), k.x + btnPadding + btnRoundedness/3 + 3, k.y + popCharPaint.getTextSize() + btnPadding + btnRoundedness/3 +3, popCharPaint);
+		//draw popup character hint if noSecondaryKeys==false
+		if(!noSecondaryKeys){
+			if(k.popupCharacters != null && k.popupCharacters.length() > 1){
+				canv.drawText("...", k.x + btnPadding + btnRoundedness/3 +3 , k.y + popCharPaint.getTextSize() + btnPadding/2, popCharPaint);
+			}else if(k.popupCharacters != null && k.popupCharacters.length() == 1){
+				canv.drawText(k.popupCharacters.toString(), k.x + btnPadding + btnRoundedness/3 + 3, k.y + popCharPaint.getTextSize() + btnPadding + btnRoundedness/3 +3, popCharPaint);
+			}
 		}
-		
 		
 		
 		if (label != null) { //draw label
@@ -520,7 +595,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 				"\tflags:"+me.getFlags());
 		*/
 		
-		if(this.popupWin.isShowing()){
+		if(this.popupWin.isShowing()/* && noSecondaryKeys == false*/){
 			//this.popupContent.dispatchTouchEvent(me);
 			handlePopUpWindowTouch(me);
 			return true;
@@ -537,11 +612,16 @@ public class MyKeyboardView extends View implements OnTouchListener{
 				this.touchingKeyIndex = index;
 				this.timeTouchedKey = me.getEventTime();
 				
-				//////////////////////////////////////////////////
-				this.removeCallbacks(this.keyLongClick);
-				this.keyLongClicked = this.keys[index];
-				this.postDelayed(this.keyLongClick, waitTime);
-				//////////////////////////////////////////////////
+				
+				//this.removeCallbacks(this.keyLongClick);
+				if(!noSecondaryKeys || this.keys[index].repeatable == true){
+					this.keyLongClicked = this.keys[index];
+					this.postDelayed(this.keyLongClick, waitTime);
+				}else{
+					//this.keyLongClicked = this.keys[index];
+					//this.postDelayed(this.keyLongClick, waitTime);
+					this.postDelayed(this.keyPreview, this.previewDelay);
+				}
 				
 				
 				this.invalidate();
@@ -553,18 +633,26 @@ public class MyKeyboardView extends View implements OnTouchListener{
 			//Log.d("!","ACTION_MOVE");
 			int index = getKeysIndex(Math.round(me.getX(0)), Math.round(me.getY(0)));
 			if(index != NOT_A_KEY){
-				if(index != this.touchingKeyIndex && !this.popupWin.isShowing()){
+				if(index != this.touchingKeyIndex && /*(*/!this.popupWin.isShowing()/* || this.noSecondaryKeys )*/ ){
 					vibrate();
 					
 					this.touchingKeyIndex = index;
 					this.timeTouchedKey = me.getEventTime();
 					
 					
-					//////////////////////////////////////////////////
+					if(noSecondaryKeys){
+						this.previewWin.dismiss();
+					}
+					
 					this.removeCallbacks(this.keyLongClick);
-					this.keyLongClicked = this.keys[index];
-					this.postDelayed(this.keyLongClick, waitTime);
-					//////////////////////////////////////////////////
+					if(!noSecondaryKeys || this.keys[index].repeatable == true){
+						//////////////////////////////////////////////////
+						this.keyLongClicked = this.keys[index];
+						this.postDelayed(this.keyLongClick, waitTime);
+						//////////////////////////////////////////////////
+					}else{
+						this.postDelayed(this.keyPreview, this.previewDelay);
+					}
 					
 					this.invalidate();
 				}
@@ -621,7 +709,16 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 
 		if (me.getActionMasked() == MotionEvent.ACTION_UP){
-			this.removeCallbacks(this.keyLongClick);
+			
+			if(noSecondaryKeys){
+				this.previewWin.dismiss();
+			}
+			
+			//if(!noSecondaryKeys){
+				this.removeCallbacks(this.keyLongClick);
+				this.removeCallbacks(this.keyPreview);
+			//}
+			
 			//Log.d("!","ACTION_UP");
 			int index = getKeysIndex(Math.round(me.getX(0)), Math.round(me.getY(0)));
 			if(index != NOT_A_KEY){
@@ -848,6 +945,24 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 
 
+	
+	
+	
+	
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 
 
 	/*
@@ -976,10 +1091,111 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		
 		
 		
-	}//private class end
+	}//protected class end
+
+
+	
+	
+	
+	
+	
+	
+	protected class Preview extends View{
+
+		MyKeyboardView kbdView;
+		String label;
+		//Paint bgPaint;
+		//Paint textPaint;
+		int padding;
+		boolean wasLastPreviewAChar;
+		
+		int width, height;
+		
+		public Preview(Context context, MyKeyboardView kbdView) {
+			super(context);
+			
+			this.kbdView = kbdView;
+			/*
+			textPaint = new Paint();
+			textPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
+			textPaint.setColor(Color.WHITE);
+			textPaint.setTextSize(70);
+			textPaint.setTextAlign(Align.CENTER);
+			textPaint.setTypeface(this.)
+			 */
+			
+			padding = 5;
+			
+		}
+		
+		
+		
+		
+		@Override
+		protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+			//super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+			
+			if(label == null){
+				this.setMeasuredDimension(0, 0);
+			}else{
+				this.setMeasuredDimension( this.width, this.height);
+			}
+		}
 
 
 
+		
+		@Override
+		protected void onDraw(Canvas canvas) {
+			//super.onDraw(canvas);
+			canvas.drawRoundRect(new RectF(0, 0, this.getWidth(), this.getHeight()), btnRoundedness + 3, btnRoundedness + 3, previewBgPaint);
+			canvas.drawText(label, this.getWidth()/2, this.getHeight() - 2*previewTextPaint.descent(), previewTextPaint);
+		}
+
+
+
+
+		public void setPopupLebel(String label){
+			Log.d("!","setPopupLebel");
+			
+			this.label = label;
+			
+			boolean isLableChar;
+			
+			if(label.length() == 1)
+				isLableChar = true;
+			else
+				isLableChar = false;
+			
+			
+			if(wasLastPreviewAChar && isLableChar){
+				return;
+			}else{
+				if(label.length() == 1){
+					this.width = (int) previewTextPaint.measureText("W") + 2*padding;
+					wasLastPreviewAChar = true;
+				}else{
+					this.width = (int) (previewTextPaint.measureText(label)*1.1f + 2*padding);
+					wasLastPreviewAChar = false;
+				}
+				this.height = (int) (previewTextPaint.getTextSize()*1.4f + 2*padding);
+				
+				kbdView.previewWin.setWidth(this.width);
+				kbdView.previewWin.setHeight(this.height);
+				
+				this.requestLayout();
+			}
+			
+			
+			
+		}
+		
+		
+		//public void init(){
+		//	this.requestLayout();
+		//}
+		
+	}//protected class end
 
 
 
