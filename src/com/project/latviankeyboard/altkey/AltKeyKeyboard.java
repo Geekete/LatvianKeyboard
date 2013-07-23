@@ -4,10 +4,8 @@ package com.project.latviankeyboard.altkey;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView.*;
-import android.text.Editable;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
 import com.project.latviankeyboard.R;
 
 import java.util.HashMap;
@@ -15,9 +13,9 @@ import java.util.Map;
 
 public class AltKeyKeyboard extends InputMethodService {
 
-    MyKeyboardView keyboardView;
+    private static MyKeyboardView keyboardView;
 
-    private static final int[] specialKeysQwerty = {11, 21, 29, 30, 31, 32, 33};
+    private static final int[] specialKeysQwerty = {11, 21, 29, 30, 32, 33};
     private static final int[] specialKeysNumbers = {0, 29, 30, 31, 32, 33};
     private static Map<Integer, Character> alphabet = new HashMap<Integer, Character>();
     private static Map<Integer, Character> alterAlphabet = new HashMap<Integer, Character>();
@@ -338,6 +336,7 @@ public class AltKeyKeyboard extends InputMethodService {
         alphabet.put(26, 'B');
         alphabet.put(27, 'N');
         alphabet.put(28, 'M');
+        alphabet.put(31, '.');
     }
 
     public void fillAlterAlphabet() {
@@ -367,6 +366,7 @@ public class AltKeyKeyboard extends InputMethodService {
         alterAlphabet.put(26, 'B');
         alterAlphabet.put(27, 'Ņ');
         alterAlphabet.put(28, 'M');
+        alterAlphabet.put(31, '.');
     }
 
     public void fillNumberSymbolAlphabet() {
@@ -411,6 +411,5 @@ public class AltKeyKeyboard extends InputMethodService {
         numberSymbolAlphabet.put(44, '$');
         numberSymbolAlphabet.put(45, '<');
         numberSymbolAlphabet.put(46, '>');
-
     }
 }

@@ -60,7 +60,7 @@
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
             </intent-filter>
-            <meta-data android:name="android.view.im" android:resource="@xml/extra_row_method0" />
+            <meta-data android:name="android.view.im" android:resource="@xml/extra_row_method" />
         </service>
         
 		<!-- Test keyboard service -->
@@ -74,7 +74,7 @@
 
             <meta-data
                 android:name="android.view.im"
-                android:resource="@xml/extra_row_method1" />
+                android:resource="@xml/extra_row_method" />
         </service>
         
     </application>
