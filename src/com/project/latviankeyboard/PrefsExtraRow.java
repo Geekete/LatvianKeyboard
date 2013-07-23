@@ -32,7 +32,7 @@ public class PrefsExtraRow extends PreferenceActivity {
 	Dialog d, sbD;
 	SharedPreferences prefs;
 	String prefKey;
-	TextView sbText;
+	TextView sbText, textRed, textGreen, textBlue, textAlpha;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -57,7 +57,11 @@ public class PrefsExtraRow extends PreferenceActivity {
 		blueBar = (SeekBar) colorChooser.findViewById(R.id.sbBlue);
 		alphaBar = (SeekBar) colorChooser.findViewById(R.id.sbAlpha);
 		seekBar = (SeekBar) seekBarDialog.findViewById(R.id.seekBar);
-		sbText = (TextView) seekBarDialog.findViewById(R.id.sbText);
+		sbText = (TextView) seekBarDialog.findViewById(R.id.textRed);
+		textRed = (TextView) colorChooser.findViewById((R.id.textRed));
+		textGreen = (TextView) colorChooser.findViewById((R.id.textGreen));
+		textBlue = (TextView) colorChooser.findViewById((R.id.textBlue));
+		textAlpha = (TextView) colorChooser.findViewById((R.id.textAlpha));
 
 		// inflates ok and cancel buttons
 		btnOk = (Button) colorChooser.findViewById(R.id.btnOk);
@@ -85,6 +89,10 @@ public class PrefsExtraRow extends PreferenceActivity {
 
 			// upgrades view background color from seekBar values
 			private void updateBackground() {
+				textRed.setText("" + redBar.getProgress());
+				textGreen.setText("" + greenBar.getProgress());
+				textBlue.setText("" + blueBar.getProgress());
+				textAlpha.setText("" + alphaBar.getProgress());
 				colorTest.setBackgroundColor(Color.argb(alphaBar.getProgress(), redBar.getProgress(), greenBar.getProgress(), blueBar.getProgress()));
 			}
 
@@ -183,11 +191,11 @@ public class PrefsExtraRow extends PreferenceActivity {
 					seekBar.setMax(75);
 					sbD.show();
 				} else if (prefKey.equals("erWaitTime")) {
-						sbD.setTitle(R.string.titleWaitTime);
-						seekBar.setProgress(prefs.getInt(prefKey, 200));
-						sbText.setText("" + prefs.getInt(prefKey, 200));
-						seekBar.setMax(1000);
-						sbD.show();
+					sbD.setTitle(R.string.titleWaitTime);
+					seekBar.setProgress(prefs.getInt(prefKey, 200));
+					sbText.setText("" + prefs.getInt(prefKey, 200));
+					seekBar.setMax(1000);
+					sbD.show();
 				} else if (prefKey.equals("erBackgroundColor")) {
 					d.setTitle(R.string.titleBackgroundColor);
 					int bkColor = prefs.getInt(prefKey, Color.argb(255, 30, 30, 30));
@@ -196,6 +204,9 @@ public class PrefsExtraRow extends PreferenceActivity {
 					greenBar.setProgress(Color.green(bkColor));
 					blueBar.setProgress(Color.blue(bkColor));
 					alphaBar.setProgress(Color.alpha(bkColor));
+					textRed.setText(""+redBar.getProgress());
+					textGreen.setText(""+greenBar.getProgress());
+					textBlue.setText(""+blueBar.getProgress());
 					d.show();
 				} else if (prefKey.equals("erBtnBackground")) {
 					d.setTitle(R.string.titleBtnBackground);
@@ -205,6 +216,9 @@ public class PrefsExtraRow extends PreferenceActivity {
 					greenBar.setProgress(Color.green(bkColor));
 					blueBar.setProgress(Color.blue(bkColor));
 					alphaBar.setProgress(Color.alpha(bkColor));
+					textRed.setText(""+redBar.getProgress());
+					textGreen.setText(""+greenBar.getProgress());
+					textBlue.setText(""+blueBar.getProgress());
 					d.show();
 				} else if (prefKey.equals("erBtnHoverColor")) {
 					d.setTitle(R.string.titleBtnHoverColor);
@@ -214,6 +228,9 @@ public class PrefsExtraRow extends PreferenceActivity {
 					greenBar.setProgress(Color.green(bkColor));
 					blueBar.setProgress(Color.blue(bkColor));
 					alphaBar.setProgress(Color.alpha(bkColor));
+					textRed.setText(""+redBar.getProgress());
+					textGreen.setText(""+greenBar.getProgress());
+					textBlue.setText(""+blueBar.getProgress());
 					d.show();
 				} else if (prefKey.equals("erBtnBorderColor")) {
 					d.setTitle(R.string.titleBtnBorderColor);
@@ -223,6 +240,9 @@ public class PrefsExtraRow extends PreferenceActivity {
 					greenBar.setProgress(Color.green(bkColor));
 					blueBar.setProgress(Color.blue(bkColor));
 					alphaBar.setProgress(Color.alpha(bkColor));
+					textRed.setText(""+redBar.getProgress());
+					textGreen.setText(""+greenBar.getProgress());
+					textBlue.setText(""+blueBar.getProgress());
 					d.show();
 				} else if (prefKey.equals("erBtnTextColor")) {
 					d.setTitle(R.string.titleBtnTextColor);
@@ -232,6 +252,9 @@ public class PrefsExtraRow extends PreferenceActivity {
 					greenBar.setProgress(Color.green(bkColor));
 					blueBar.setProgress(Color.blue(bkColor));
 					alphaBar.setProgress(Color.alpha(bkColor));
+					textRed.setText(""+redBar.getProgress());
+					textGreen.setText(""+greenBar.getProgress());
+					textBlue.setText(""+blueBar.getProgress());
 					d.show();
 				} else if (prefKey.equals("erTextSize")) {
 					sbD.setTitle(R.string.titleTextSize);
