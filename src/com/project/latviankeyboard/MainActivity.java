@@ -37,11 +37,13 @@ public class MainActivity extends Activity {
 
 			@Override
 			public void onItemClick(AdapterView<?> parent, View v, int position, long id) {
-				Log.i("ListView", "" + id);
 				if (id == 0) {
 					Intent intent = new Intent("com.project.latviankeyboard.PREFSEXTRAROW");   
 					startActivity(intent);
-				}		
+				} else if (id == 1) {
+					Intent intent = new Intent("com.project.latviankeyboard.PREFSALTKEY");   
+					startActivity(intent);
+				}
 			}
 		});
 	}

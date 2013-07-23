@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <Preference
+        android:key="akBackgroundColor"
+        android:summary="@string/sumBackgroundColor"
+        android:title="@string/titleBackgroundColor" />
+    <Preference
+        android:key="akBtnColor"
+        android:summary="@string/sumBtnBackground"
+        android:title="@string/titleBtnBackground" />
+    <Preference
+        android:key="akLetterColor"
+        android:title="@string/titleBtnTextColor" />
+    <Preference
+        android:key="akBorderColor"
+        android:title="@string/titleBtnBorderColor" />
+    <Preference
+        android:key="akBtnRoundness"
+        android:title="@string/titleBtnRoundness" />
+    <Preference
+        android:key="akBorderWidth"
+        android:title="@string/titleBorderWidth" />
+    <Preference
+        android:key="akCallKeyboard"
+        android:summary="@string/sumCallKeyboard"
+        android:title="@string/titleCallKeyboard" />
+
+    <CheckBoxPreference
+        android:key="akDefaultStyle"
+        android:summary="@string/sumDefaultStyle"
+        android:title="@string/titleDefaultStyle" />
+
+</PreferenceScreen>
