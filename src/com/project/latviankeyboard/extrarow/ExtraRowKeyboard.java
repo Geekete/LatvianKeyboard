@@ -48,7 +48,7 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 	Keyboard keyboardCur;
 	Keyboard keyboardQWERTY;
 	Keyboard keyboardSymbols;
-	Keyboard keyboardShiftedSymbols;
+	Keyboard keyboardNums;
 	
 	
 	int currentSelectionEndPos;
@@ -69,7 +69,7 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 
 		keyboardQWERTY = new Keyboard(this, R.xml.extra_row_qwerty);
 		keyboardSymbols = new Keyboard(this, R.xml.extra_row_symbols);
-		keyboardShiftedSymbols = new Keyboard(this, R.xml.extra_row_symbols_shift);
+		keyboardNums = new Keyboard(this, R.xml.extra_row_nums);
 	}
 	
 	
@@ -83,10 +83,9 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		inputView = (MyKeyboardView) getLayoutInflater().inflate(R.layout.extra_row_input, null);
 		inputView.setOnKeyboardActionListener(this);
 		Log.d("!","set qwerty");
-		//inputView.setValues un tad no sharredpreferences faila.
-		setValues();
 		keyboardCur = keyboardQWERTY;
 		inputView.setKeyboard(keyboardCur);
+		//setValues();
 		return inputView;
 	}
 
@@ -95,16 +94,17 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 	
 	
 	
-	
+/*	
 	private void setValues() {
 		SharedPreferences prefs  = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-		
+*/		
+		/*
 		boolean isHapticOn = prefs.getBoolean("erIsHapticOn", true);
 		//int buttonHeight = prefs.getInt("erButtonHeight", 70);
 		int kbdHeightpercentVert = prefs.getInt("erVerticalHeight", 50);
 		int kbdHeightpercentHoriz = prefs.getInt("erHorizontalHeight", 60);
 		
-		String textFont = prefs.getString("erTextFont", "");
+		String textFont = prefs.getString("erTextFont", "fonts/Xolonium-Regular.otf");
 		
 		int waitTime = prefs.getInt("erWaitTime", 200);
 		int backgroundColor = prefs.getInt("erBackgroundColor", Color.argb(255, 30, 30, 30));
@@ -118,11 +118,31 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		
 		//int btnRoundedness = prefs.getInt("erBtnRoundedness", 8);
 		int btnRoundedness = prefs.getInt("erBtnRoundness", 8);
+		*/
+/*		
+		boolean isHapticOn = prefs.getBoolean("erIsHapticOn", true);
+		//int buttonHeight = prefs.getInt("erButtonHeight", 70);
+		int kbdHeightpercentVert = Integer.parseInt(prefs.getString("erVerticalHeight", "50"));
+		int kbdHeightpercentHoriz = Integer.parseInt(prefs.getString("erHorizontalHeight", "60"));
+		
+		String textFont = prefs.getString("erTextFont", "fonts/Xolonium-Regular.otf");
+		
+		int waitTime = Integer.parseInt(prefs.getString("erWaitTime", "200"));
+		int backgroundColor = Integer.parseInt( prefs.getString("erBackgroundColor", ""+Color.argb(255, 30, 30, 30)) );
+		int btnBackgroundColor = Integer.parseInt( prefs.getString("erBtnBackground", ""+Color.argb(255,60,60,60)) );
+		int btnBackgroundHoverColor = Integer.parseInt( prefs.getString("erBtnHoverColor", ""+Color.argb(255,80,80,80)) );
+		int btnBorderColor = Integer.parseInt( prefs.getString("erBtnBorderColor", ""+Color.argb(255,51,181,229)) );
+		int btnTextColor = Integer.parseInt( prefs.getString("erBtnTextColor", ""+Color.argb(255,255,255,255)) );
+		int textSize = Integer.parseInt( prefs.getString("erTextSize", "25"));
+		int btnPadding = Integer.parseInt( prefs.getString("erBtnPadding", "1") );
+		int btnRoundedness = Integer.parseInt( prefs.getString("erBtnRoundness", "8") );
 		
 		
-		inputView.setValues(isHapticOn, kbdHeightpercentVert, kbdHeightpercentHoriz, waitTime, backgroundColor, btnBackgroundColor, btnBackgroundHoverColor, btnBorderColor, btnTextColor, textSize, btnPadding, btnRoundedness);
+		
+		
+		inputView.setValues(isHapticOn, kbdHeightpercentVert, kbdHeightpercentHoriz, waitTime, backgroundColor, btnBackgroundColor, btnBackgroundHoverColor, btnBorderColor, btnTextColor, textSize, btnPadding, btnRoundedness, textFont);
 	}
-
+*/
 
 
 
@@ -136,6 +156,9 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		// Clear shift states.
 		// mMetaState = 0;
 		// }
+		
+		//if(inputView != null)
+		//	setValues();
 
 		// initialize our state based on the type of text being edited.
 		switch (attribute.inputType & EditorInfo.TYPE_MASK_CLASS) {
@@ -144,13 +167,13 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		case EditorInfo.TYPE_CLASS_DATETIME:
 			// Numbers and dates default to the symbols keyboard, with no extra
 			// features.
-			keyboardCur = keyboardSymbols;
+			keyboardCur = keyboardNums;
 			break;
 
 		case EditorInfo.TYPE_CLASS_PHONE:
 			// Phones will also default to the symbols keyboard, though
 			// often you will want to have a dedicated phone keyboard.
-			keyboardCur = keyboardSymbols;
+			keyboardCur = keyboardNums;
 			break;
 
 		case EditorInfo.TYPE_CLASS_TEXT:
@@ -299,7 +322,7 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		case Keyboard.KEYCODE_MODE_CHANGE:
 			if(keyboardCur == keyboardQWERTY){
 				keyboardCur = keyboardSymbols;
-			}else if(keyboardCur == keyboardSymbols || keyboardCur == keyboardShiftedSymbols){
+			}else if(keyboardCur == keyboardSymbols || keyboardCur == keyboardNums){
 				keyboardCur = keyboardQWERTY;
 			}
 			inputView.setKeyboard(keyboardCur);
@@ -315,6 +338,12 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 			break;
 		case '\n':
 			sendCharToField(primaryCode);
+			break;
+		case -100:
+			if(this.keyboardCur == this.keyboardSymbols){
+				keyboardCur = keyboardNums;
+				inputView.setKeyboard(keyboardCur);
+			}
 			break;
 		case 167:
 			final Dialog d = new Dialog(this);

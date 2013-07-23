@@ -3,6 +3,7 @@ package com.project.latviankeyboard.extrarow;
 
 import android.app.Service;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -17,6 +18,7 @@ import android.inputmethodservice.Keyboard.Row;
 import android.inputmethodservice.KeyboardView.OnKeyboardActionListener;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Display;
@@ -76,6 +78,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	int textSize;
 	int btnPadding;
 	int btnRoundedness;
+	Typeface typeface;
 	
 	///////////////
 	Paint darkeningPaint;
@@ -130,6 +133,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 	public MyKeyboardView(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		//Log.d("!","-----------------------constructor");
 		this.ctx = context;
 		this.setOnTouchListener(this);
 		vibrator = (Vibrator) ctx.getSystemService(Service.VIBRATOR_SERVICE);
@@ -150,6 +154,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 		
 		//setDefaultValues();
+		//setValues();
 	}
 
 /*
@@ -183,8 +188,8 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	 * @param textSize
 	 * @param btnPadding
 	 * @param btnRoundedness
-	 */
-	public void setValues(boolean isHapticOn, int kbdHeightpercentVert, int kbdHeightpercentHoriz, int waitTime, int backgroundColor, int btnBackgroundColor, int btnBackgroundHoverColor, int btnBorderColor, int btnTextColor, int textSize, int btnPadding, int btnRoundedness){
+	 *//*
+	public void setValues(boolean isHapticOn, int kbdHeightpercentVert, int kbdHeightpercentHoriz, int waitTime, int backgroundColor, int btnBackgroundColor, int btnBackgroundHoverColor, int btnBorderColor, int btnTextColor, int textSize, int btnPadding, int btnRoundedness, String typeface){
 		this.isHapticOn = isHapticOn; //vibration
 		this.kbdHeightpercentVert = kbdHeightpercentVert;
 		this.kbdHeightpercentHoriz = kbdHeightpercentHoriz;
@@ -200,8 +205,48 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		
 		this.buttonHeight = 70;
 		
+		this.typeface = Typeface.createFromAsset( ctx.getAssets(), typeface);
+		
 		this.initPaints();
 	}
+	*/
+	
+	
+	
+	
+	private void setValues() {
+		SharedPreferences prefs  = PreferenceManager.getDefaultSharedPreferences(ctx);
+
+		boolean isHapticOn = prefs.getBoolean("erIsHapticOn", true);
+		this.kbdHeightpercentVert = Integer.parseInt(prefs.getString("erVerticalHeight", "50"));
+		this.kbdHeightpercentHoriz = Integer.parseInt(prefs.getString("erHorizontalHeight", "60"));
+		
+		String textFont = prefs.getString("erTextFont", "fonts/Xolonium-Regular.otf");
+		this.typeface = Typeface.createFromAsset( ctx.getAssets(), textFont);
+		
+		this.waitTime = Integer.parseInt(prefs.getString("erWaitTime", "200"));
+		this.backgroundColor = Integer.parseInt( prefs.getString("erBackgroundColor", ""+Color.argb(255, 30, 30, 30)) );
+		this.btnBackgroundColor = Integer.parseInt( prefs.getString("erBtnBackground", ""+Color.argb(255,60,60,60)) );
+		this.btnBackgroundHoverColor = Integer.parseInt( prefs.getString("erBtnHoverColor", ""+Color.argb(255,80,80,80)) );
+		this.btnBorderColor = Integer.parseInt( prefs.getString("erBtnBorderColor", ""+Color.argb(255,51,181,229)) );
+		this.btnTextColor = Integer.parseInt( prefs.getString("erBtnTextColor", ""+Color.argb(255,255,255,255)) );
+		this.textSize = Integer.parseInt( prefs.getString("erTextSize", "25"));
+		this.btnPadding = Integer.parseInt( prefs.getString("erBtnPadding", "1") );
+		this.btnRoundedness = Integer.parseInt( prefs.getString("erBtnRoundness", "8") );
+		
+		this.initPaints();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	
 
@@ -251,13 +296,12 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	
 	private void initPaints(){
 		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/GrandHotel-Regular.otf");
-		Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Xolonium-Regular.otf");
+		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Xolonium-Regular.otf");
 		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Roboto-Regular.ttf");
 		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Pecita.otf");
 		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/d-puntillas-D-to-tiptoe.ttf");
 		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Megrim.ttf");
 		//Typeface tf = Typeface.createFromAsset( ctx.getAssets(), "fonts/Jura-Medium.ttf");
-		
 		
 		this.darkeningPaint = new Paint();
 		this.darkeningPaint.setColor(Color.argb(170,0,0,0));
@@ -267,7 +311,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		this.mainTextPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		this.mainTextPaint.setTextSize(this.textSize);
 		//this.mainTextPaint.setTypeface(Typeface.DEFAULT);
-		this.mainTextPaint.setTypeface(tf);
+		this.mainTextPaint.setTypeface(this.typeface);
 		
 		this.btnBgPaint = new Paint();
 		
@@ -280,7 +324,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		this.popCharPaint.setAlpha(100);
 		this.popCharPaint.setTextSize(this.textSize/2);
 		//this.popCharPaint.setTypeface(Typeface.DEFAULT);
-		this.popCharPaint.setTypeface(tf);
+		this.popCharPaint.setTypeface(this.typeface);
 		this.popCharPaint.setFlags(Paint.ANTI_ALIAS_FLAG);
 		this.popCharPaint.setTextAlign(Align.LEFT);
 		
@@ -680,21 +724,33 @@ public class MyKeyboardView extends View implements OnTouchListener{
 
 	public void setKeyboard(Keyboard keyboard) {
 
+		setValues();
+		
 		this.keyboard = keyboard;
 		this.keys = keyboard.getKeys().toArray(new Key[keyboard.getKeys().size()]);
 		
 		
 		
-		//count rows
+		//count rows //////////////TODO improve
+		int rows = 0;
 		for(int i=0; i<this.keys.length; i++){
+			if(i==0){
+				rows++;
+				continue;
+			}
 			
+			if(this.keys[i-1].y < this.keys[i].y){
+				rows++;
+				continue;
+			}
+				
 		}
 		
 		//calculate button height
 		if(display.getRotation() == Surface.ROTATION_0 || display.getRotation() == Surface.ROTATION_180){
-			this.buttonHeight = Math.round((int) ( ((float)display.getHeight()) * ((float)this.kbdHeightpercentVert) / 100) / 5);
+			this.buttonHeight = Math.round((int) ( ((float)display.getHeight()) * ((float)this.kbdHeightpercentVert) / 100) / rows);
 		}else{
-			this.buttonHeight = Math.round((int) ( ((float)display.getHeight()) * ((float)this.kbdHeightpercentHoriz) / 100) / 5);
+			this.buttonHeight = Math.round((int) ( ((float)display.getHeight()) * ((float)this.kbdHeightpercentHoriz) / 100) / rows);
 		}
 		
 		

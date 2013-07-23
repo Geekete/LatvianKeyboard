@@ -64,13 +64,13 @@
     </Row>
     
     <Row android:rowEdgeFlags="bottom">
-        <Key android:codes="-2" android:keyLabel="1!?" android:keyWidth="20%p" android:keyEdgeFlags="left"/>
+        <Key android:codes="-2" android:keyLabel="abc" android:keyWidth="20%p" android:keyEdgeFlags="left"/>
         <Key android:codes="44" android:keyLabel="," android:keyWidth="10%p" android:popupCharacters="\u00a7," android:popupKeyboard="@xml/extra_row_popup_kbd"/>
         <Key android:codes="43" android:keyLabel="+" />
-        <Key android:codes="32" android:keyLabel=" " 
+        <Key android:codes="32" android:keyLabel="\u033A" 
                 android:keyWidth="20%p" android:isRepeatable="true"/>
         <Key android:codes="61" android:keyLabel="="  />
-        <Key android:codes="46" android:keyLabel="." android:keyWidth="10%p" />
+        <Key android:codes="46" android:keyLabel="." android:keyWidth="10%p" android:popupCharacters="±×÷°" android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="10" android:keyLabel="↵" 
                 android:keyWidth="20%p" android:keyEdgeFlags="right"/>
     </Row>

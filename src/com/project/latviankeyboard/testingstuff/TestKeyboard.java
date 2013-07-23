@@ -58,7 +58,7 @@ public class TestKeyboard extends InputMethodService implements KeyboardView.OnK
 
 		keyboardQWERTY = new Keyboard(this, R.xml.extra_row_qwerty);
 		keyboardSymbols = new Keyboard(this, R.xml.extra_row_symbols);
-		keyboardShiftedSymbols = new Keyboard(this, R.xml.extra_row_symbols_shift);
+		keyboardShiftedSymbols = new Keyboard(this, R.xml.extra_row_nums);
 	}
 	
 	

@@ -28,9 +28,11 @@
         android:title="@string/titleBackgroundColor" />
     <Preference
         android:key="erBtnBackground"
+        android:summary="@string/sumBtnBackground"
         android:title="@string/titleBtnBackground" />
     <Preference
         android:key="erBtnHoverColor"
+        android:summary="@string/sumBtnHoverColor"
         android:title="@string/titleBtnHoverColor" />
     <Preference
         android:key="erBtnBorderColor"
@@ -54,7 +56,13 @@
         android:inputType="number"
         android:key="erBtnRoundness"
         android:title="@string/titleBtnRoundness" />
-    <Preference android:title="@string/titleCallKeyboard" android:key="callKeyboard" android:summary="@string/sumCallKeyboard"/>
-    <Preference android:title="@string/titleResetDefaults" android:key="resetDefaults" android:summary="@string/sumResetDefaults"/>
+    <Preference
+        android:key="callKeyboard"
+        android:summary="@string/sumCallKeyboard"
+        android:title="@string/titleCallKeyboard" />
+    <Preference
+        android:key="resetDefaults"
+        android:summary="@string/sumResetDefaults"
+        android:title="@string/titleResetDefaults" />
 
 </PreferenceScreen>
