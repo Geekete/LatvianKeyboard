@@ -35,15 +35,13 @@
         <Key android:codes="25"    android:keyLabel="\\" />
         <Key android:codes="26"    android:keyLabel="&amp;" />
         <Key android:codes="27"    android:keyLabel="=" />
-        <Key android:codes="0"    android:keyIcon="@drawable/dots" android:keyEdgeFlags="left"
-             android:popupKeyboard="@xml/alt_key_popup"/>
+        <Key android:codes="0"     android:keyEdgeFlags="left" android:popupKeyboard="@xml/alt_key_popup"/>
         <Key android:codes="29"    android:keyIcon="@drawable/sym_keyboard_delete"
              android:isRepeatable="true" android:keyWidth="20%p"/>
     </Row>
     <Row>
         <Key android:codes="30"    android:keyLabel="ABC..." android:keyWidth="20%p" android:keyEdgeFlags="left"/>
-        <Key android:codes="31"    android:keyIcon="@android:drawable/ic_menu_preferences"/>
-        <Key android:codes="32"    android:keyIcon="@drawable/sym_keyboard_space" android:keyWidth="50%p"/>
+        <Key android:codes="32"    android:keyIcon="@drawable/sym_keyboard_space" android:keyWidth="60%p"/>
         <Key android:codes="33"    android:keyIcon="@drawable/sym_keyboard_return" android:keyWidth="20%p"/>
     </Row>
 </Keyboard>
