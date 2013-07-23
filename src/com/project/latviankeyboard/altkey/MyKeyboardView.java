@@ -1,29 +1,37 @@
 package com.project.latviankeyboard.altkey;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 
 import java.util.List;
 
 public class MyKeyboardView extends KeyboardView {
 
-    private int backgroundColor = Color.BLACK;
-    private int buttonColor = Color.GRAY;
-    private int letterColor = Color.WHITE;
+    private int backgroundColor;
+    private int buttonColor;
+    private int letterColor;
+    private int borderColor;
 
-    private boolean defaultStyle = false;
+    private boolean defaultStyle;
+
+    private float roundness;
+    private int borderWidth;
 
     public MyKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setValues(context);
     }
 
     public MyKeyboardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        setValues(context);
     }
 
     @Override
@@ -48,11 +56,18 @@ public class MyKeyboardView extends KeyboardView {
             labelPaint.setColor(letterColor);
             labelPaint.setTextAlign(Paint.Align.CENTER);
 
+            Paint borderPaint = new Paint();
+            borderPaint.setColor(borderColor);
+            borderPaint.setStrokeWidth(borderWidth);
+            borderPaint.setStyle(Paint.Style.STROKE);
+
             List<Key> keys = getKeyboard().getKeys();
             int maxWidth = keys.get(0).width;
             for (Key key : keys) {
-
-                canvas.drawRect(key.x + 1, key.y + 2, (key.x + key.width), (key.y + key.height), buttonPaint);
+                RectF rect = new RectF(key.x + 1, key.y + 2, (key.x + key.width), (key.y + key.height));
+                RectF rectBorder = new RectF(key.x + 3, key.y + 4, (key.x + key.width - 2), (key.y + key.height - 2));
+                canvas.drawRoundRect(rect, roundness, roundness, buttonPaint);
+                canvas.drawRoundRect(rectBorder, roundness, roundness, borderPaint);
                 if (key.icon != null) {
                     Drawable icon = key.icon;
                     int left;
@@ -62,7 +77,7 @@ public class MyKeyboardView extends KeyboardView {
                         if (key.width > maxWidth) {
                             left = key.x + ((key.width - 50) / 2);
                         } else {
-                            left = key.x + 2;
+                            left = key.x - 2;
                         }
                         top = key.y + 15;
                         icon.setBounds(left, top, left + icon.getIntrinsicWidth(), top + icon.getIntrinsicHeight());
@@ -77,6 +92,7 @@ public class MyKeyboardView extends KeyboardView {
                         }
                         icon.setBounds(left, top, left + icon.getIntrinsicWidth(), top + key.height);
                     }
+                    icon.setColorFilter(letterColor, PorterDuff.Mode.MULTIPLY);
                     icon.draw(canvas);
                 } else {
                     if (key.label != null) {
@@ -96,19 +112,14 @@ public class MyKeyboardView extends KeyboardView {
         }
     }
 
-    public void setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
-    }
-
-    public void setButtonColor(int red, int green, int blue) {
-        this.buttonColor = Color.rgb(red, green, blue);
-    }
-
-    public void setLetterColor(int red, int green, int blue) {
-        this.letterColor = Color.rgb(red, green, blue);
-    }
-
-    public void setDefaultStyle(boolean defaultStyle) {
-        this.defaultStyle = defaultStyle;
+    public void setValues(Context context) {
+        SharedPreferences prefs  = PreferenceManager.getDefaultSharedPreferences(context);
+        this.backgroundColor = prefs.getInt("altBackgroundColor", Color.BLACK);
+        this.buttonColor = prefs.getInt("altButtonColor", Color.WHITE);
+        this.letterColor = prefs.getInt("altLetterColor", Color.RED);
+        this.borderColor = prefs.getInt("altBorderColot", Color.LTGRAY);
+        this.roundness = prefs.getFloat("altButtonRoundness", 1);
+        this.borderWidth = prefs.getInt("altBorderWidth", 2);
+        this.defaultStyle = prefs.getBoolean("altDefaultStyle", true);
     }
 }

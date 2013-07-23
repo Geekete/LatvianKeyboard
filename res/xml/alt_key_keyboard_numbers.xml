@@ -37,11 +37,13 @@
         <Key android:codes="27"    android:keyLabel="=" />
         <Key android:codes="0"     android:keyEdgeFlags="left" android:popupKeyboard="@xml/alt_key_popup"/>
         <Key android:codes="29"    android:keyIcon="@drawable/sym_keyboard_delete"
-             android:isRepeatable="true" android:keyWidth="20%p"/>
+             android:isRepeatable="true" android:keyWidth="20%p" android:iconPreview="@drawable/sym_keyboard_feedback_delete"/>
     </Row>
     <Row>
         <Key android:codes="30"    android:keyLabel="ABC..." android:keyWidth="20%p" android:keyEdgeFlags="left"/>
-        <Key android:codes="32"    android:keyIcon="@drawable/sym_keyboard_space" android:keyWidth="60%p"/>
-        <Key android:codes="33"    android:keyIcon="@drawable/sym_keyboard_return" android:keyWidth="20%p"/>
+        <Key android:codes="32"    android:keyIcon="@drawable/sym_keyboard_space" android:keyWidth="60%p"
+             android:iconPreview="@drawable/sym_keyboard_feedback_space"/>
+        <Key android:codes="33"    android:keyIcon="@drawable/sym_keyboard_return" android:keyWidth="20%p"
+             android:iconPreview="@drawable/sym_keyboard_feedback_return"/>
     </Row>
 </Keyboard>
