@@ -29,7 +29,7 @@
     </Row>
     
     <Row android:rowEdgeFlags="bottom">
-        <Key android:codes="35" android:keyLabel="#" android:keyWidth="28.334%p" android:keyEdgeFlags="left"  android:popupCharacters="*(/)" android:popupKeyboard="@xml/extra_row_popup_kbd" />
+        <Key android:codes="35" android:keyLabel="#" android:keyWidth="28.334%p" android:keyEdgeFlags="left"  android:popupCharacters="*-(/)" android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="48" android:keyLabel="0" android:keyWidth="28.334%p"  android:popupCharacters="+" android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="46" android:keyLabel="." android:keyWidth="28.334%p" android:popupCharacters="," android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="10" android:keyLabel="↵" android:keyWidth="15%p" android:keyEdgeFlags="right" />

@@ -79,6 +79,8 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	int btnPadding;
 	int btnRoundedness;
 	Typeface typeface;
+	int textShadow;
+	int btnShadow;
 	
 	///////////////
 	Paint darkeningPaint;
@@ -218,21 +220,25 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		SharedPreferences prefs  = PreferenceManager.getDefaultSharedPreferences(ctx);
 
 		boolean isHapticOn = prefs.getBoolean("erIsHapticOn", true);
-		this.kbdHeightpercentVert = Integer.parseInt(prefs.getString("erVerticalHeight", "50"));
-		this.kbdHeightpercentHoriz = Integer.parseInt(prefs.getString("erHorizontalHeight", "60"));
+		this.kbdHeightpercentVert = prefs.getInt("erVerticalHeight", 50);
+		this.kbdHeightpercentHoriz = prefs.getInt("erHorizontalHeight", 60);
 		
 		String textFont = prefs.getString("erTextFont", "fonts/Xolonium-Regular.otf");
 		this.typeface = Typeface.createFromAsset( ctx.getAssets(), textFont);
 		
-		this.waitTime = Integer.parseInt(prefs.getString("erWaitTime", "200"));
-		this.backgroundColor = Integer.parseInt( prefs.getString("erBackgroundColor", ""+Color.argb(255, 30, 30, 30)) );
-		this.btnBackgroundColor = Integer.parseInt( prefs.getString("erBtnBackground", ""+Color.argb(255,60,60,60)) );
-		this.btnBackgroundHoverColor = Integer.parseInt( prefs.getString("erBtnHoverColor", ""+Color.argb(255,80,80,80)) );
-		this.btnBorderColor = Integer.parseInt( prefs.getString("erBtnBorderColor", ""+Color.argb(255,51,181,229)) );
-		this.btnTextColor = Integer.parseInt( prefs.getString("erBtnTextColor", ""+Color.argb(255,255,255,255)) );
-		this.textSize = Integer.parseInt( prefs.getString("erTextSize", "25"));
-		this.btnPadding = Integer.parseInt( prefs.getString("erBtnPadding", "1") );
-		this.btnRoundedness = Integer.parseInt( prefs.getString("erBtnRoundness", "8") );
+		this.waitTime = prefs.getInt("erWaitTime", 200);
+		this.backgroundColor = prefs.getInt("erBackgroundColor", Color.argb(255, 30, 30, 30));
+		this.btnBackgroundColor = prefs.getInt("erBtnBackground", Color.argb(255,60,60,60));
+		this.btnBackgroundHoverColor = prefs.getInt("erBtnHoverColor", Color.argb(255,80,80,80));
+		this.btnBorderColor = prefs.getInt("erBtnBorderColor", Color.argb(255,51,181,229));
+		this.btnTextColor = prefs.getInt("erBtnTextColor", Color.argb(255,255,255,255));
+		this.textSize = prefs.getInt("erTextSize", 25);
+		this.btnPadding = prefs.getInt("erBtnPadding", 1);
+		this.btnRoundedness = prefs.getInt("erBtnRoundness", 8);
+		
+		this.textShadow = prefs.getInt("erTextShadow", Color.argb(135, 0, 0, 0));
+		this.btnShadow = prefs.getInt("erBtnShadow", Color.argb(170, 0, 0, 0));
+		//Color.argb(170, 0, 0, 0)
 		
 		this.initPaints();
 	}
@@ -401,8 +407,8 @@ public class MyKeyboardView extends View implements OnTouchListener{
 			canv.drawRoundRect(new RectF(k.x + borderPadding, k.y + borderPadding, k.x + k.width - borderPadding, k.y + k.height - borderPadding), btnRoundedness+2, btnRoundedness+2, btnBorderPaint);
 		}
 		
-		if(!border && this.btnPadding >2)
-			btnBgPaint.setShadowLayer(3, 0, 0, Color.argb(170, 0, 0, 0));
+		if(!border && this.btnPadding >1)
+			btnBgPaint.setShadowLayer(this.btnPadding, 0, 0, this.btnShadow);
 		
 		canv.drawRoundRect(new RectF(k.x + btnPadding, k.y + btnPadding, k.x + k.width - btnPadding, k.y + k.height - btnPadding), btnRoundedness, btnRoundedness, btnBgPaint);
 		btnBgPaint.setShadowLayer(0, 0, 0, 0);
@@ -410,7 +416,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		
 		//draw popup character hint
 		if(k.popupCharacters != null && k.popupCharacters.length() > 1){
-			canv.drawText("...", k.x + btnPadding + btnRoundedness/3 +3 , k.y + popCharPaint.getTextSize(), popCharPaint);
+			canv.drawText("...", k.x + btnPadding + btnRoundedness/3 +3 , k.y + popCharPaint.getTextSize() + btnPadding/2, popCharPaint);
 		}else if(k.popupCharacters != null && k.popupCharacters.length() == 1){
 			canv.drawText(k.popupCharacters.toString(), k.x + btnPadding + btnRoundedness/3 + 3, k.y + popCharPaint.getTextSize() + btnPadding + btnRoundedness/3 +3, popCharPaint);
 		}
@@ -418,7 +424,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		
 		
 		if (label != null) { //draw label
-			mainTextPaint.setShadowLayer(7, 0, 0, Color.argb(135, 0, 0, 0));
+			mainTextPaint.setShadowLayer(7, 0, 0, this.textShadow);
 			canv.drawText(label,(k.width) / 2 + k.x - (mainTextPaint.measureText(label)/2), (k.height) / 2 + (mainTextPaint.getTextSize() - mainTextPaint.descent()/2) / 2 + k.y, mainTextPaint);
 			mainTextPaint.setShadowLayer(0, 0, 0, 0);
 		} else if (k.icon != null) { //draw icon
