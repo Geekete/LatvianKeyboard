@@ -7,6 +7,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.PaintDrawable;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -38,6 +39,7 @@ public class PrefsExtraRow extends PreferenceActivity {
 	TextView sbText, textRed, textGreen, textBlue, textAlpha;
 	Typeface font;
 	Button.OnClickListener btnActionListener;
+	CheckBoxPreference isHapticOn;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -119,7 +121,7 @@ public class PrefsExtraRow extends PreferenceActivity {
 			public void onClick(View v) {
 				if (v.getId() == fcB1.getId()) {
 					editor.putString("erTextFont", "fonts/Xolonium-Regular.otf");
-				} else if (v.getId() == fcB2.getId()) {		
+				} else if (v.getId() == fcB2.getId()) {
 					editor.putString("erTextFont", "fonts/GrandHotel-Regular.otf");
 				} else if (v.getId() == fcB3.getId()) {
 					editor.putString("erTextFont", "fonts/Roboto-Regular.ttf");
@@ -228,8 +230,8 @@ public class PrefsExtraRow extends PreferenceActivity {
 		blueBar.setOnSeekBarChangeListener(seekBarChangeListener);
 		alphaBar.setOnSeekBarChangeListener(seekBarChangeListener);
 		seekBar.setOnSeekBarChangeListener(sbChangeListener);
-		
-		//set click listener to fontChooser buttons
+
+		// set click listener to fontChooser buttons
 		fcB1.setOnClickListener(btnActionListener);
 		fcB2.setOnClickListener(btnActionListener);
 		fcB3.setOnClickListener(btnActionListener);
@@ -419,6 +421,14 @@ public class PrefsExtraRow extends PreferenceActivity {
 		findPreference("erBtnRoundness").setOnPreferenceClickListener(myListener);
 		findPreference("callKeyboard").setOnPreferenceClickListener(myListener);
 		findPreference("resetDefaults").setOnPreferenceClickListener(myListener);
+
+		// isHapticOn bugfix
+		isHapticOn = (CheckBoxPreference) findPreference("erIsHapticOn");
+		if (prefs.getBoolean("erIsHapticOn", true)) {
+			isHapticOn.setChecked(true);
+		} else {
+			isHapticOn.setChecked(false);
+		}
 
 	}
 }
