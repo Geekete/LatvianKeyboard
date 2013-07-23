@@ -29,7 +29,7 @@
             android:background="@drawable/red_seek_bar"
             android:max="255"
             android:paddingRight="15dp"
-            android:paddingTop="5dp" />
+            android:paddingTop="3dp" />
 
     </LinearLayout>
 
@@ -48,13 +48,13 @@
 
         <SeekBar
             android:id="@+id/sbGreen"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:background="@drawable/green_seek_bar"
             android:max="255"
             android:paddingRight="15dp"
-            android:paddingTop="5dp" />
+            android:paddingTop="3dp" />
 
     </LinearLayout>
 
@@ -79,7 +79,7 @@
             android:background="@drawable/blue_seek_bar"
             android:max="255"
             android:paddingRight="15dp"
-            android:paddingTop="5dp" />
+            android:paddingTop="3dp" />
 
     </LinearLayout>
 
@@ -105,20 +105,7 @@
             android:max="255"
             android:paddingBottom="0dp"
             android:paddingRight="15dp"
-            android:paddingTop="5dp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical" >
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
-
-        </LinearLayout>
+            android:paddingTop="3dp" />
 
     </LinearLayout>
 
