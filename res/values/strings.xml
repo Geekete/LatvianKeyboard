@@ -45,10 +45,10 @@
     <string name="sumCallKeyboard">Opens keyboard with selected preferences</string>
     <string name="titleResetDefaults">Reset</string>
     <string name="sumResetDefaults">Resets keyboard preferences to dafault values</string>
+    <string name="sumBtnBackground">Choose button background color</string>
+    <string name="sumBtnHoverColor">Buttons color when clicked</string>
 
     <!-- Alt key keyboard strings -->
     <string name="ime_name2">Alt key keyboard</string>
-    <string name="sumBtnBackground">Choose button background color</string>
-    <string name="sumBtnHoverColor">Buttons color when clicked</string>
 
 </resources>

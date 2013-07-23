@@ -19,18 +19,20 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class PrefsExtraRow extends PreferenceActivity {
 
 	OnPreferenceClickListener myListener;
-	SeekBar redBar, greenBar, blueBar, alphaBar;
+	SeekBar redBar, greenBar, blueBar, alphaBar, seekBar;
 	View colorTest;
-	LinearLayout colorChooser;
-	SeekBar.OnSeekBarChangeListener seekBarChangeListener;
-	Button btnOk, btnCancel;
-	Dialog d;
+	LinearLayout colorChooser, seekBarDialog;
+	SeekBar.OnSeekBarChangeListener seekBarChangeListener, sbChangeListener;
+	Button btnOk, btnCancel, sbBtnCancel, sbBtnOk;
+	Dialog d, sbD;
 	SharedPreferences prefs;
 	String prefKey;
+	TextView sbText;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -40,49 +42,44 @@ public class PrefsExtraRow extends PreferenceActivity {
 		// inflates preferences
 		addPreferencesFromResource(R.xml.prefs_extra_row);
 
-		// inflates layout
-		colorChooser = (LinearLayout) getLayoutInflater().inflate(
-				R.layout.color_chooser, null);
+		// inflates colorChooser
+		colorChooser = (LinearLayout) getLayoutInflater().inflate(R.layout.color_chooser, null);
+		// inflates seekBarDialog
+		seekBarDialog = (LinearLayout) getLayoutInflater().inflate(R.layout.seek_bar_dialog, null);
 
 		// gets shared preferences to edit them later
 		prefs = PreferenceManager.getDefaultSharedPreferences(this);
 		final SharedPreferences.Editor editor = prefs.edit();
 
-		// gets seekbars
+		// gets seekbars and textView
 		redBar = (SeekBar) colorChooser.findViewById(R.id.sbRed);
 		greenBar = (SeekBar) colorChooser.findViewById(R.id.sbGreen);
 		blueBar = (SeekBar) colorChooser.findViewById(R.id.sbBlue);
 		alphaBar = (SeekBar) colorChooser.findViewById(R.id.sbAlpha);
+		seekBar = (SeekBar) seekBarDialog.findViewById(R.id.seekBar);
+		sbText = (TextView) seekBarDialog.findViewById(R.id.sbText);
 
 		// inflates ok and cancel buttons
 		btnOk = (Button) colorChooser.findViewById(R.id.btnOk);
 		btnCancel = (Button) colorChooser.findViewById(R.id.btnCancel);
+		sbBtnOk = (Button) seekBarDialog.findViewById(R.id.sbBtnOk);
+		sbBtnCancel = (Button) seekBarDialog.findViewById(R.id.sbBtnCancel);
 
-		// Sets EditTextPref values
-		EditTextPreference verticalHeight = (EditTextPreference) findPreference("erVerticalHeight");
-		verticalHeight.setText("" + prefs.getString("erVerticalHeight", "50"));
-		EditTextPreference horizontalHeight = (EditTextPreference) findPreference("erHorizontalHeight");
-		horizontalHeight.setText("" + prefs.getString("erHorizontalHeight", "60"));
-		EditTextPreference waitTime = (EditTextPreference) findPreference("erWaitTime");
-		waitTime.setText("" + prefs.getString("erWaitTime", "200"));
-		EditTextPreference textSize = (EditTextPreference) findPreference("erTextSize");
-		textSize.setText("" + prefs.getString("erTextSize", "25"));
-		EditTextPreference buttonPadding = (EditTextPreference) findPreference("erBtnPadding");
-		buttonPadding.setText("" + prefs.getString("erBtnPadding", "1"));
-
-		// inflates Dialog context
+		// inflates Dialog context and adds colorChooser layout
 		d = new Dialog(PrefsExtraRow.this);
 		d.setContentView(colorChooser);
-		d.setCancelable(true);
-		d.setTitle(R.string.titleBackgroundColor);
 		d.setCanceledOnTouchOutside(true);
 
-		// SeekBar action listener
+		// inflates Dialog context and adds seekBar layout
+		sbD = new Dialog(PrefsExtraRow.this);
+		sbD.setContentView(seekBarDialog);
+		sbD.setCanceledOnTouchOutside(true);
+
+		// ColorChooser action listener
 		seekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
 
 			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
 				updateBackground();
 			}
 
@@ -100,20 +97,35 @@ public class PrefsExtraRow extends PreferenceActivity {
 			}
 		};
 
-		// adds actionlistener to "Ok" button
+		// SeekBar action listener
+		sbChangeListener = new SeekBar.OnSeekBarChangeListener() {
+
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+				sbText.setText("" + progress);
+			}
+
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+			}
+
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+			}
+		};
+
+		// adds actionlistener to "Ok" button [ColorChooser]
 		btnOk.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View arg0) {
-				editor.putString(prefKey, ""+Color.argb(alphaBar.getProgress(),
-						redBar.getProgress(), greenBar.getProgress(),
-						blueBar.getProgress()));
+				editor.putInt(prefKey, Color.argb(alphaBar.getProgress(), redBar.getProgress(), greenBar.getProgress(), blueBar.getProgress()));
 				editor.commit();
 				d.dismiss();
 			}
 		});
 
-		// adds actionListener to "Cancel" button
+		// adds actionListener to "Cancel" button [ColorChooser]
 		btnCancel.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -122,11 +134,32 @@ public class PrefsExtraRow extends PreferenceActivity {
 			}
 		});
 
+		// adds actionlistener to "Ok" button [SeekBarDialog]
+		sbBtnOk.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				editor.putInt(prefKey, seekBar.getProgress());
+				editor.commit();
+				sbD.dismiss();
+			}
+		});
+
+		// adds actionListener to "Cancel" button [SeekBarDialog]
+		sbBtnCancel.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				sbD.dismiss();
+			}
+		});
+		
 		// adds actionListener to seekbars
 		redBar.setOnSeekBarChangeListener(seekBarChangeListener);
 		greenBar.setOnSeekBarChangeListener(seekBarChangeListener);
 		blueBar.setOnSeekBarChangeListener(seekBarChangeListener);
 		alphaBar.setOnSeekBarChangeListener(seekBarChangeListener);
+		seekBar.setOnSeekBarChangeListener(sbChangeListener);
 
 		// inflates view that is used to test color
 		colorTest = colorChooser.findViewById(R.id.testColor);
@@ -137,8 +170,21 @@ public class PrefsExtraRow extends PreferenceActivity {
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				prefKey = preference.getKey();
-				if (prefKey.equals("erBackgroundColor")) {
-					int bkColor = Integer.parseInt( prefs.getString(prefKey, ""+Color.argb(255, 30, 30, 30)) );
+				if (prefKey.equals("erVerticalHeight")) {
+					sbD.setTitle(R.string.titleVerticalHeight);
+					seekBar.setProgress(prefs.getInt(prefKey, 50));
+					sbText.setText("" + prefs.getInt(prefKey, 50));
+					seekBar.setMax(75);
+					sbD.show();
+				} else if (prefKey.equals("erHorizontalHeight")) {
+					sbD.setTitle(R.string.titleHorizontalKeyboard);
+					seekBar.setProgress(prefs.getInt(prefKey, 60));
+					sbText.setText("" + prefs.getInt(prefKey, 60));
+					seekBar.setMax(75);
+					sbD.show();
+				} else if (prefKey.equals("erBackgroundColor")) {
+					d.setTitle(R.string.titleBackgroundColor);
+					int bkColor = prefs.getInt(prefKey, Color.argb(255, 30, 30, 30));
 					colorTest.setBackgroundColor(bkColor);
 					redBar.setProgress(Color.red(bkColor));
 					greenBar.setProgress(Color.green(bkColor));
@@ -146,7 +192,8 @@ public class PrefsExtraRow extends PreferenceActivity {
 					alphaBar.setProgress(Color.alpha(bkColor));
 					d.show();
 				} else if (prefKey.equals("erBtnBackground")) {
-					int bkColor = Integer.parseInt( prefs.getString(prefKey, ""+Color.argb(255, 60, 60, 60)) );
+					d.setTitle(R.string.titleBtnBackground);
+					int bkColor = prefs.getInt(prefKey, Color.argb(255, 60, 60, 60));
 					colorTest.setBackgroundColor(bkColor);
 					redBar.setProgress(Color.red(bkColor));
 					greenBar.setProgress(Color.green(bkColor));
@@ -154,7 +201,8 @@ public class PrefsExtraRow extends PreferenceActivity {
 					alphaBar.setProgress(Color.alpha(bkColor));
 					d.show();
 				} else if (prefKey.equals("erBtnHoverColor")) {
-					int bkColor = Integer.parseInt( prefs.getString(prefKey, ""+Color.argb(255, 80, 80, 80)) );
+					d.setTitle(R.string.titleBtnHoverColor);
+					int bkColor = prefs.getInt(prefKey, Color.argb(255, 80, 80, 80));
 					colorTest.setBackgroundColor(bkColor);
 					redBar.setProgress(Color.red(bkColor));
 					greenBar.setProgress(Color.green(bkColor));
@@ -162,7 +210,8 @@ public class PrefsExtraRow extends PreferenceActivity {
 					alphaBar.setProgress(Color.alpha(bkColor));
 					d.show();
 				} else if (prefKey.equals("erBtnBorderColor")) {
-					int bkColor = Integer.parseInt( prefs.getString(prefKey, ""+Color.argb(255, 51, 181, 229)) );
+					d.setTitle(R.string.titleBtnBorderColor);
+					int bkColor = prefs.getInt(prefKey, Color.argb(255, 51, 181, 229));
 					colorTest.setBackgroundColor(bkColor);
 					redBar.setProgress(Color.red(bkColor));
 					greenBar.setProgress(Color.green(bkColor));
@@ -170,25 +219,35 @@ public class PrefsExtraRow extends PreferenceActivity {
 					alphaBar.setProgress(Color.alpha(bkColor));
 					d.show();
 				} else if (prefKey.equals("erBtnTextColor")) {
-					int bkColor = Integer.parseInt( prefs.getString(prefKey, ""+Color.argb(255, 255, 255, 255)) );
+					d.setTitle(R.string.titleBtnTextColor);
+					int bkColor = prefs.getInt(prefKey, Color.argb(255, 255, 255, 255));
 					colorTest.setBackgroundColor(bkColor);
 					redBar.setProgress(Color.red(bkColor));
 					greenBar.setProgress(Color.green(bkColor));
 					blueBar.setProgress(Color.blue(bkColor));
 					alphaBar.setProgress(Color.alpha(bkColor));
 					d.show();
-				/*} else if (prefKey.equals("erBtnRoundness")) {
-					int bkColor = Integer.parseInt( prefs.getString(prefKey, ""+Color.argb(255, 30, 30, 30)) );
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					d.show();*/
+				} else if (prefKey.equals("erTextSize")) {
+					sbD.setTitle(R.string.titleTextSize);
+					seekBar.setProgress(prefs.getInt(prefKey, 25));
+					sbText.setText("" + prefs.getInt(prefKey, 25));
+					seekBar.setMax(60);
+					sbD.show();
+				} else if (prefKey.equals("erBtnPadding")) {
+					sbD.setTitle(R.string.titleBtnPadding);
+					seekBar.setProgress(prefs.getInt(prefKey, 4));
+					sbText.setText("" + prefs.getInt(prefKey, 4));
+					seekBar.setMax(15);
+					sbD.show();
+				} else if (prefKey.equals("erBtnRoundness")) {
+					sbD.setTitle(R.string.titleBtnRoundness);
+					seekBar.setProgress(prefs.getInt(prefKey, 8));
+					sbText.setText("" + prefs.getInt(prefKey, 8));
+					seekBar.setMax(35);
+					sbD.show();
 				} else if (prefKey.equals("callKeyboard")) {
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.toggleSoftInput(InputMethodManager.SHOW_FORCED,
-							InputMethodManager.HIDE_NOT_ALWAYS);
+					imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
 				} else if (prefKey.equals("resetDefaults")) {
 					editor.remove("erIsHapticOn");
 					editor.remove("erVerticalHeight");
@@ -209,21 +268,19 @@ public class PrefsExtraRow extends PreferenceActivity {
 		};
 
 		// adds actionListeners for preferences
-		findPreference("erBackgroundColor").setOnPreferenceClickListener(
-				myListener);
-		findPreference("erBtnBackground").setOnPreferenceClickListener(
-				myListener);
-		findPreference("erBtnHoverColor").setOnPreferenceClickListener(
-				myListener);
-		findPreference("erBtnBorderColor").setOnPreferenceClickListener(
-				myListener);
-		findPreference("erBtnTextColor").setOnPreferenceClickListener(
-				myListener);
-		findPreference("erBtnRoundness").setOnPreferenceClickListener(
-				myListener);
+		findPreference("erVerticalHeight").setOnPreferenceClickListener(myListener);
+		findPreference("erHorizontalHeight").setOnPreferenceClickListener(myListener);
+		findPreference("erWaitTime").setOnPreferenceClickListener(myListener);
+		findPreference("erBackgroundColor").setOnPreferenceClickListener(myListener);
+		findPreference("erBtnBackground").setOnPreferenceClickListener(myListener);
+		findPreference("erBtnHoverColor").setOnPreferenceClickListener(myListener);
+		findPreference("erBtnBorderColor").setOnPreferenceClickListener(myListener);
+		findPreference("erBtnTextColor").setOnPreferenceClickListener(myListener);
+		findPreference("erTextSize").setOnPreferenceClickListener(myListener);
+		findPreference("erBtnPadding").setOnPreferenceClickListener(myListener);
+		findPreference("erBtnRoundness").setOnPreferenceClickListener(myListener);
 		findPreference("callKeyboard").setOnPreferenceClickListener(myListener);
-		findPreference("resetDefaults")
-				.setOnPreferenceClickListener(myListener);
+		findPreference("resetDefaults").setOnPreferenceClickListener(myListener);
 
 	}
 }

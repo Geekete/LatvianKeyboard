@@ -6,17 +6,16 @@
         android:summary="@string/sumisHapticOn"
         android:title="@string/titleisHaptinOn" />
 
-    <EditTextPreference
-        android:inputType="number"
+    <Preference
         android:key="erVerticalHeight"
         android:summary="@string/sumVerticalHeight"
         android:title="@string/titleVerticalHeight" />
-    <EditTextPreference
+    <Preference
         android:inputType="number"
         android:key="erHorizontalHeight"
         android:summary="@string/sumHorizontalHeight"
         android:title="@string/titleHorizontalKeyboard" />
-    <EditTextPreference
+    <Preference
         android:inputType="number"
         android:key="erWaitTime"
         android:summary="@string/sumWaitTime"
@@ -41,12 +40,12 @@
         android:key="erBtnTextColor"
         android:title="@string/titleBtnTextColor" />
 
-    <EditTextPreference
+    <Preference
         android:inputType="number"
         android:key="erTextSize"
         android:summary="@string/sumTextSize"
         android:title="@string/titleTextSize" />
-    <EditTextPreference
+    <Preference
         android:inputType="number"
         android:key="erBtnPadding"
         android:summary="@string/sumBtnPadding"
