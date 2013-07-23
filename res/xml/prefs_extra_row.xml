@@ -11,12 +11,10 @@
         android:summary="@string/sumVerticalHeight"
         android:title="@string/titleVerticalHeight" />
     <Preference
-        android:inputType="number"
         android:key="erHorizontalHeight"
         android:summary="@string/sumHorizontalHeight"
         android:title="@string/titleHorizontalKeyboard" />
     <Preference
-        android:inputType="number"
         android:key="erWaitTime"
         android:summary="@string/sumWaitTime"
         android:title="@string/titleWaitTime" />
@@ -41,18 +39,15 @@
         android:title="@string/titleBtnTextColor" />
 
     <Preference
-        android:inputType="number"
         android:key="erTextSize"
         android:summary="@string/sumTextSize"
         android:title="@string/titleTextSize" />
     <Preference
-        android:inputType="number"
         android:key="erBtnPadding"
         android:summary="@string/sumBtnPadding"
         android:title="@string/titleBtnPadding" />
 
     <Preference
-        android:inputType="number"
         android:key="erBtnRoundness"
         android:title="@string/titleBtnRoundness" />
     <Preference

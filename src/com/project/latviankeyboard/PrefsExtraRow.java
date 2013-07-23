@@ -182,6 +182,12 @@ public class PrefsExtraRow extends PreferenceActivity {
 					sbText.setText("" + prefs.getInt(prefKey, 60));
 					seekBar.setMax(75);
 					sbD.show();
+				} else if (prefKey.equals("erWaitTime")) {
+						sbD.setTitle(R.string.titleWaitTime);
+						seekBar.setProgress(prefs.getInt(prefKey, 200));
+						sbText.setText("" + prefs.getInt(prefKey, 200));
+						seekBar.setMax(1000);
+						sbD.show();
 				} else if (prefKey.equals("erBackgroundColor")) {
 					d.setTitle(R.string.titleBackgroundColor);
 					int bkColor = prefs.getInt(prefKey, Color.argb(255, 30, 30, 30));
