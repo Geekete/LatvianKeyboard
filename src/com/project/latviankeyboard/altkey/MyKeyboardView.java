@@ -12,11 +12,15 @@ import java.util.List;
 
 public class MyKeyboardView extends KeyboardView {
 
-    private int backgroundColor = Color.BLACK;
-    private int buttonColor = Color.GRAY;
-    private int letterColor = Color.WHITE;
+    private int backgroundColor = Color.GRAY;
+    private int buttonColor = Color.WHITE;
+    private int letterColor = Color.RED;
+    private int borderColor = Color.LTGRAY;
 
     private boolean defaultStyle = false;
+
+    private float roundness = 1;
+    private int borderWidth = 2;
 
     public MyKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -48,11 +52,18 @@ public class MyKeyboardView extends KeyboardView {
             labelPaint.setColor(letterColor);
             labelPaint.setTextAlign(Paint.Align.CENTER);
 
+            Paint borderPaint = new Paint();
+            borderPaint.setColor(borderColor);
+            borderPaint.setStrokeWidth(borderWidth);
+            borderPaint.setStyle(Paint.Style.STROKE);
+
             List<Key> keys = getKeyboard().getKeys();
             int maxWidth = keys.get(0).width;
             for (Key key : keys) {
-
-                canvas.drawRect(key.x + 1, key.y + 2, (key.x + key.width), (key.y + key.height), buttonPaint);
+                RectF rect = new RectF(key.x + 1, key.y + 2, (key.x + key.width), (key.y + key.height));
+                RectF rectBorder = new RectF(key.x + 3, key.y + 4, (key.x + key.width - 2), (key.y + key.height - 2));
+                canvas.drawRoundRect(rect, roundness, roundness, buttonPaint);
+                canvas.drawRoundRect(rectBorder, roundness, roundness, borderPaint);
                 if (key.icon != null) {
                     Drawable icon = key.icon;
                     int left;
@@ -77,6 +88,7 @@ public class MyKeyboardView extends KeyboardView {
                         }
                         icon.setBounds(left, top, left + icon.getIntrinsicWidth(), top + key.height);
                     }
+                    icon.setColorFilter(letterColor, PorterDuff.Mode.MULTIPLY);
                     icon.draw(canvas);
                 } else {
                     if (key.label != null) {
@@ -96,16 +108,28 @@ public class MyKeyboardView extends KeyboardView {
         }
     }
 
-    public void setBackgroundColor(int backgroundColor) {
-        this.backgroundColor = backgroundColor;
+    public void setBackgroundColor(int alpha, int red, int green, int blue) {
+        this.backgroundColor = Color.argb(alpha, red, green, blue);
     }
 
-    public void setButtonColor(int red, int green, int blue) {
-        this.buttonColor = Color.rgb(red, green, blue);
+    public void setButtonColor(int alpha, int red, int green, int blue) {
+        this.buttonColor = Color.argb(alpha, red, green, blue);
     }
 
-    public void setLetterColor(int red, int green, int blue) {
-        this.letterColor = Color.rgb(red, green, blue);
+    public void setLetterColor(int alpha, int red, int green, int blue) {
+        this.letterColor = Color.argb(alpha, red, green, blue);
+    }
+
+    public void setBorderColor(int alpha, int red, int green, int blue) {
+        this.borderColor = Color.argb(alpha, red, green, blue);
+    }
+
+    public void setRoundness(float roundness) {
+        this.roundness = roundness;
+    }
+
+    public void setBorderWidth(int borderWidth) {
+        this.borderWidth = borderWidth;
     }
 
     public void setDefaultStyle(boolean defaultStyle) {

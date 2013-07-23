@@ -8,8 +8,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import com.project.latviankeyboard.R;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class AltKeyKeyboard extends InputMethodService {
 
