@@ -1,33 +1,37 @@
 package com.project.latviankeyboard.altkey;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
+import android.preference.PreferenceManager;
 import android.util.AttributeSet;
 
 import java.util.List;
 
 public class MyKeyboardView extends KeyboardView {
 
-    private int backgroundColor = Color.GRAY;
-    private int buttonColor = Color.WHITE;
-    private int letterColor = Color.RED;
-    private int borderColor = Color.LTGRAY;
+    private int backgroundColor;
+    private int buttonColor;
+    private int letterColor;
+    private int borderColor;
 
-    private boolean defaultStyle = false;
+    private boolean defaultStyle;
 
-    private float roundness = 1;
-    private int borderWidth = 2;
+    private float roundness;
+    private int borderWidth;
 
     public MyKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setValues(context);
     }
 
     public MyKeyboardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        setValues(context);
     }
 
     @Override
@@ -108,31 +112,14 @@ public class MyKeyboardView extends KeyboardView {
         }
     }
 
-    public void setBackgroundColor(int alpha, int red, int green, int blue) {
-        this.backgroundColor = Color.argb(alpha, red, green, blue);
-    }
-
-    public void setButtonColor(int alpha, int red, int green, int blue) {
-        this.buttonColor = Color.argb(alpha, red, green, blue);
-    }
-
-    public void setLetterColor(int alpha, int red, int green, int blue) {
-        this.letterColor = Color.argb(alpha, red, green, blue);
-    }
-
-    public void setBorderColor(int alpha, int red, int green, int blue) {
-        this.borderColor = Color.argb(alpha, red, green, blue);
-    }
-
-    public void setRoundness(float roundness) {
-        this.roundness = roundness;
-    }
-
-    public void setBorderWidth(int borderWidth) {
-        this.borderWidth = borderWidth;
-    }
-
-    public void setDefaultStyle(boolean defaultStyle) {
-        this.defaultStyle = defaultStyle;
+    public void setValues(Context context) {
+        SharedPreferences prefs  = PreferenceManager.getDefaultSharedPreferences(context);
+        this.backgroundColor = prefs.getInt("altBackgroundColor", Color.BLACK);
+        this.buttonColor = prefs.getInt("altButtonColor", Color.WHITE);
+        this.letterColor = prefs.getInt("altLetterColor", Color.RED);
+        this.borderColor = prefs.getInt("altBorderColot", Color.LTGRAY);
+        this.roundness = prefs.getFloat("altButtonRoundness", 1);
+        this.borderWidth = prefs.getInt("altBorderWidth", 2);
+        this.defaultStyle = prefs.getBoolean("altDefaultStyle", true);
     }
 }
