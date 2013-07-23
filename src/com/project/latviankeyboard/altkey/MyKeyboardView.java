@@ -73,7 +73,7 @@ public class MyKeyboardView extends KeyboardView {
                         if (key.width > maxWidth) {
                             left = key.x + ((key.width - 50) / 2);
                         } else {
-                            left = key.x + 2;
+                            left = key.x - 2;
                         }
                         top = key.y + 15;
                         icon.setBounds(left, top, left + icon.getIntrinsicWidth(), top + icon.getIntrinsicHeight());
