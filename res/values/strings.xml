@@ -11,7 +11,6 @@
     <!-- Extra row keyboard strings -->
     <string name="ime_name">Extra row keyboard</string>
     <string name="titleExtraRowPreferences">Extra Row Preferences</string>
-    
     <string name="extraRowInKeyboardListItem0">Keyboard settings</string>
     <string name="extraRowInKeyboardListItem1">Input method</string>
     <string name="extraRowInKeyboardDialogTitle">Choose action</string>
@@ -44,11 +43,27 @@
     <string name="titleCallKeyboard">Test keyboard</string>
     <string name="sumCallKeyboard">Opens keyboard with selected preferences</string>
     <string name="titleResetDefaults">Reset</string>
-    <string name="sumResetDefaults">Resets keyboard preferences to dafault values</string>
+    <string name="sumResetDefaults">Resets keyboard preferences to default values</string>
     <string name="sumBtnBackground">Choose button background color</string>
     <string name="sumBtnHoverColor">Buttons color when clicked</string>
+    <string name="titleTextShadow">Text shadow</string>
+    <string name="sumTextShadow">Text shadow color</string>
+    <string name="titleBtnShadow">Button shadow</string>
+    <string name="sumBtnShadow">Button shadow color when higher button padding is set</string>
+    <string name="titleTextFont">Text font</string>
+    <string name="sumTextFont">Keyboard letter font</string>
 
     <!-- Alt key keyboard strings -->
     <string name="ime_name2">Alt key keyboard</string>
+    
+    <!-- Font strings -->
+    <string name="fontXoloniumRegular">Xolonium-Regular</string>
+    <string name="fontGrandHotelRegular">GrandHotel-Regular</string>
+    <string name="fontRobotoRegular">Roboto-Regular</string>
+    <string name="fontPecita">Pecita</string>
+    <string name="fontDPuntillasDToTiptoe">D-Puntillas-D-To-Tiptoe</string>
+    <string name="fontMegrim">Megrim</string>
+    <string name="fontJuraMedium">Jura-Medium</string>
+
 
 </resources>

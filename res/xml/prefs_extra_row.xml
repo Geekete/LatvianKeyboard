@@ -27,7 +27,7 @@
         android:key="erBtnBackground"
         android:summary="@string/sumBtnBackground"
         android:title="@string/titleBtnBackground" />
-    <Preference
+    <Preference android:title="@string/titleBtnShadow" android:key="erBtnShadow" android:summary="@string/sumBtnShadow" /><Preference
         android:key="erBtnHoverColor"
         android:summary="@string/sumBtnHoverColor"
         android:title="@string/titleBtnHoverColor" />
@@ -38,7 +38,7 @@
         android:key="erBtnTextColor"
         android:title="@string/titleBtnTextColor" />
 
-    <Preference
+    <Preference android:title="@string/titleTextShadow" android:key="erTextShadow" android:summary="@string/sumTextShadow" /><Preference android:title="@string/titleTextFont" android:key="erTextFont" android:summary="@string/sumTextFont" /><Preference
         android:key="erTextSize"
         android:summary="@string/sumTextSize"
         android:title="@string/titleTextSize" />
@@ -58,5 +58,8 @@
         android:key="resetDefaults"
         android:summary="@string/sumResetDefaults"
         android:title="@string/titleResetDefaults" />
+    
+    
+    
 
 </PreferenceScreen>
