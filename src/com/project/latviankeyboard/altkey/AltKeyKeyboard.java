@@ -1,9 +1,12 @@
 package com.project.latviankeyboard.altkey;
 
 
+import android.content.Context;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView.*;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import com.project.latviankeyboard.R;
@@ -31,6 +34,13 @@ public class AltKeyKeyboard extends InputMethodService {
 
     private Keyboard currentKeyboard;
 
+    private HashMap<Integer, Integer> soundPoolMap;
+    private HashMap<Integer, Integer> soundPoolForSpecialsMap;
+    private SoundPool soundPool;
+    private SoundPool soundPoolForSpecials;
+    private int soundID = 1;
+    int streamVolume;
+
     private OnKeyboardActionListener onKeyboardActionListener = new OnKeyboardActionListener() {
         @Override
         public void onPress(int primaryCode) {
@@ -44,6 +54,33 @@ public class AltKeyKeyboard extends InputMethodService {
 
         @Override
         public void onKey(int primaryCode, int[] keyCodes) {
+
+            AudioManager audioManager = (AudioManager)getSystemService(Context.AUDIO_SERVICE);
+            streamVolume = audioManager.getStreamVolume(AudioManager.STREAM_RING);
+            boolean specialKey = false;
+
+            if (primaryCode == 32) {
+                specialKey = !specialKey;
+                soundPoolForSpecials.play(1, streamVolume, streamVolume, 1, 0, 1);
+            }
+            if (primaryCode == 33) {
+                specialKey = !specialKey;
+                soundPoolForSpecials.play(2, streamVolume, streamVolume, 1, 0, 1);
+            }
+            if (primaryCode == 30) {
+                specialKey = !specialKey;
+                soundPoolForSpecials.play(3, streamVolume, streamVolume, 1, 0, 1);
+            }
+            if (primaryCode == 29) {
+                specialKey = !specialKey;
+                soundPoolForSpecials.play(4, streamVolume, streamVolume, 1, 0, 1);
+            }
+            if (!specialKey) {
+                soundPool.play(soundID++, streamVolume, streamVolume, 1, 0, 1);
+                if (soundID == 8) {
+                    soundID = 1;
+                }
+            }
 
             boolean special = false;
 
@@ -219,6 +256,10 @@ public class AltKeyKeyboard extends InputMethodService {
         fillAlphabet();
         fillAlterAlphabet();
         fillNumberSymbolAlphabet();
+        soundPool = new SoundPool(4, AudioManager.STREAM_SYSTEM, 100);
+        soundPoolForSpecials = new SoundPool(4, AudioManager.STREAM_SYSTEM, 100);
+        soundPoolMap = new HashMap<Integer, Integer>();
+        soundPoolForSpecialsMap = new HashMap<Integer, Integer>();
     }
 
     @Override
@@ -235,6 +276,21 @@ public class AltKeyKeyboard extends InputMethodService {
     @Override
     public View onCreateInputView() {
         keyboardView = (MyKeyboardView) getLayoutInflater().inflate(R.layout.alt_key_input, null);
+
+        soundPoolMap.put(1, soundPool.load(keyboardView.getContext(), R.raw.ba1, 1));
+        soundPoolMap.put(2, soundPool.load(keyboardView.getContext(), R.raw.ba1, 1));
+        soundPoolMap.put(3, soundPool.load(keyboardView.getContext(), R.raw.ba1, 1));
+        soundPoolMap.put(4, soundPool.load(keyboardView.getContext(), R.raw.ba1, 1));
+        soundPoolMap.put(5, soundPool.load(keyboardView.getContext(), R.raw.na1, 1));
+        soundPoolMap.put(6, soundPool.load(keyboardView.getContext(), R.raw.na1, 1));
+        soundPoolMap.put(7, soundPool.load(keyboardView.getContext(), R.raw.na1, 1));
+
+        soundPoolForSpecialsMap.put(1, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.bananaaa1, 1));
+        soundPoolForSpecialsMap.put(2, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.laugh, 1));
+        soundPoolForSpecialsMap.put(3, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.bee_do, 1));
+        soundPoolForSpecialsMap.put(4, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.noo, 1));
+        soundPoolForSpecialsMap.put(5, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.lullaby, 1));
+
         keyboardView.setKeyboard(normal);
         currentKeyboard = normal;
         keyboardView.setPreviewEnabled(true);
