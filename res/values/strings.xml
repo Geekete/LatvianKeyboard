@@ -55,6 +55,7 @@
 
     <!-- Alt key keyboard strings -->
     <string name="ime_name2">Alt key keyboard</string>
+    <string name="titleAltKeyPreferences">Alt Key Preferences</string>
     
     <!-- Font strings -->
     <string name="fontXoloniumRegular">Xolonium-Regular</string>
@@ -64,6 +65,15 @@
     <string name="fontDPuntillasDToTiptoe">D-Puntillas-D-To-Tiptoe</string>
     <string name="fontMegrim">Megrim</string>
     <string name="fontJuraMedium">Jura-Medium</string>
+    <string name="titleBorderWidth">Button border width</string>
+    <string name="titleDefaultStyle">Default style</string>
+    <string name="sumDefaultStyle">Uncheck to customize keyboard</string>
+    <string name="titleCatVibration">Vibration</string>
+    <string name="titleCatKeyboardHeight">Keyboard height</string>
+    <string name="titleCatKeyboardPrefs">Keyboard settings</string>
+    <string name="titleCatButtonPrefs">Button settings</string>
+    <string name="titleCatTextPrefs">Text settings</string>
+    <string name="titleCatOther">Other</string>
 
 
 </resources>

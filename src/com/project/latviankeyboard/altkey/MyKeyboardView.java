@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
 import android.preference.PreferenceManager;
@@ -21,17 +22,15 @@ public class MyKeyboardView extends KeyboardView {
 
     private boolean defaultStyle;
 
-    private float roundness;
+    private int roundness;
     private int borderWidth;
 
     public MyKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setValues(context);
     }
 
     public MyKeyboardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setValues(context);
     }
 
     @Override
@@ -94,6 +93,7 @@ public class MyKeyboardView extends KeyboardView {
                     }
                     icon.setColorFilter(letterColor, PorterDuff.Mode.MULTIPLY);
                     icon.draw(canvas);
+                    icon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
                 } else {
                     if (key.label != null) {
                         if (key.label.length() > 1) {
@@ -114,12 +114,18 @@ public class MyKeyboardView extends KeyboardView {
 
     public void setValues(Context context) {
         SharedPreferences prefs  = PreferenceManager.getDefaultSharedPreferences(context);
-        this.backgroundColor = prefs.getInt("altBackgroundColor", Color.BLACK);
-        this.buttonColor = prefs.getInt("altButtonColor", Color.WHITE);
-        this.letterColor = prefs.getInt("altLetterColor", Color.RED);
-        this.borderColor = prefs.getInt("altBorderColot", Color.LTGRAY);
-        this.roundness = prefs.getFloat("altButtonRoundness", 1);
-        this.borderWidth = prefs.getInt("altBorderWidth", 2);
-        this.defaultStyle = prefs.getBoolean("altDefaultStyle", true);
+        this.backgroundColor = prefs.getInt("akBackgroundColor", Color.BLACK);
+        this.buttonColor = prefs.getInt("akBtnColor", Color.WHITE);
+        this.letterColor = prefs.getInt("akLetterColor", Color.RED);
+        this.borderColor = prefs.getInt("akBorderColor", Color.LTGRAY);
+        this.roundness = prefs.getInt("akBtnRoundness", 1);
+        this.borderWidth = prefs.getInt("akBorderWidth", 2);
+        this.defaultStyle = prefs.getBoolean("akDefaultStyle", true);
+    }
+
+    @Override
+    public void setKeyboard(Keyboard keyboard) {
+        super.setKeyboard(keyboard);
+        setValues(getContext());
     }
 }
