@@ -256,8 +256,8 @@ public class AltKeyKeyboard extends InputMethodService {
         fillAlphabet();
         fillAlterAlphabet();
         fillNumberSymbolAlphabet();
-        soundPool = new SoundPool(4, AudioManager.STREAM_SYSTEM, 100);
-        soundPoolForSpecials = new SoundPool(4, AudioManager.STREAM_SYSTEM, 100);
+        soundPool = new SoundPool(4, AudioManager.STREAM_RING, 100);
+        soundPoolForSpecials = new SoundPool(4, AudioManager.STREAM_RING, 100);
         soundPoolMap = new HashMap<Integer, Integer>();
         soundPoolForSpecialsMap = new HashMap<Integer, Integer>();
     }
@@ -289,7 +289,6 @@ public class AltKeyKeyboard extends InputMethodService {
         soundPoolForSpecialsMap.put(2, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.laugh, 1));
         soundPoolForSpecialsMap.put(3, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.bee_do, 1));
         soundPoolForSpecialsMap.put(4, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.noo, 1));
-        soundPoolForSpecialsMap.put(5, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.lullaby, 1));
 
         keyboardView.setKeyboard(normal);
         currentKeyboard = normal;
