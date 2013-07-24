@@ -22,7 +22,7 @@ public class MyKeyboardView extends KeyboardView {
 
     private boolean defaultStyle;
 
-    private float roundness;
+    private int roundness;
     private int borderWidth;
 
     public MyKeyboardView(Context context, AttributeSet attrs) {
@@ -118,15 +118,9 @@ public class MyKeyboardView extends KeyboardView {
         this.buttonColor = prefs.getInt("akBtnColor", Color.WHITE);
         this.letterColor = prefs.getInt("akLetterColor", Color.RED);
         this.borderColor = prefs.getInt("akBorderColor", Color.LTGRAY);
-        this.roundness = prefs.getFloat("akBtnRoundness", 1);
+        this.roundness = prefs.getInt("akBtnRoundness", 1);
         this.borderWidth = prefs.getInt("akBorderWidth", 2);
         this.defaultStyle = prefs.getBoolean("akDefaultStyle", true);
-    }
-
-    @Override
-    public void setKeyboard(Keyboard keyboard) {
-        super.setKeyboard(keyboard);
-        setValues(getContext());
     }
 
     @Override

@@ -144,12 +144,13 @@ public class PrefsAltKey extends PreferenceActivity {
 
 			@Override
 			public void onClick(View v) {
-				// if (prefKey.equals("akBtnRoundness")) {
-				// editor.putFloat(prefKey, seekBar.getProgress());
-				// }
-				editor.putInt(prefKey, seekBar.getProgress());
-				editor.commit();
-				sbD.dismiss();
+				//if (prefKey.equals("akBtnRoundness")) {
+					//editor.putFloat(prefKey, (Float) seekBar.getProgress());
+				//} else {
+					editor.putInt(prefKey, seekBar.getProgress());
+					editor.commit();
+					sbD.dismiss();
+				//}
 			}
 		});
 
@@ -171,9 +172,9 @@ public class PrefsAltKey extends PreferenceActivity {
 
 		// inflates view that is used to test color
 		colorTest = colorChooser.findViewById(R.id.testColor);
-		
-		//CheckBoxPreference
-		defaultStyle = (CheckBoxPreference)  findPreference("akDefaultStyle");
+
+		// CheckBoxPreference
+		defaultStyle = (CheckBoxPreference) findPreference("akDefaultStyle");
 
 		// creates actionlistener for preferences
 		myListener = new OnPreferenceClickListener() {
