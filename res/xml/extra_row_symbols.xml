@@ -7,7 +7,7 @@
     android:verticalGap="0px"
     >
     
-    <Row android:rowEdgeFlags="top" android:keyWidth="9.091%" >
+    <Row android:rowEdgeFlags="top" android:keyWidth="9.2%" >
         <Key android:codes="33" android:keyLabel="!" android:keyEdgeFlags="left" android:popupCharacters="ā" android:popupKeyboard="@xml/extra_row_popup_kbd"/>
         <Key android:codes="64" android:keyLabel="\u0040" android:popupCharacters="č" android:popupKeyboard="@xml/extra_row_popup_kbd"/>
         <Key android:codes="35" android:keyLabel="#" android:popupCharacters="ē" android:popupKeyboard="@xml/extra_row_popup_kbd"/>

@@ -460,8 +460,15 @@ public class ExtraRowKeyboard extends InputMethodService implements KeyboardView
 		}
 		
 		if(chr == Keyboard.KEYCODE_DELETE){
-			if(cs == null)//only delete char if the user didn't intend to delete a selection
-				ic.deleteSurroundingText(1, 0);
+			if(cs == null){//only delete char if the user didn't intend to delete a selection
+				if(this.inputView.backspaceCounter < 5){
+					Log.d("!","deleted 1");
+					ic.deleteSurroundingText(1, 0);
+				}else{
+					Log.d("!","deleted 3");
+					ic.deleteSurroundingText(3, 0);
+				}
+			}
 		}else if(chr == '\n'){//send ENTER
 			this.sendDownUpKeyEvents(KeyEvent.KEYCODE_ENTER);
 		}else{//send a character in the apropriate case
