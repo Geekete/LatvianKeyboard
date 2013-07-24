@@ -40,6 +40,8 @@ public class PrefsExtraRow extends PreferenceActivity {
 	Typeface font;
 	Button.OnClickListener btnActionListener;
 	CheckBoxPreference isHapticOn;
+	int bkColor;
+	int sbProgress;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -248,135 +250,53 @@ public class PrefsExtraRow extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 				prefKey = preference.getKey();
 				if (prefKey.equals("erVerticalHeight")) {
-					sbD.setTitle(R.string.titleVerticalHeight);
-					seekBar.setProgress(prefs.getInt(prefKey, 50));
-					sbText.setText("" + prefs.getInt(prefKey, 50));
+					sbProgress = prefs.getInt(prefKey, 50);
+					setSeekBarDialog(preference, prefKey);
 					seekBar.setMax(75);
-					sbD.show();
 				} else if (prefKey.equals("erHorizontalHeight")) {
-					sbD.setTitle(R.string.titleHorizontalKeyboard);
-					seekBar.setProgress(prefs.getInt(prefKey, 60));
-					sbText.setText("" + prefs.getInt(prefKey, 60));
+					sbProgress = prefs.getInt(prefKey, 60);
+					setSeekBarDialog(preference, prefKey);
 					seekBar.setMax(75);
-					sbD.show();
 				} else if (prefKey.equals("erWaitTime")) {
-					sbD.setTitle(R.string.titleWaitTime);
-					seekBar.setProgress(prefs.getInt(prefKey, 200));
-					sbText.setText("" + prefs.getInt(prefKey, 200));
+					sbProgress = prefs.getInt(prefKey, 200);
+					setSeekBarDialog(preference, prefKey);
 					seekBar.setMax(1000);
-					sbD.show();
 				} else if (prefKey.equals("erBackgroundColor")) {
-					d.setTitle(R.string.titleBackgroundColor);
-					int bkColor = prefs.getInt(prefKey, Color.argb(255, 30, 30, 30));
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.argb(255, 30, 30, 30));
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("erBtnBackground")) {
-					d.setTitle(R.string.titleBtnBackground);
-					int bkColor = prefs.getInt(prefKey, Color.argb(255, 60, 60, 60));
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.argb(255, 60, 60, 60));
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("erBtnShadow")) {
-					d.setTitle(R.string.titleBtnShadow);
-					int bkColor = prefs.getInt(prefKey, Color.argb(170, 0, 0, 0));
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.argb(170, 0, 0, 0));
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("erBtnHoverColor")) {
-					d.setTitle(R.string.titleBtnHoverColor);
-					int bkColor = prefs.getInt(prefKey, Color.argb(255, 80, 80, 80));
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.argb(255, 80, 80, 80));
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("erBtnBorderColor")) {
-					d.setTitle(R.string.titleBtnBorderColor);
-					int bkColor = prefs.getInt(prefKey, Color.argb(255, 51, 181, 229));
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.argb(255, 51, 181, 229));
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("erBtnTextColor")) {
-					d.setTitle(R.string.titleBtnTextColor);
-					int bkColor = prefs.getInt(prefKey, Color.argb(255, 255, 255, 255));
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.argb(255, 255, 255, 255));
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("erTextShadow")) {
-					d.setTitle(R.string.titleTextShadow);
-					int bkColor = prefs.getInt(prefKey, Color.argb(135, 0, 0, 0));
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.argb(135, 0, 0, 0));
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("erTextFont")) {
 					fcD.setTitle(R.string.titleTextFont);
 					fcD.show();
 				} else if (prefKey.equals("erTextSize")) {
-					sbD.setTitle(R.string.titleTextSize);
-					seekBar.setProgress(prefs.getInt(prefKey, 25));
-					sbText.setText("" + prefs.getInt(prefKey, 25));
+					sbProgress = prefs.getInt(prefKey, 25);
+					setSeekBarDialog(preference, prefKey);
 					seekBar.setMax(60);
-					sbD.show();
 				} else if (prefKey.equals("erBtnPadding")) {
-					sbD.setTitle(R.string.titleBtnPadding);
-					seekBar.setProgress(prefs.getInt(prefKey, 1));
-					sbText.setText("" + prefs.getInt(prefKey, 1));
+					sbProgress = prefs.getInt(prefKey, 1);
+					setSeekBarDialog(preference, prefKey);
 					seekBar.setMax(15);
-					sbD.show();
 				} else if (prefKey.equals("erBtnRoundness")) {
-					sbD.setTitle(R.string.titleBtnRoundness);
-					seekBar.setProgress(prefs.getInt(prefKey, 8));
-					sbText.setText("" + prefs.getInt(prefKey, 8));
+					sbProgress = prefs.getInt(prefKey, 8);
+					setSeekBarDialog(preference, prefKey);
 					seekBar.setMax(35);
-					sbD.show();
 				} else if (prefKey.equals("callKeyboard")) {
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -428,7 +348,24 @@ public class PrefsExtraRow extends PreferenceActivity {
 			isHapticOn.setChecked(false);
 		}
 	}
-	public void setColorChooserDialog(Preference preference) {
-		
+	public void setColorChooserDialog(Preference preference, String prefKey) {
+		d.setTitle(preference.getTitle());
+		colorTest.setBackgroundColor(bkColor);
+		redBar.setProgress(Color.red(bkColor));
+		greenBar.setProgress(Color.green(bkColor));
+		blueBar.setProgress(Color.blue(bkColor));
+		alphaBar.setProgress(Color.alpha(bkColor));
+		textRed.setText("" + redBar.getProgress());
+		textGreen.setText("" + greenBar.getProgress());
+		textBlue.setText("" + blueBar.getProgress());
+		textAlpha.setText("" + alphaBar.getProgress());
+		d.show();
+	}
+	
+	public void setSeekBarDialog(Preference preference, String prefKey) {
+		sbD.setTitle(preference.getTitle());
+		seekBar.setProgress(sbProgress);
+		sbText.setText("" + sbProgress);
+		sbD.show();
 	}
 }
