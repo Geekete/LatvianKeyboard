@@ -24,6 +24,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class PrefsExtraRow extends PreferenceActivity {
 
@@ -41,8 +42,7 @@ public class PrefsExtraRow extends PreferenceActivity {
 	Typeface font;
 	Button.OnClickListener btnActionListener;
 	CheckBoxPreference isHapticOn, hints;
-	int bkColor;
-	int sbProgress;
+	int bkColor, sbProgress;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -210,9 +210,13 @@ public class PrefsExtraRow extends PreferenceActivity {
 
 			@Override
 			public void onClick(View v) {
-				editor.putInt(prefKey, seekBar.getProgress());
-				editor.commit();
-				sbD.dismiss();
+				if ((prefKey.equals("erWaitTime") || prefKey.equals("erVerticalHeight") || prefKey.equals("erHorizontalHeight") || prefKey.equals("erTextSize") || prefKey.equals("erHintTextSize")) && (seekBar.getProgress() == 0)) {
+					Toast.makeText(PrefsExtraRow.this, "This settings can't be 0!", 3).show();
+				} else {
+					editor.putInt(prefKey, seekBar.getProgress());
+					editor.commit();
+					sbD.dismiss();
+				}
 			}
 		});
 
@@ -301,11 +305,11 @@ public class PrefsExtraRow extends PreferenceActivity {
 				} else if (prefKey.equals("erHintTextSize")) {
 					sbProgress = prefs.getInt(prefKey, 80);
 					setSeekBarDialog(preference, prefKey);
-					seekBar.setMax(1000); // Test
+					seekBar.setMax(200);
 				} else if (prefKey.equals("erHintDelay")) {
 					sbProgress = prefs.getInt(prefKey, 0);
 					setSeekBarDialog(preference, prefKey);
-					seekBar.setMax(1000); // Test
+					seekBar.setMax(500);
 				} else if (prefKey.equals("erHintTextColor")) {
 					bkColor = prefs.getInt(prefKey, Color.WHITE);
 					setColorChooserDialog(preference, prefKey);
@@ -315,7 +319,7 @@ public class PrefsExtraRow extends PreferenceActivity {
 				} else if (prefKey.equals("erHintElevation")) {
 					sbProgress = prefs.getInt(prefKey, 20);
 					setSeekBarDialog(preference, prefKey);
-					seekBar.setMax(100); // Test
+					seekBar.setMax(100);
 				} else if (prefKey.equals("callKeyboard")) {
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -340,6 +344,7 @@ public class PrefsExtraRow extends PreferenceActivity {
 					editor.remove("erHintTextColor");
 					editor.remove("erHintBackground");
 					editor.remove("erHintElevation");
+					editor.remove("erHints");
 					editor.commit();
 				}
 				return false;
@@ -384,10 +389,10 @@ public class PrefsExtraRow extends PreferenceActivity {
 		} else {
 			hints.setChecked(false);
 		}
-		
+
 		// adds change listener to hints checkbox
 		hints.setOnPreferenceClickListener(new OnPreferenceClickListener() {
-			
+
 			@Override
 			public boolean onPreferenceClick(Preference preference) {
 				if (hints.isChecked()) {

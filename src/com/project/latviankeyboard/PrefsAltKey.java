@@ -33,6 +33,7 @@ public class PrefsAltKey extends PreferenceActivity {
 	String prefKey;
 	TextView sbText, textRed, textGreen, textBlue, textAlpha;
 	CheckBoxPreference defaultStyle, soundSwitch;
+	int bkColor, sbProgress;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -184,69 +185,25 @@ public class PrefsAltKey extends PreferenceActivity {
 			public boolean onPreferenceClick(Preference preference) {
 				prefKey = preference.getKey();
 				if (prefKey.equals("akBackgroundColor")) {
-					d.setTitle(R.string.titleBackgroundColor);
-					int bkColor = prefs.getInt(prefKey, Color.BLACK);
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.BLACK);
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("akBtnColor")) {
-					d.setTitle(R.string.titleBtnBackground);
-					int bkColor = prefs.getInt(prefKey, Color.WHITE);
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.WHITE);
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("akLetterColor")) {
-					d.setTitle(R.string.titleBtnTextColor);
-					int bkColor = prefs.getInt(prefKey, Color.RED);
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.RED);
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("akBorderColor")) {
-					d.setTitle(R.string.titleBtnBorderColor);
-					int bkColor = prefs.getInt(prefKey, Color.LTGRAY);
-					colorTest.setBackgroundColor(bkColor);
-					redBar.setProgress(Color.red(bkColor));
-					greenBar.setProgress(Color.green(bkColor));
-					blueBar.setProgress(Color.blue(bkColor));
-					alphaBar.setProgress(Color.alpha(bkColor));
-					textRed.setText("" + redBar.getProgress());
-					textGreen.setText("" + greenBar.getProgress());
-					textBlue.setText("" + blueBar.getProgress());
-					textAlpha.setText("" + alphaBar.getProgress());
-					d.show();
+					bkColor = prefs.getInt(prefKey, Color.LTGRAY);
+					setColorChooserDialog(preference, prefKey);
 				} else if (prefKey.equals("akBtnRoundness")) {
-					sbD.setTitle(R.string.titleBtnRoundness);
-					seekBar.setProgress(prefs.getInt(prefKey, 1));
-					sbText.setText("" + prefs.getInt(prefKey, 1));
+					sbProgress = prefs.getInt(prefKey, 1);
 					seekBar.setMax(30);
-					sbD.show();
+					setSeekBarDialog(preference, prefKey);
 				} else if (prefKey.equals("akBorderWidth")) {
-					sbD.setTitle(R.string.titleBorderWidth);
-					seekBar.setProgress(prefs.getInt(prefKey, 2));
-					sbText.setText("" + prefs.getInt(prefKey, 2));
+					sbProgress = prefs.getInt(prefKey, 2);
 					seekBar.setMax(15);
-					sbD.show();
+					setSeekBarDialog(preference, prefKey);
 				} else if (prefKey.equals("akCallKeyboard")) {
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -282,5 +239,25 @@ public class PrefsAltKey extends PreferenceActivity {
 			soundSwitch.setChecked(false);
 		}
 
+	}
+	public void setColorChooserDialog(Preference preference, String prefKey) {
+		d.setTitle(preference.getTitle());
+		colorTest.setBackgroundColor(bkColor);
+		redBar.setProgress(Color.red(bkColor));
+		greenBar.setProgress(Color.green(bkColor));
+		blueBar.setProgress(Color.blue(bkColor));
+		alphaBar.setProgress(Color.alpha(bkColor));
+		textRed.setText("" + redBar.getProgress());
+		textGreen.setText("" + greenBar.getProgress());
+		textBlue.setText("" + blueBar.getProgress());
+		textAlpha.setText("" + alphaBar.getProgress());
+		d.show();
+	}
+
+	public void setSeekBarDialog(Preference preference, String prefKey) {
+		sbD.setTitle(preference.getTitle());
+		seekBar.setProgress(sbProgress);
+		sbText.setText("" + sbProgress);
+		sbD.show();
 	}
 }

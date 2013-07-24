@@ -75,7 +75,7 @@
 
             <meta-data
                 android:name="android.view.im"
-                android:resource="@xml/extra_row_method1" />
+                android:resource="@xml/alt_key_method" />
         </service>
 
         <!-- Test keyboard service -->
@@ -89,7 +89,7 @@
 
             <meta-data
                 android:name="android.view.im"
-                android:resource="@xml/extra_row_method" />
+                android:resource="@xml/test_key_method" />
         </service>
     </application>
 
