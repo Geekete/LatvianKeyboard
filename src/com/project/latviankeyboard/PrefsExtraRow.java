@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
@@ -39,7 +40,7 @@ public class PrefsExtraRow extends PreferenceActivity {
 	TextView sbText, textRed, textGreen, textBlue, textAlpha;
 	Typeface font;
 	Button.OnClickListener btnActionListener;
-	CheckBoxPreference isHapticOn;
+	CheckBoxPreference isHapticOn, hints;
 	int bkColor;
 	int sbProgress;
 
@@ -297,6 +298,24 @@ public class PrefsExtraRow extends PreferenceActivity {
 					sbProgress = prefs.getInt(prefKey, 8);
 					setSeekBarDialog(preference, prefKey);
 					seekBar.setMax(35);
+				} else if (prefKey.equals("erHintTextSize")) {
+					sbProgress = prefs.getInt(prefKey, 80);
+					setSeekBarDialog(preference, prefKey);
+					seekBar.setMax(1000); // Test
+				} else if (prefKey.equals("erHintDelay")) {
+					sbProgress = prefs.getInt(prefKey, 0);
+					setSeekBarDialog(preference, prefKey);
+					seekBar.setMax(1000); // Test
+				} else if (prefKey.equals("erHintTextColor")) {
+					bkColor = prefs.getInt(prefKey, Color.WHITE);
+					setColorChooserDialog(preference, prefKey);
+				} else if (prefKey.equals("erHintBackground")) {
+					bkColor = prefs.getInt(prefKey, Color.GRAY);
+					setColorChooserDialog(preference, prefKey);
+				} else if (prefKey.equals("erHintElevation")) {
+					sbProgress = prefs.getInt(prefKey, 20);
+					setSeekBarDialog(preference, prefKey);
+					seekBar.setMax(100); // Test
 				} else if (prefKey.equals("callKeyboard")) {
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
@@ -316,6 +335,11 @@ public class PrefsExtraRow extends PreferenceActivity {
 					editor.remove("erTextSize");
 					editor.remove("erBtnPadding");
 					editor.remove("erBtnRoundness");
+					editor.remove("erHintTextSize");
+					editor.remove("erHintDelay");
+					editor.remove("erHintTextColor");
+					editor.remove("erHintBackground");
+					editor.remove("erHintElevation");
 					editor.commit();
 				}
 				return false;
@@ -339,6 +363,11 @@ public class PrefsExtraRow extends PreferenceActivity {
 		findPreference("erBtnRoundness").setOnPreferenceClickListener(myListener);
 		findPreference("callKeyboard").setOnPreferenceClickListener(myListener);
 		findPreference("resetDefaults").setOnPreferenceClickListener(myListener);
+		findPreference("erHintTextSize").setOnPreferenceClickListener(myListener);
+		findPreference("erHintDelay").setOnPreferenceClickListener(myListener);
+		findPreference("erHintTextColor").setOnPreferenceClickListener(myListener);
+		findPreference("erHintBackground").setOnPreferenceClickListener(myListener);
+		findPreference("erHintElevation").setOnPreferenceClickListener(myListener);
 
 		// isHapticOn bugfix
 		isHapticOn = (CheckBoxPreference) findPreference("erIsHapticOn");
@@ -347,7 +376,38 @@ public class PrefsExtraRow extends PreferenceActivity {
 		} else {
 			isHapticOn.setChecked(false);
 		}
+
+		// hints bugfix
+		hints = (CheckBoxPreference) findPreference("erHints");
+		if (prefs.getBoolean("erHints", true)) {
+			hints.setChecked(true);
+		} else {
+			hints.setChecked(false);
+		}
+		
+		// adds change listener to hints checkbox
+		hints.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				if (hints.isChecked()) {
+					findPreference("erHintTextSize").setEnabled(true);
+					findPreference("erHintDelay").setEnabled(true);
+					findPreference("erHintTextColor").setEnabled(true);
+					findPreference("erHintBackground").setEnabled(true);
+					findPreference("erHintElevation").setEnabled(true);
+				} else {
+					findPreference("erHintTextSize").setEnabled(false);
+					findPreference("erHintDelay").setEnabled(false);
+					findPreference("erHintTextColor").setEnabled(false);
+					findPreference("erHintBackground").setEnabled(false);
+					findPreference("erHintElevation").setEnabled(false);
+				}
+				return false;
+			}
+		});
 	}
+
 	public void setColorChooserDialog(Preference preference, String prefKey) {
 		d.setTitle(preference.getTitle());
 		colorTest.setBackgroundColor(bkColor);
@@ -361,7 +421,7 @@ public class PrefsExtraRow extends PreferenceActivity {
 		textAlpha.setText("" + alphaBar.getProgress());
 		d.show();
 	}
-	
+
 	public void setSeekBarDialog(Preference preference, String prefKey) {
 		sbD.setTitle(preference.getTitle());
 		seekBar.setProgress(sbProgress);

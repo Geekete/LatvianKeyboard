@@ -52,11 +52,32 @@
     <string name="sumBtnShadow">Button shadow color when higher button padding is set</string>
     <string name="titleTextFont">Text font</string>
     <string name="sumTextFont">Keyboard letter font</string>
+    <string name="titleCatVibration">Vibration</string>
+    <string name="titleCatKeyboardHeight">Keyboard height</string>
+    <string name="titleCatKeyboardPrefs">Keyboard settings</string>
+    <string name="titleCatButtonPrefs">Button settings</string>
+    <string name="titleCatTextPrefs">Text settings</string>
+    <string name="titleCatOther">Other</string>
+    <string name="titleCatHintsPrefs">Hint settings</string>
+    <string name="titleHints">Hints</string>
+    <string name="sumHints">Swich between secondary key pop-ups and key previews</string>
+    <string name="titleHintTextSize">Text size</string>
+    <string name="sumHintTextSize">Hint text size</string>
+    <string name="titleHintTetColor">Text color</string>
+    <string name="titleHintTextColor">Text Color</string>
+    <string name="titleHintBackground">Background color</string>
+    <string name="sumHintBackground">Hint background color</string>
+    <string name="titleHintDelay">Delay</string>
+    <string name="sumHintDelay">Hint delay</string>
+    <string name="titleHintElevation">Hint elevation</string>
 
     <!-- Alt key keyboard strings -->
     <string name="ime_name2">Alt key keyboard</string>
     <string name="titleAltKeyPreferences">Alt Key Preferences</string>
-    
+    <string name="titleBorderWidth">Button border width</string>
+    <string name="titleDefaultStyle">Default style</string>
+    <string name="sumDefaultStyle">Uncheck to customize keyboard</string>
+
     <!-- Font strings -->
     <string name="fontXoloniumRegular">Xolonium-Regular</string>
     <string name="fontGrandHotelRegular">GrandHotel-Regular</string>
@@ -65,15 +86,5 @@
     <string name="fontDPuntillasDToTiptoe">D-Puntillas-D-To-Tiptoe</string>
     <string name="fontMegrim">Megrim</string>
     <string name="fontJuraMedium">Jura-Medium</string>
-    <string name="titleBorderWidth">Button border width</string>
-    <string name="titleDefaultStyle">Default style</string>
-    <string name="sumDefaultStyle">Uncheck to customize keyboard</string>
-    <string name="titleCatVibration">Vibration</string>
-    <string name="titleCatKeyboardHeight">Keyboard height</string>
-    <string name="titleCatKeyboardPrefs">Keyboard settings</string>
-    <string name="titleCatButtonPrefs">Button settings</string>
-    <string name="titleCatTextPrefs">Text settings</string>
-    <string name="titleCatOther">Other</string>
-
 
 </resources>
