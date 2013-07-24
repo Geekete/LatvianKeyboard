@@ -309,7 +309,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		
 		
 		//preview
-		this.showHints = prefs.getBoolean("erHints", true); 
+		this.showHints = prefs.getBoolean("erHints", false); 
 		this.previewTextSize = prefs.getInt("erHintTextSize", 80); //""
 		this.previewDelay = prefs.getInt("erHintDelay", 0);
 		this.previewTextColor = prefs.getInt("erHintTextColor", Color.argb(255, 255, 255, 255));
