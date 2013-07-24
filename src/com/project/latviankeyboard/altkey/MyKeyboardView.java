@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.*;
 import android.graphics.drawable.Drawable;
+import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
 import android.preference.PreferenceManager;
@@ -26,12 +27,10 @@ public class MyKeyboardView extends KeyboardView {
 
     public MyKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        setValues(context);
     }
 
     public MyKeyboardView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        setValues(context);
     }
 
     @Override
@@ -94,6 +93,7 @@ public class MyKeyboardView extends KeyboardView {
                     }
                     icon.setColorFilter(letterColor, PorterDuff.Mode.MULTIPLY);
                     icon.draw(canvas);
+                    icon.setColorFilter(Color.WHITE, PorterDuff.Mode.MULTIPLY);
                 } else {
                     if (key.label != null) {
                         if (key.label.length() > 1) {
@@ -121,5 +121,11 @@ public class MyKeyboardView extends KeyboardView {
         this.roundness = prefs.getFloat("akBtnRoundness", 1);
         this.borderWidth = prefs.getInt("akBorderWidth", 2);
         this.defaultStyle = prefs.getBoolean("akDefaultStyle", true);
+    }
+
+    @Override
+    public void setKeyboard(Keyboard keyboard) {
+        super.setKeyboard(keyboard);
+        setValues(getContext());
     }
 }
