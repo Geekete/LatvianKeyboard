@@ -122,7 +122,11 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		public void run() {
 			if(MyKeyboardView.this.keyLongClicked.repeatable){
 				vibrate();
-				MyKeyboardView.this.backspaceCounter++;
+				
+				if(MyKeyboardView.this.keys[MyKeyboardView.this.touchingKeyIndex].codes[0] == -5){
+					MyKeyboardView.this.backspaceCounter++;
+				}
+				
 				keyboardActionListener.onKey(keyLongClicked.codes[0], null);
 				MyKeyboardView.this.postDelayed(MyKeyboardView.this.keyLongClick, waitTime);
 			}else if(!MyKeyboardView.this.popupWin.isShowing() && keyLongClicked.popupCharacters != null){
@@ -311,6 +315,8 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		this.previewTextColor = prefs.getInt("erHintTextColor", Color.argb(255, 255, 255, 255));
 		this.previewBgColor = prefs.getInt("erHintBackground", Color.GRAY);
 		this.previewsYShift = prefs.getInt("erHintElevation", 20);
+		
+		this.previewContent.inited = false;
 		
 		this.initPaints();
 	}
@@ -766,17 +772,20 @@ public class MyKeyboardView extends View implements OnTouchListener{
 				keyboardActionListener.onKey(keys[index].codes[0], null);
 			}
 			*/
-			if(this.touchingKeyIndex != NOT_A_KEY){
-				keyboardActionListener.onKey(keys[this.touchingKeyIndex].codes[0], null);
-			}	
-			
 			if(this.keys[this.touchingKeyIndex].codes[0] == -5){//if moving away form backspace button ... reset its backspaceCounter
 				this.backspaceCounter = 0;
 			}
 			
+			
 			if(showHints && this.keys[this.touchingKeyIndex].codes[0] == this.settingsChar){ //if moving away form comma button (this.settingsChar) AND it is hint mode ... deal with Runnable that was posted to handler 
 				this.removeCallbacks(this.toSettings);
 			}
+			
+				
+			if(this.touchingKeyIndex != NOT_A_KEY){
+				keyboardActionListener.onKey(keys[this.touchingKeyIndex].codes[0], null);
+			}	
+			
 			
 			this.touchingKey = false;
 			this.touchingKeyIndex = NOT_A_KEY;
@@ -1194,6 +1203,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		//Paint textPaint;
 		int padding;
 		boolean wasLastPreviewAChar;
+		boolean inited = false;
 		
 		int width, height;
 		
@@ -1264,9 +1274,10 @@ public class MyKeyboardView extends View implements OnTouchListener{
 				isLableChar = false;
 			
 			
-			if(wasLastPreviewAChar && isLableChar){
+			if(wasLastPreviewAChar && isLableChar && inited){
 				return;
 			}else{
+				inited = true;
 				if(label.length() == 1){
 					this.width = (int) previewTextPaint.measureText("W") + 2*padding;
 					wasLastPreviewAChar = true;
