@@ -128,4 +128,10 @@ public class MyKeyboardView extends KeyboardView {
         super.setKeyboard(keyboard);
         setValues(getContext());
     }
+
+    @Override
+    public void setKeyboard(Keyboard keyboard) {
+        super.setKeyboard(keyboard);
+        setValues(getContext());
+    }
 }
