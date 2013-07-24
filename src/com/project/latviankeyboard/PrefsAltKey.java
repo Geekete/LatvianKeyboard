@@ -238,13 +238,13 @@ public class PrefsAltKey extends PreferenceActivity {
 					sbD.setTitle(R.string.titleBtnRoundness);
 					seekBar.setProgress(prefs.getInt(prefKey, 1));
 					sbText.setText("" + prefs.getInt(prefKey, 1));
-					seekBar.setMax(60);
+					seekBar.setMax(30);
 					sbD.show();
 				} else if (prefKey.equals("akBorderWidth")) {
 					sbD.setTitle(R.string.titleBorderWidth);
 					seekBar.setProgress(prefs.getInt(prefKey, 2));
 					sbText.setText("" + prefs.getInt(prefKey, 2));
-					seekBar.setMax(60);
+					seekBar.setMax(15);
 					sbD.show();
 				} else if (prefKey.equals("akCallKeyboard")) {
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
