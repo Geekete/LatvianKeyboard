@@ -59,26 +59,28 @@ public class AltKeyKeyboard extends InputMethodService {
             streamVolume = audioManager.getStreamVolume(AudioManager.STREAM_RING);
             boolean specialKey = false;
 
-            if (primaryCode == 32) {
-                specialKey = !specialKey;
-                soundPoolForSpecials.play(1, streamVolume, streamVolume, 1, 0, 1);
-            }
-            if (primaryCode == 33) {
-                specialKey = !specialKey;
-                soundPoolForSpecials.play(2, streamVolume, streamVolume, 1, 0, 1);
-            }
-            if (primaryCode == 30) {
-                specialKey = !specialKey;
-                soundPoolForSpecials.play(3, streamVolume, streamVolume, 1, 0, 1);
-            }
-            if (primaryCode == 29) {
-                specialKey = !specialKey;
-                soundPoolForSpecials.play(4, streamVolume, streamVolume, 1, 0, 1);
-            }
-            if (!specialKey) {
-                soundPool.play(soundID++, streamVolume, streamVolume, 1, 0, 1);
-                if (soundID == 8) {
-                    soundID = 1;
+            if (keyboardView.isSwitchSounds()) {
+                if (primaryCode == 32) {
+                    specialKey = !specialKey;
+                    soundPoolForSpecials.play(1, streamVolume, streamVolume, 1, 0, 1);
+                }
+                if (primaryCode == 33) {
+                    specialKey = !specialKey;
+                    soundPoolForSpecials.play(2, streamVolume, streamVolume, 1, 0, 1);
+                }
+                if (primaryCode == 30) {
+                    specialKey = !specialKey;
+                    soundPoolForSpecials.play(3, streamVolume, streamVolume, 1, 0, 1);
+                }
+                if (primaryCode == 29) {
+                    specialKey = !specialKey;
+                    soundPoolForSpecials.play(4, streamVolume, streamVolume, 1, 0, 1);
+                }
+                if (!specialKey) {
+                    soundPool.play(soundID++, streamVolume, streamVolume, 1, 0, 1);
+                    if (soundID == 8) {
+                        soundID = 1;
+                    }
                 }
             }
 
@@ -289,9 +291,9 @@ public class AltKeyKeyboard extends InputMethodService {
         soundPoolForSpecialsMap.put(2, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.laugh, 1));
         soundPoolForSpecialsMap.put(3, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.bee_do, 1));
         soundPoolForSpecialsMap.put(4, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.noo, 1));
+        soundPoolForSpecialsMap.put(5, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.lullaby, 1));
 
-        keyboardView.setKeyboard(normal);
-        currentKeyboard = normal;
+        keyboardView.setKeyboard(currentKeyboard);
         keyboardView.setPreviewEnabled(true);
         keyboardView.setOnKeyboardActionListener(onKeyboardActionListener);
         return keyboardView;
@@ -339,7 +341,6 @@ public class AltKeyKeyboard extends InputMethodService {
                 break;
             }
             default: {
-                currentKeyboard = normal;
                 break;
             }
         }
