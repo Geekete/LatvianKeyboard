@@ -1,63 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <CheckBoxPreference
-        android:key="erIsHapticOn"
-        android:summary="@string/sumisHapticOn"
-        android:title="@string/titleisHaptinOn" />
+    <PreferenceCategory android:title="@string/titleCatKeyboardPrefs">
+        
+    <CheckBoxPreference android:key="erIsHapticOn" android:summary="@string/sumisHapticOn" android:title="@string/titleisHaptinOn" /><Preference android:key="erWaitTime" android:summary="@string/sumWaitTime" android:title="@string/titleWaitTime" /><Preference android:key="erVerticalHeight" android:summary="@string/sumVerticalHeight" android:title="@string/titleVerticalHeight" /><Preference android:key="erHorizontalHeight" android:summary="@string/sumHorizontalHeight" android:title="@string/titleHorizontalKeyboard" /><Preference android:key="erBackgroundColor" android:summary="@string/sumBackgroundColor" android:title="@string/titleBackgroundColor" /></PreferenceCategory><PreferenceCategory android:title="@string/titleCatButtonPrefs"><Preference android:key="erBtnBackground" android:summary="@string/sumBtnBackground" android:title="@string/titleBtnBackground" /><Preference android:title="@string/titleBtnShadow" android:key="erBtnShadow" android:summary="@string/sumBtnShadow" /><Preference android:key="erBtnHoverColor" android:summary="@string/sumBtnHoverColor" android:title="@string/titleBtnHoverColor" /><Preference android:key="erBtnBorderColor" android:title="@string/titleBtnBorderColor" /><Preference android:key="erBtnTextColor" android:title="@string/titleBtnTextColor" /><Preference android:key="erBtnPadding" android:summary="@string/sumBtnPadding" android:title="@string/titleBtnPadding" /><Preference android:key="erBtnRoundness" android:title="@string/titleBtnRoundness" /></PreferenceCategory>
 
-    <Preference
-        android:key="erVerticalHeight"
-        android:summary="@string/sumVerticalHeight"
-        android:title="@string/titleVerticalHeight" />
-    <Preference
-        android:key="erHorizontalHeight"
-        android:summary="@string/sumHorizontalHeight"
-        android:title="@string/titleHorizontalKeyboard" />
-    <Preference
-        android:key="erWaitTime"
-        android:summary="@string/sumWaitTime"
-        android:title="@string/titleWaitTime" />
+    
+    
+    
 
-    <Preference
-        android:key="erBackgroundColor"
-        android:summary="@string/sumBackgroundColor"
-        android:title="@string/titleBackgroundColor" />
-    <Preference
-        android:key="erBtnBackground"
-        android:summary="@string/sumBtnBackground"
-        android:title="@string/titleBtnBackground" />
-    <Preference android:title="@string/titleBtnShadow" android:key="erBtnShadow" android:summary="@string/sumBtnShadow" /><Preference
-        android:key="erBtnHoverColor"
-        android:summary="@string/sumBtnHoverColor"
-        android:title="@string/titleBtnHoverColor" />
-    <Preference
-        android:key="erBtnBorderColor"
-        android:title="@string/titleBtnBorderColor" />
-    <Preference
-        android:key="erBtnTextColor"
-        android:title="@string/titleBtnTextColor" />
+    
+    
+    
+    
+    
 
-    <Preference android:title="@string/titleTextShadow" android:key="erTextShadow" android:summary="@string/sumTextShadow" /><Preference android:title="@string/titleTextFont" android:key="erTextFont" android:summary="@string/sumTextFont" /><Preference
-        android:key="erTextSize"
-        android:summary="@string/sumTextSize"
-        android:title="@string/titleTextSize" />
-    <Preference
-        android:key="erBtnPadding"
-        android:summary="@string/sumBtnPadding"
-        android:title="@string/titleBtnPadding" />
+    
+    
 
-    <Preference
-        android:key="erBtnRoundness"
-        android:title="@string/titleBtnRoundness" />
-    <Preference
-        android:key="callKeyboard"
-        android:summary="@string/sumCallKeyboard"
-        android:title="@string/titleCallKeyboard" />
-    <Preference
-        android:key="resetDefaults"
-        android:summary="@string/sumResetDefaults"
-        android:title="@string/titleResetDefaults" />
+    <PreferenceCategory android:title="@string/titleCatTextPrefs"><Preference android:title="@string/titleTextFont" android:key="erTextFont" android:summary="@string/sumTextFont" /><Preference android:key="erTextSize" android:summary="@string/sumTextSize" android:title="@string/titleTextSize" /><Preference android:title="@string/titleTextShadow" android:key="erTextShadow" android:summary="@string/sumTextShadow" />
+    
+</PreferenceCategory><PreferenceCategory android:title="@string/titleCatOther"><Preference android:key="callKeyboard" android:summary="@string/sumCallKeyboard" android:title="@string/titleCallKeyboard" /><Preference android:key="resetDefaults" android:summary="@string/sumResetDefaults" android:title="@string/titleResetDefaults" /></PreferenceCategory>
+    
+    
+    
+    
     
     
     
