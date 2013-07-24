@@ -49,7 +49,7 @@
     <Row>
         <Key android:codes="-1" android:keyLabel="\u2191" 
                 android:keyWidth="15%p" android:isModifier="true"
-                android:isSticky="true" android:keyEdgeFlags="left"/>
+                android:isSticky="true" android:keyEdgeFlags="left"  android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="122" android:keyLabel="z" android:popupCharacters="~" android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="120" android:keyLabel="x" android:popupCharacters="|" android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="99" android:keyLabel="c" android:popupCharacters="€" android:popupKeyboard="@xml/extra_row_popup_kbd" />
@@ -59,18 +59,18 @@
         <Key android:codes="109" android:keyLabel="m" android:popupCharacters="\u003f" android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="-5" android:keyLabel="⇤" 
                 android:keyWidth="15%p" android:keyEdgeFlags="right"
-                android:isRepeatable="true"/>
+                android:isRepeatable="true"  android:popupKeyboard="@xml/extra_row_popup_kbd" />
     </Row>
     
     <Row android:rowEdgeFlags="bottom">
-        <Key android:codes="-2" android:keyLabel="1!?" android:keyWidth="20%p" android:keyEdgeFlags="left"/>
+        <Key android:codes="-2" android:keyLabel="1!?" android:keyWidth="20%p" android:keyEdgeFlags="left" android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="44" android:keyLabel="," android:keyWidth="10%p" android:popupCharacters="\u00a7," android:popupKeyboard="@xml/extra_row_popup_kbd"/>
         <Key android:codes="32" android:keyLabel="\u033A" 
-                android:keyWidth="40%p" android:isRepeatable="true"/>
+                android:keyWidth="40%p" android:isRepeatable="true"  android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="46" android:keyLabel="."
-                android:keyWidth="10%p" />
+                android:keyWidth="10%p"  android:popupKeyboard="@xml/extra_row_popup_kbd" />
         <Key android:codes="10" android:keyLabel="↵" 
-                android:keyWidth="20%p" android:keyEdgeFlags="right"/>
+                android:keyWidth="20%p" android:keyEdgeFlags="right"  android:popupKeyboard="@xml/extra_row_popup_kbd" />
     </Row>
 </Keyboard>
     
