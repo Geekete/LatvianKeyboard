@@ -114,12 +114,12 @@ public class MyKeyboardView extends KeyboardView {
 
     public void setValues(Context context) {
         SharedPreferences prefs  = PreferenceManager.getDefaultSharedPreferences(context);
-        this.backgroundColor = prefs.getInt("altBackgroundColor", Color.BLACK);
-        this.buttonColor = prefs.getInt("altButtonColor", Color.WHITE);
-        this.letterColor = prefs.getInt("altLetterColor", Color.RED);
-        this.borderColor = prefs.getInt("altBorderColot", Color.LTGRAY);
-        this.roundness = prefs.getFloat("altButtonRoundness", 1);
-        this.borderWidth = prefs.getInt("altBorderWidth", 2);
-        this.defaultStyle = prefs.getBoolean("altDefaultStyle", true);
+        this.backgroundColor = prefs.getInt("akBackgroundColor", Color.BLACK);
+        this.buttonColor = prefs.getInt("akBtnColor", Color.WHITE);
+        this.letterColor = prefs.getInt("akLetterColor", Color.RED);
+        this.borderColor = prefs.getInt("akBorderColor", Color.LTGRAY);
+        this.roundness = prefs.getFloat("akBtnRoundness", 1);
+        this.borderWidth = prefs.getInt("akBorderWidth", 2);
+        this.defaultStyle = prefs.getBoolean("akDefaultStyle", true);
     }
 }
