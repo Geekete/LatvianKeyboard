@@ -24,6 +24,7 @@ public class MyKeyboardView extends KeyboardView {
 
     private int roundness;
     private int borderWidth;
+    private boolean switchSounds;
 
     public MyKeyboardView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -101,7 +102,8 @@ public class MyKeyboardView extends KeyboardView {
                         } else {
                             labelPaint.setTextSize(35);
                         }
-                        canvas.drawText(key.label.toString(), (key.x + 1) + key.width / 2, (key.y + 14) + key.height / 2, labelPaint);
+                        canvas.drawText(key.label.toString(), (key.x + 1) + key.width / 2,
+                                (key.y + 14) + key.height / 2, labelPaint);
                     }
                 }
                 int popups = key.popupResId;
@@ -121,11 +123,16 @@ public class MyKeyboardView extends KeyboardView {
         this.roundness = prefs.getInt("akBtnRoundness", 1);
         this.borderWidth = prefs.getInt("akBorderWidth", 2);
         this.defaultStyle = prefs.getBoolean("akDefaultStyle", true);
+        this.switchSounds = prefs.getBoolean("akSwitchSounds", true);
     }
 
     @Override
     public void setKeyboard(Keyboard keyboard) {
         super.setKeyboard(keyboard);
         setValues(getContext());
+    }
+
+    public boolean isSwitchSounds() {
+        return switchSounds;
     }
 }
