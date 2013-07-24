@@ -32,6 +32,7 @@ public class PrefsAltKey extends PreferenceActivity {
 	SharedPreferences prefs;
 	String prefKey;
 	TextView sbText, textRed, textGreen, textBlue, textAlpha;
+	CheckBoxPreference defaultStyle;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -123,9 +124,9 @@ public class PrefsAltKey extends PreferenceActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				//editor.putInt(prefKey, Color.argb(alphaBar.getProgress(), redBar.getProgress(), greenBar.getProgress(), blueBar.getProgress()));
-				//editor.commit();
-				//d.dismiss();
+				editor.putInt(prefKey, Color.argb(alphaBar.getProgress(), redBar.getProgress(), greenBar.getProgress(), blueBar.getProgress()));
+				editor.commit();
+				d.dismiss();
 			}
 		});
 
@@ -134,7 +135,7 @@ public class PrefsAltKey extends PreferenceActivity {
 
 			@Override
 			public void onClick(View arg0) {
-				//d.dismiss();
+				d.dismiss();
 			}
 		});
 
@@ -143,9 +144,12 @@ public class PrefsAltKey extends PreferenceActivity {
 
 			@Override
 			public void onClick(View v) {
-				//editor.putInt(prefKey, seekBar.getProgress());
-				//editor.commit();
-				//sbD.dismiss();
+				// if (prefKey.equals("akBtnRoundness")) {
+				// editor.putFloat(prefKey, seekBar.getProgress());
+				// }
+				editor.putInt(prefKey, seekBar.getProgress());
+				editor.commit();
+				sbD.dismiss();
 			}
 		});
 
@@ -154,7 +158,7 @@ public class PrefsAltKey extends PreferenceActivity {
 
 			@Override
 			public void onClick(View v) {
-				//sbD.dismiss();
+				sbD.dismiss();
 			}
 		});
 
@@ -167,6 +171,9 @@ public class PrefsAltKey extends PreferenceActivity {
 
 		// inflates view that is used to test color
 		colorTest = colorChooser.findViewById(R.id.testColor);
+		
+		//CheckBoxPreference
+		defaultStyle = (CheckBoxPreference)  findPreference("akDefaultStyle");
 
 		// creates actionlistener for preferences
 		myListener = new OnPreferenceClickListener() {
@@ -176,73 +183,74 @@ public class PrefsAltKey extends PreferenceActivity {
 				prefKey = preference.getKey();
 				if (prefKey.equals("akBackgroundColor")) {
 					d.setTitle(R.string.titleBackgroundColor);
-					//int bkColor = prefs.getInt(prefKey, Color.argb(255, 30, 30, 30));
-					//colorTest.setBackgroundColor(bkColor);
-					//redBar.setProgress(Color.red(bkColor));
-					//greenBar.setProgress(Color.green(bkColor));
-					//blueBar.setProgress(Color.blue(bkColor));
-					//alphaBar.setProgress(Color.alpha(bkColor));
-					//textRed.setText("" + redBar.getProgress());
-					//textGreen.setText("" + greenBar.getProgress());
-					//textBlue.setText("" + blueBar.getProgress());
-					//textAlpha.setText("" + alphaBar.getProgress());
+					int bkColor = prefs.getInt(prefKey, Color.BLACK);
+					colorTest.setBackgroundColor(bkColor);
+					redBar.setProgress(Color.red(bkColor));
+					greenBar.setProgress(Color.green(bkColor));
+					blueBar.setProgress(Color.blue(bkColor));
+					alphaBar.setProgress(Color.alpha(bkColor));
+					textRed.setText("" + redBar.getProgress());
+					textGreen.setText("" + greenBar.getProgress());
+					textBlue.setText("" + blueBar.getProgress());
+					textAlpha.setText("" + alphaBar.getProgress());
 					d.show();
 				} else if (prefKey.equals("akBtnColor")) {
 					d.setTitle(R.string.titleBtnBackground);
-					//int bkColor = prefs.getInt(prefKey, Color.argb(255, 60, 60, 60));
-					//colorTest.setBackgroundColor(bkColor);
-					//redBar.setProgress(Color.red(bkColor));
-					//greenBar.setProgress(Color.green(bkColor));
-					//blueBar.setProgress(Color.blue(bkColor));
-					//alphaBar.setProgress(Color.alpha(bkColor));
-					//textRed.setText("" + redBar.getProgress());
-					//textGreen.setText("" + greenBar.getProgress());
-					//textBlue.setText("" + blueBar.getProgress());
-					//textAlpha.setText("" + alphaBar.getProgress());
+					int bkColor = prefs.getInt(prefKey, Color.WHITE);
+					colorTest.setBackgroundColor(bkColor);
+					redBar.setProgress(Color.red(bkColor));
+					greenBar.setProgress(Color.green(bkColor));
+					blueBar.setProgress(Color.blue(bkColor));
+					alphaBar.setProgress(Color.alpha(bkColor));
+					textRed.setText("" + redBar.getProgress());
+					textGreen.setText("" + greenBar.getProgress());
+					textBlue.setText("" + blueBar.getProgress());
+					textAlpha.setText("" + alphaBar.getProgress());
 					d.show();
 				} else if (prefKey.equals("akLetterColor")) {
 					d.setTitle(R.string.titleBtnTextColor);
-					//int bkColor = prefs.getInt(prefKey, Color.argb(170, 0, 0, 0));
-					//colorTest.setBackgroundColor(bkColor);
-					//redBar.setProgress(Color.red(bkColor));
-					//greenBar.setProgress(Color.green(bkColor));
-					//blueBar.setProgress(Color.blue(bkColor));
-					//alphaBar.setProgress(Color.alpha(bkColor));
-					//textRed.setText("" + redBar.getProgress());
-					//textGreen.setText("" + greenBar.getProgress());
-					//textBlue.setText("" + blueBar.getProgress());
-					//textAlpha.setText("" + alphaBar.getProgress());
+					int bkColor = prefs.getInt(prefKey, Color.RED);
+					colorTest.setBackgroundColor(bkColor);
+					redBar.setProgress(Color.red(bkColor));
+					greenBar.setProgress(Color.green(bkColor));
+					blueBar.setProgress(Color.blue(bkColor));
+					alphaBar.setProgress(Color.alpha(bkColor));
+					textRed.setText("" + redBar.getProgress());
+					textGreen.setText("" + greenBar.getProgress());
+					textBlue.setText("" + blueBar.getProgress());
+					textAlpha.setText("" + alphaBar.getProgress());
 					d.show();
 				} else if (prefKey.equals("akBorderColor")) {
 					d.setTitle(R.string.titleBtnBorderColor);
-					//int bkColor = prefs.getInt(prefKey, Color.argb(255, 80, 80, 80));
-					//colorTest.setBackgroundColor(bkColor);
-					//redBar.setProgress(Color.red(bkColor));
-					//greenBar.setProgress(Color.green(bkColor));
-					//blueBar.setProgress(Color.blue(bkColor));
-					//alphaBar.setProgress(Color.alpha(bkColor));
-					//textRed.setText("" + redBar.getProgress());
-					//textGreen.setText("" + greenBar.getProgress());
-					//textBlue.setText("" + blueBar.getProgress());
-					//textAlpha.setText("" + alphaBar.getProgress());
+					int bkColor = prefs.getInt(prefKey, Color.LTGRAY);
+					colorTest.setBackgroundColor(bkColor);
+					redBar.setProgress(Color.red(bkColor));
+					greenBar.setProgress(Color.green(bkColor));
+					blueBar.setProgress(Color.blue(bkColor));
+					alphaBar.setProgress(Color.alpha(bkColor));
+					textRed.setText("" + redBar.getProgress());
+					textGreen.setText("" + greenBar.getProgress());
+					textBlue.setText("" + blueBar.getProgress());
+					textAlpha.setText("" + alphaBar.getProgress());
 					d.show();
 				} else if (prefKey.equals("akBtnRoundness")) {
 					sbD.setTitle(R.string.titleBtnRoundness);
-					//seekBar.setProgress(prefs.getInt(prefKey, 25));
-					//sbText.setText("" + prefs.getInt(prefKey, 25));
-					//seekBar.setMax(60);
+					seekBar.setProgress(prefs.getInt(prefKey, 1));
+					sbText.setText("" + prefs.getInt(prefKey, 1));
+					seekBar.setMax(60);
 					sbD.show();
 				} else if (prefKey.equals("akBorderWidth")) {
 					sbD.setTitle(R.string.titleBorderWidth);
-					//seekBar.setProgress(prefs.getInt(prefKey, 25));
-					//sbText.setText("" + prefs.getInt(prefKey, 25));
-					//seekBar.setMax(60);
+					seekBar.setProgress(prefs.getInt(prefKey, 2));
+					sbText.setText("" + prefs.getInt(prefKey, 2));
+					seekBar.setMax(60);
 					sbD.show();
 				} else if (prefKey.equals("akCallKeyboard")) {
 					InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
 					imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_NOT_ALWAYS);
 				} else if (prefKey.equals("akDefaultStyle")) {
-					//TODO
+					editor.putBoolean(prefKey, defaultStyle.isChecked());
+					editor.commit();
 				}
 				return false;
 			}
@@ -257,6 +265,13 @@ public class PrefsAltKey extends PreferenceActivity {
 		findPreference("akBorderWidth").setOnPreferenceClickListener(myListener);
 		findPreference("akCallKeyboard").setOnPreferenceClickListener(myListener);
 		findPreference("akDefaultStyle").setOnPreferenceClickListener(myListener);
+
+		// akDefaultStyle checkbox bugfox
+		if (prefs.getBoolean("akDefaultStyle", true)) {
+			defaultStyle.setChecked(true);
+		} else {
+			defaultStyle.setChecked(false);
+		}
 
 	}
 }

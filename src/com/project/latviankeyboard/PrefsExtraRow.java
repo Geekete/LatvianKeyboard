@@ -133,8 +133,6 @@ public class PrefsExtraRow extends PreferenceActivity {
 					editor.putString("erTextFont", "fonts/Megrim.ttf");
 				} else if (v.getId() == fcB7.getId()) {
 					editor.putString("erTextFont", "fonts/Jura-Medium.ttf");
-				} else {
-					Log.i("Bļum bļum", "DANGER!");
 				}
 				editor.commit();
 				fcD.dismiss();
@@ -369,8 +367,8 @@ public class PrefsExtraRow extends PreferenceActivity {
 					sbD.show();
 				} else if (prefKey.equals("erBtnPadding")) {
 					sbD.setTitle(R.string.titleBtnPadding);
-					seekBar.setProgress(prefs.getInt(prefKey, 4));
-					sbText.setText("" + prefs.getInt(prefKey, 4));
+					seekBar.setProgress(prefs.getInt(prefKey, 1));
+					sbText.setText("" + prefs.getInt(prefKey, 1));
 					seekBar.setMax(15);
 					sbD.show();
 				} else if (prefKey.equals("erBtnRoundness")) {
@@ -429,6 +427,8 @@ public class PrefsExtraRow extends PreferenceActivity {
 		} else {
 			isHapticOn.setChecked(false);
 		}
-
+	}
+	public void setColorChooserDialog(Preference preference) {
+		
 	}
 }
