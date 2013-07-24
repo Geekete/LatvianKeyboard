@@ -32,8 +32,6 @@ public class AltKeyKeyboard extends InputMethodService {
     private Keyboard alternateLower;
     private Keyboard numbersSymbols;
 
-    private Keyboard currentKeyboard;
-
     private HashMap<Integer, Integer> soundPoolMap;
     private HashMap<Integer, Integer> soundPoolForSpecialsMap;
     private SoundPool soundPool;
@@ -121,41 +119,43 @@ public class AltKeyKeyboard extends InputMethodService {
                             if (!alternative) {
                                 if (upperCase) {
                                     keyboardView.setKeyboard(alternate);
-                                    currentKeyboard = alternate;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(alternate);
                                 } else {
                                     keyboardView.setKeyboard(alternateLower);
-                                    currentKeyboard = alternateLower;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(alternateLower);
                                 }
                             } else {
                                 if (upperCase) {
                                     keyboardView.setKeyboard(normal);
-                                    currentKeyboard = normal;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(normal);
                                 } else {
                                     keyboardView.setKeyboard(normalLower);
-                                    currentKeyboard = normalLower;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(normalLower);
                                 }
                             }
                             alternative = !alternative;
+                            KeyboardCurrentState.getInstance().setAlternative(alternative);
                             break;
                         }
                         case 21: {
 
                             upperCase = !upperCase;
+                            KeyboardCurrentState.getInstance().setUpperCase(upperCase);
                             if (upperCase) {
                                 if (alternative) {
                                     keyboardView.setKeyboard(alternate);
-                                    currentKeyboard = alternate;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(alternate);
                                 } else {
                                     keyboardView.setKeyboard(normal);
-                                    currentKeyboard = normal;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(normal);
                                 }
                             } else {
                                 if (alternative) {
                                     keyboardView.setKeyboard(alternateLower);
-                                    currentKeyboard = alternateLower;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(alternateLower);
                                 } else {
                                     keyboardView.setKeyboard(normalLower);
-                                    currentKeyboard = normalLower;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(normalLower);
                                 }
                             }
                             break;
@@ -166,8 +166,9 @@ public class AltKeyKeyboard extends InputMethodService {
                         }
                         case 30: {
                             numbersAndSht = !numbersAndSht;
+                            KeyboardCurrentState.getInstance().setNumbersAndSht(numbersAndSht);
                             keyboardView.setKeyboard(numbersSymbols);
-                            currentKeyboard = numbersSymbols;
+                            KeyboardCurrentState.getInstance().setCurrentKeyboard(numbersSymbols);
                             break;
                         }
                         case 32: {
@@ -191,21 +192,22 @@ public class AltKeyKeyboard extends InputMethodService {
                         }
                         case 30: {
                             numbersAndSht = !numbersAndSht;
+                            KeyboardCurrentState.getInstance().setNumbersAndSht(numbersAndSht);
                             if (upperCase) {
                                 if (alternative) {
                                     keyboardView.setKeyboard(alternate);
-                                    currentKeyboard = alternate;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(alternate);
                                 } else {
                                     keyboardView.setKeyboard(normal);
-                                    currentKeyboard = normal;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(normal);
                                 }
                             } else {
                                 if (alternative) {
                                     keyboardView.setKeyboard(alternateLower);
-                                    currentKeyboard = alternateLower;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(alternateLower);
                                 } else {
                                     keyboardView.setKeyboard(normalLower);
-                                    currentKeyboard = normalLower;
+                                    KeyboardCurrentState.getInstance().setCurrentKeyboard(normalLower);
                                 }
                             }
                             break;
@@ -293,7 +295,23 @@ public class AltKeyKeyboard extends InputMethodService {
         soundPoolForSpecialsMap.put(4, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.noo, 1));
         soundPoolForSpecialsMap.put(5, soundPoolForSpecials.load(keyboardView.getContext(), R.raw.lullaby, 1));
 
-        keyboardView.setKeyboard(currentKeyboard);
+        if (KeyboardCurrentState.getInstance().isNumbersAndSht()) {
+            keyboardView.setKeyboard(numbersSymbols);
+        } else {
+            if (KeyboardCurrentState.getInstance().isAlternative()) {
+                if (KeyboardCurrentState.getInstance().isUpperCase()) {
+                    keyboardView.setKeyboard(alternate);
+                } else {
+                    keyboardView.setKeyboard(alternateLower);
+                }
+            } else {
+                if (KeyboardCurrentState.getInstance().isUpperCase()) {
+                    keyboardView.setKeyboard(normal);
+                } else {
+                    keyboardView.setKeyboard(normalLower);
+                }
+            }
+        }
         keyboardView.setPreviewEnabled(true);
         keyboardView.setOnKeyboardActionListener(onKeyboardActionListener);
         return keyboardView;
@@ -311,20 +329,28 @@ public class AltKeyKeyboard extends InputMethodService {
         switch (attribute.inputType & EditorInfo.TYPE_MASK_CLASS) {
 
             case EditorInfo.TYPE_CLASS_NUMBER: {
-                currentKeyboard = numbersSymbols;
+                if (KeyboardCurrentState.getInstance().getCurrentKeyboard() == null) {
+                    KeyboardCurrentState.getInstance().setCurrentKeyboard(numbersSymbols);
+                }
                 break;
             }
             case EditorInfo.TYPE_CLASS_DATETIME: {
-                currentKeyboard = numbersSymbols;
+                if (KeyboardCurrentState.getInstance().getCurrentKeyboard() == null) {
+                    KeyboardCurrentState.getInstance().setCurrentKeyboard(numbersSymbols);
+                }
                 break;
             }
 
             case EditorInfo.TYPE_CLASS_PHONE: {
-                currentKeyboard = numbersSymbols;
+                if (KeyboardCurrentState.getInstance().getCurrentKeyboard() == null) {
+                    KeyboardCurrentState.getInstance().setCurrentKeyboard(numbersSymbols);
+                }
                 break;
             }
             case EditorInfo.TYPE_CLASS_TEXT: {
-                currentKeyboard = normal;
+                if (KeyboardCurrentState.getInstance().getCurrentKeyboard() == null) {
+                    KeyboardCurrentState.getInstance().setCurrentKeyboard(normal);
+                }
                 int variation = attribute.inputType & EditorInfo.TYPE_MASK_VARIATION;
 
                 if (variation == EditorInfo.TYPE_TEXT_VARIATION_PASSWORD || variation == EditorInfo.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD) {
@@ -350,7 +376,23 @@ public class AltKeyKeyboard extends InputMethodService {
     public void onStartInputView(EditorInfo info, boolean restarting) {
         super.onStartInputView(info, restarting);
 
-        keyboardView.setKeyboard(currentKeyboard);
+        if (KeyboardCurrentState.getInstance().isNumbersAndSht()) {
+            keyboardView.setKeyboard(numbersSymbols);
+        } else {
+            if (KeyboardCurrentState.getInstance().isAlternative()) {
+                if (KeyboardCurrentState.getInstance().isUpperCase()) {
+                    keyboardView.setKeyboard(alternate);
+                } else {
+                    keyboardView.setKeyboard(alternateLower);
+                }
+            } else {
+                if (KeyboardCurrentState.getInstance().isUpperCase()) {
+                    keyboardView.setKeyboard(normal);
+                } else {
+                    keyboardView.setKeyboard(normalLower);
+                }
+            }
+        }
         keyboardView.closing();
     }
 

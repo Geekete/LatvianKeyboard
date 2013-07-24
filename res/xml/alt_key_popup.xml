@@ -3,25 +3,25 @@
           android:keyWidth="10%p"
           android:keyHeight="10%p">
     <Row>
-        <Key android:codes="28" android:keyLabel="(" android:keyEdgeFlags="left"></Key>
-        <Key android:codes="34" android:keyLabel=")" ></Key>
-        <Key android:codes="35" android:keyLabel="[" ></Key>
-        <Key android:codes="36" android:keyLabel="]" ></Key>
-        <Key android:codes="37" android:keyLabel="~" ></Key>
+        <Key android:codes="28" android:keyLabel="(" android:keyEdgeFlags="left"/>
+        <Key android:codes="34" android:keyLabel=")" />
+        <Key android:codes="35" android:keyLabel="[" />
+        <Key android:codes="36" android:keyLabel="]" />
+        <Key android:codes="37" android:keyLabel="~" />
     </Row>
 
     <Row>
-        <Key android:codes="38" android:keyLabel="{" android:keyEdgeFlags="left"></Key>
-        <Key android:codes="39" android:keyLabel="}" ></Key>
-        <Key android:codes="40" android:keyLabel="|" ></Key>
-        <Key android:codes="41" android:keyLabel="_" ></Key>
-        <Key android:codes="42" android:keyLabel="^" ></Key>
+        <Key android:codes="38" android:keyLabel="{" android:keyEdgeFlags="left"/>
+        <Key android:codes="39" android:keyLabel="}" />
+        <Key android:codes="40" android:keyLabel="|" />
+        <Key android:codes="41" android:keyLabel="_" />
+        <Key android:codes="42" android:keyLabel="^" />
     </Row>
 
     <Row>
-        <Key android:codes="43" android:keyLabel="#" android:keyEdgeFlags="left"></Key>
-        <Key android:codes="44" android:keyLabel="$" ></Key>
-        <Key android:codes="45" android:keyLabel="&lt;" ></Key>
-        <Key android:codes="46" android:keyLabel="&gt;" ></Key>
+        <Key android:codes="43" android:keyLabel="#" android:keyEdgeFlags="left"/>
+        <Key android:codes="44" android:keyLabel="$" />
+        <Key android:codes="45" android:keyLabel="&lt;" />
+        <Key android:codes="46" android:keyLabel="&gt;" />
     </Row>
 </Keyboard>

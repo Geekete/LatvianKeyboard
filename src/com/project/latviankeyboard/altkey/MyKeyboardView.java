@@ -98,9 +98,9 @@ public class MyKeyboardView extends KeyboardView {
                 } else {
                     if (key.label != null) {
                         if (key.label.length() > 1) {
-                            labelPaint.setTextSize(24);
+                            labelPaint.setTextSize(getTextAlignment());
                         } else {
-                            labelPaint.setTextSize(35);
+                            labelPaint.setTextSize(getTextAlignment());
                         }
                         canvas.drawText(key.label.toString(), (key.x + 1) + key.width / 2,
                                 (key.y + 14) + key.height / 2, labelPaint);
