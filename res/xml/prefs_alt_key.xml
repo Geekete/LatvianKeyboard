@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/titleCatKeyboardPrefs"><Preference android:key="akBackgroundColor" android:summary="@string/sumBackgroundColor" android:title="@string/titleBackgroundColor" /></PreferenceCategory>
+    <PreferenceCategory android:title="@string/titleCatKeyboardPrefs"><Preference android:key="akBackgroundColor" android:summary="@string/sumBackgroundColor" android:title="@string/titleBackgroundColor" />
+    <CheckBoxPreference android:summary="@string/sumSwitchSounds" android:title="@string/titleSwitchSounds" android:key="akSwitchSounds"/>
+</PreferenceCategory>
     <PreferenceCategory android:title="@string/titleCatButtonPrefs"><Preference android:key="akBtnColor" android:summary="@string/sumBtnBackground" android:title="@string/titleBtnBackground" /><Preference android:key="akBorderColor" android:title="@string/titleBtnBorderColor" /><Preference android:key="akBtnRoundness" android:title="@string/titleBtnRoundness" /><Preference android:key="akBorderWidth" android:title="@string/titleBorderWidth" />
     
 </PreferenceCategory><PreferenceCategory android:title="@string/titleCatTextPrefs"><Preference android:key="akLetterColor" android:title="@string/titleBtnTextColor" /></PreferenceCategory>

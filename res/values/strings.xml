@@ -77,6 +77,8 @@
     <string name="titleBorderWidth">Button border width</string>
     <string name="titleDefaultStyle">Default style</string>
     <string name="sumDefaultStyle">Uncheck to customize keyboard</string>
+    <string name="titleSwitchSounds">Keyboard sound</string>
+    <string name="sumSwitchSounds">If checked plays minion sounds on keypress</string>
 
     <!-- Font strings -->
     <string name="fontXoloniumRegular">Xolonium-Regular</string>

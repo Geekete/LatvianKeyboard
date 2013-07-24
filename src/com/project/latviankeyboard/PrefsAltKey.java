@@ -32,7 +32,7 @@ public class PrefsAltKey extends PreferenceActivity {
 	SharedPreferences prefs;
 	String prefKey;
 	TextView sbText, textRed, textGreen, textBlue, textAlpha;
-	CheckBoxPreference defaultStyle;
+	CheckBoxPreference defaultStyle, soundSwitch;
 
 	@Override
 	protected void onCreate(final Bundle savedInstanceState) {
@@ -144,13 +144,13 @@ public class PrefsAltKey extends PreferenceActivity {
 
 			@Override
 			public void onClick(View v) {
-				//if (prefKey.equals("akBtnRoundness")) {
-					//editor.putFloat(prefKey, (Float) seekBar.getProgress());
-				//} else {
-					editor.putInt(prefKey, seekBar.getProgress());
-					editor.commit();
-					sbD.dismiss();
-				//}
+				// if (prefKey.equals("akBtnRoundness")) {
+				// editor.putFloat(prefKey, (Float) seekBar.getProgress());
+				// } else {
+				editor.putInt(prefKey, seekBar.getProgress());
+				editor.commit();
+				sbD.dismiss();
+				// }
 			}
 		});
 
@@ -175,6 +175,7 @@ public class PrefsAltKey extends PreferenceActivity {
 
 		// CheckBoxPreference
 		defaultStyle = (CheckBoxPreference) findPreference("akDefaultStyle");
+		soundSwitch = (CheckBoxPreference) findPreference("akSwitchSounds");
 
 		// creates actionlistener for preferences
 		myListener = new OnPreferenceClickListener() {
@@ -267,11 +268,18 @@ public class PrefsAltKey extends PreferenceActivity {
 		findPreference("akCallKeyboard").setOnPreferenceClickListener(myListener);
 		findPreference("akDefaultStyle").setOnPreferenceClickListener(myListener);
 
-		// akDefaultStyle checkbox bugfox
+		// akDefaultStyle checkbox bugfix
 		if (prefs.getBoolean("akDefaultStyle", true)) {
 			defaultStyle.setChecked(true);
 		} else {
 			defaultStyle.setChecked(false);
+		}
+
+		// akSwitchSounds checkbox bugfix
+		if (prefs.getBoolean("akSwtichSounds", true)) {
+			soundSwitch.setChecked(true);
+		} else {
+			soundSwitch.setChecked(false);
 		}
 
 	}
