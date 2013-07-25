@@ -3,7 +3,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent" >
 
-    <com.project.latviankeyboard.extrarow.MyKeyboardView
+    <com.project.latviankeyboard.testingstuff.DancingKeyboardView
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/keyboard_test_ime"
         android:layout_width="match_parent"

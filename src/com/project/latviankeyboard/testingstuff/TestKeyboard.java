@@ -1,35 +1,19 @@
 package com.project.latviankeyboard.testingstuff;
 
-
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.os.SystemClock;
-import android.text.method.MetaKeyKeyListener;
 import android.util.Log;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
-import android.view.SurfaceHolder;
 import android.view.View;
-import android.view.inputmethod.CompletionInfo;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.ExtractedTextRequest;
-import android.view.inputmethod.InputConnection;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import com.project.latviankeyboard.R;
-import com.project.latviankeyboard.extrarow.MyKeyboardView;
+import com.project.latviankeyboard.testingstuff.DancingKeyboardView;
 
 
 
@@ -50,7 +34,7 @@ public class TestKeyboard extends InputMethodService implements KeyboardView.OnK
 	
 	//KeyboardView inputView;
 	RelativeLayout rl;
-	MyKeyboardView inputView;
+	DancingKeyboardView inputView;
 
 	/*
 	LVKeyboardERow keyboardCur;
@@ -95,8 +79,8 @@ public class TestKeyboard extends InputMethodService implements KeyboardView.OnK
 	public View onCreateInputView() {
 		
 		rl = (RelativeLayout) getLayoutInflater().inflate(R.layout.test_ime, null);
-		inputView = (MyKeyboardView) rl.findViewById(R.id.keyboard_test_ime);
-		//TextBox init
+		inputView = (DancingKeyboardView) rl.findViewById(R.id.keyboard_test_ime);
+		//TextBox initialization
 		textBox =(EditText) rl.findViewById(R.id.text_box);
 		typeSpeed = (TextView) rl.findViewById(R.id.type_speed);
 		nowScore = (TextView) rl.findViewById(R.id.now_score);
@@ -104,7 +88,7 @@ public class TestKeyboard extends InputMethodService implements KeyboardView.OnK
 		nowScore.setText(String.valueOf(intNowScore));
 		dancingMan = (DancingMan) rl.findViewById(R.id.dancing_man);
 		
-		//inputView = (MyKeyboardView) getLayoutInflater().inflate(R.layout.extra_row_input, null);
+		//inputView = (DancingKeyboardView) getLayoutInflater().inflate(R.layout.extra_row_input, null);
 		inputView.setOnKeyboardActionListener(this);
 		Log.d("!","set qwerty");
 		inputView.setKeyboard(keyboardQWERTY);
@@ -166,7 +150,7 @@ public class TestKeyboard extends InputMethodService implements KeyboardView.OnK
 			}
 
 			if ((attribute.inputType & EditorInfo.TYPE_TEXT_FLAG_AUTO_COMPLETE) != 0) {
-				// TODO if view is autocompleteing itself
+				// TODO if view is auto completing itself
 			}
 
 			// We also want to look at the current state of the editor
