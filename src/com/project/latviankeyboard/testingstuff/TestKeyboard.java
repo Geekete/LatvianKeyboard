@@ -77,7 +77,7 @@ public class TestKeyboard extends InputMethodService implements KeyboardView.OnK
 
 	@Override
 	public View onCreateInputView() {
-		
+		 
 		rl = (RelativeLayout) getLayoutInflater().inflate(R.layout.test_ime, null);
 		inputView = (DancingKeyboardView) rl.findViewById(R.id.keyboard_test_ime);
 		//TextBox initialization

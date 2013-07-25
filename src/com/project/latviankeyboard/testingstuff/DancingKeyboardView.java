@@ -287,7 +287,7 @@ public class DancingKeyboardView extends View implements OnTouchListener{
 		isHapticOn = true;
 		this.kbdHeightpercentVert = 35;
 		this.kbdHeightpercentHoriz = 60;
-		
+		 
 		String textFont = "fonts/Xolonium-Regular.otf";
 		this.typeface = Typeface.createFromAsset( ctx.getAssets(), textFont);
 		
