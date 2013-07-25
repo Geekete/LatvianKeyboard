@@ -10,6 +10,7 @@ import android.inputmethodservice.Keyboard.Key;
 import android.inputmethodservice.KeyboardView;
 import android.preference.PreferenceManager;
 import android.util.AttributeSet;
+import android.widget.Button;
 
 import java.util.List;
 
@@ -98,9 +99,9 @@ public class MyKeyboardView extends KeyboardView {
                 } else {
                     if (key.label != null) {
                         if (key.label.length() > 1) {
-                            labelPaint.setTextSize(getTextAlignment());
+                            labelPaint.setTextSize(new Button(this.getContext()).getTextSize() - 6);
                         } else {
-                            labelPaint.setTextSize(getTextAlignment());
+                            labelPaint.setTextSize(new Button(this.getContext()).getTextSize() + 4);
                         }
                         canvas.drawText(key.label.toString(), (key.x + 1) + key.width / 2,
                                 (key.y + 14) + key.height / 2, labelPaint);
