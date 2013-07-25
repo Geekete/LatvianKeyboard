@@ -2,10 +2,10 @@
 <resources>
 
     <!-- Main Activity Strings -->
-    <string name="app_name">Latvian keyboard settings</string>
+    <string name="app_name">Latvian alternative keyboard</string>
     <string name="titleExtraRowKeyboard">Extra row keyboard</string>
     <string name="titleAltKeyKeyboard">Alt key keyboard</string>
-    <string name="titleKeyboard3">Keyboard 3</string>
+    <string name="titleDancingKeyboard">Dancing keyboard</string>
     <string name="titleAbout">About</string>
 
     <!-- Extra row keyboard strings -->
