@@ -74,7 +74,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	int buttonHeight;
 	int backspaceCounter = 0;
 	int settingsChar = 44;
-	int toSettingsDelay = 1500;
+	int toSettingsDelay = 1000;
 	
 
 	
@@ -182,6 +182,13 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		}
 	};
 	
+	Runnable keyPreviewDispClose = new Runnable(){	//
+		@Override
+		public void run() {
+			MyKeyboardView.this.previewWin.dismiss();
+		}
+	};
+	
 	
 	
 	Runnable toSettings = new Runnable(){	//
@@ -191,6 +198,8 @@ public class MyKeyboardView extends View implements OnTouchListener{
 			keyboardActionListener.onKey(167, null);
 		}
 	};
+	
+	
 	
 	
 	
@@ -215,7 +224,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		this.popupWin = new PopupWindow(context);
 		this.popupWin.setContentView(popupContent);
 		this.popupWin.setBackgroundDrawable(new BitmapDrawable(getResources()));
-		this.popupWin.setTouchable(true);
+		this.popupWin.setTouchable(false);
 
 		//
 		
@@ -223,7 +232,7 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		this.previewWin = new PopupWindow(context);
 		this.previewWin.setContentView(this.previewContent);
 		this.previewWin.setBackgroundDrawable(new BitmapDrawable(getResources()));
-		this.previewWin.setTouchable(true);
+		this.previewWin.setTouchable(false);
 		
 	}
 
@@ -630,6 +639,10 @@ public class MyKeyboardView extends View implements OnTouchListener{
 				this.touchingKeyIndex = index;
 				this.timeTouchedKey = me.getEventTime();
 				
+				if(showHints){
+					boolean temp = this.removeCallbacks(this.keyPreviewDispClose);
+					this.previewWin.dismiss();
+				}
 				
 				if(!showHints || this.keys[index].repeatable == true){
 					this.keyLongClicked = this.keys[index];
@@ -756,7 +769,8 @@ public class MyKeyboardView extends View implements OnTouchListener{
 		if (me.getActionMasked() == MotionEvent.ACTION_UP){
 			
 			if(showHints){
-				this.previewWin.dismiss();
+				//this.previewWin.dismiss();
+				this.postDelayed(this.keyPreviewDispClose, 300);
 			}
 			
 			//if(!noSecondaryKeys){
@@ -1027,6 +1041,14 @@ public class MyKeyboardView extends View implements OnTouchListener{
 	public void showPreview(){
 		if(touchingKeyIndex == NOT_A_KEY)
 			return;
+		
+		/*
+		if(this.previewWin.isShowing()){
+			Log.d("!","SHOWING>>>");
+		}else{
+			Log.d("!","NOT SHOWING>>>");
+		}
+		*/
 		
 		Key k = MyKeyboardView.this.keys[touchingKeyIndex];
 		MyKeyboardView.this.previewContent.setPopupLebel(k.label);
