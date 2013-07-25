@@ -51,6 +51,9 @@ public class PrefsExtraRow extends PreferenceActivity {
 
 		// inflates preferences
 		addPreferencesFromResource(R.xml.prefs_extra_row);
+		
+		//get preference
+		hints = (CheckBoxPreference) findPreference("erHints");
 
 		// inflates colorChooser and its objects
 		colorChooser = (LinearLayout) getLayoutInflater().inflate(R.layout.color_chooser, null);
@@ -346,6 +349,8 @@ public class PrefsExtraRow extends PreferenceActivity {
 					editor.remove("erHintElevation");
 					editor.remove("erHints");
 					editor.commit();
+					hints.setChecked(false);
+					hints.getOnPreferenceClickListener().onPreferenceClick(hints);
 				}
 				return false;
 			}
@@ -383,7 +388,6 @@ public class PrefsExtraRow extends PreferenceActivity {
 		}
 
 		// hints bugfix
-		hints = (CheckBoxPreference) findPreference("erHints");
 		if (prefs.getBoolean("erHints", true)) {
 			hints.setChecked(true);
 		} else {
