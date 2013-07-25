@@ -1,4 +1,4 @@
-package com.project.latviankeyboard.testingstuff;
+package com.project.latviankeyboard.dancingkeyboard;
 
 import com.project.latviankeyboard.R;
 

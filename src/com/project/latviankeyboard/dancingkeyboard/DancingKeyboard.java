@@ -1,4 +1,4 @@
-package com.project.latviankeyboard.testingstuff;
+package com.project.latviankeyboard.dancingkeyboard;
 
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
@@ -13,11 +13,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.project.latviankeyboard.R;
-import com.project.latviankeyboard.testingstuff.DancingKeyboardView;
+import com.project.latviankeyboard.dancingkeyboard.DancingKeyboardView;
 
 
 
-public class TestKeyboard extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
+public class DancingKeyboard extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
 
 	long longSpeed = 0;
 	int intNowScore = 0;
@@ -78,7 +78,7 @@ public class TestKeyboard extends InputMethodService implements KeyboardView.OnK
 	@Override
 	public View onCreateInputView() {
 		 
-		rl = (RelativeLayout) getLayoutInflater().inflate(R.layout.test_ime, null);
+		rl = (RelativeLayout) getLayoutInflater().inflate(R.layout.dancing_layout, null);
 		inputView = (DancingKeyboardView) rl.findViewById(R.id.keyboard_test_ime);
 		//TextBox initialization
 		textBox =(EditText) rl.findViewById(R.id.text_box);
@@ -185,7 +185,11 @@ public class TestKeyboard extends InputMethodService implements KeyboardView.OnK
 
 		inputView.setKeyboard(keyboardCur);
 		inputView.closing();
+		try{
 		textFromOutside = getCurrentInputConnection().getExtractedText(new ExtractedTextRequest(), 0).text.toString();
+		}catch(Exception ex){
+		textFromOutside = "";
+		}
 		textBox.setText(textFromOutside);
 		textBox.setSelection(textFromOutside.length());
 
