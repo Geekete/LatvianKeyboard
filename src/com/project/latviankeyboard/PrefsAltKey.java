@@ -255,6 +255,7 @@ public class PrefsAltKey extends PreferenceActivity {
 	}
 
 	public void setSeekBarDialog(Preference preference, String prefKey) {
+		seekBar.setMax(30);
 		sbD.setTitle(preference.getTitle());
 		seekBar.setProgress(sbProgress);
 		sbText.setText("" + sbProgress);
