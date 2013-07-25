@@ -78,10 +78,10 @@
                 android:resource="@xml/alt_key_method" />
         </service>
 
-        <!-- Test keyboard service -->
+        <!-- Dancing keyboard service -->
         <service
-            android:name="com.project.latviankeyboard.testingstuff.TestKeyboard"
-            android:label="test keyboard 00"
+            android:name="com.project.latviankeyboard.dancingkeyboard.DancingKeyboard"
+            android:label="Dancing Keyboard"
             android:permission="android.permission.BIND_INPUT_METHOD" >
             <intent-filter>
                 <action android:name="android.view.InputMethod" />
